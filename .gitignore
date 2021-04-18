@@ -1,0 +1,11 @@
+.idea/
+.git/
+vendor/
+*.lock
+.phpunit*
+config
+.php_cs.cache
+runtime
+hyperf-skeleton
+hyperf-skeleton*
+.phpunit.result.cache

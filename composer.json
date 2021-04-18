@@ -1,0 +1,42 @@
+{
+    "name": "nashgao/mqtt",
+    "authors": [
+        {
+            "name": "nashgao",
+            "email": "nashgao1992@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ext-swoole": ">=4.5",
+        "hyperf/di": "~2.1",
+        "hyperf/event": "~2.1",
+        "hyperf/pool": "~2.1",
+        "hyperf/logger": "~2.1",
+        "simps/mqtt": "^1.3",
+        "nashgao/utils": "~0.1"
+    },
+    "require-dev": {
+        "swoole/ide-helper": "^4.6",
+        "friendsofphp/php-cs-fixer": "^v2.1.04",
+        "mockery/mockery": "^1.0",
+        "phpstan/phpstan": "^0.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nashgao\\MQTT\\": "src/"
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-autoload-dump": [
+            "rm -rf runtime/container"
+        ],
+        "test": "co-phpunit -c phpunit.xml --colors=always",
+        "cs-fix": "php-cs-fixer fix $1",
+        "analyse": "phpstan analyse --memory-limit 300M -l 0 -c phpstan.neon ./app ./config",
+        "start": "php ./bin/hyperf.php start"
+    }
+}
