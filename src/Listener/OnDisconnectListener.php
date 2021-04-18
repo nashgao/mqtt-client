@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Listener;
 
-
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
 use Nashgao\MQTT\Event\OnDisconnectEvent;
@@ -12,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use Simps\MQTT\Hex\ReasonCode;
 
 /**
- * @Listener()
+ * @Listener
  */
 class OnDisconnectListener implements ListenerInterface
 {
@@ -26,7 +25,7 @@ class OnDisconnectListener implements ListenerInterface
     public function listen(): array
     {
         return [
-            OnDisconnectEvent::class
+            OnDisconnectEvent::class,
         ];
     }
 

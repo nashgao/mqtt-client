@@ -23,6 +23,4 @@ class OnDisconnectEvent
         $this->qos = $qos;
         $this->client = $client;
     }
-
-
 }

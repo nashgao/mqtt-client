@@ -14,9 +14,11 @@ use Swoole\Coroutine\Channel;
 
 class Client
 {
-    const QOS_AT_MOST_ONCE = 0,
-          QOS_AT_LEAST_ONCE = 1,
-          QOS_EXACTLY_ONCE = 2;
+    const QOS_AT_MOST_ONCE = 0;
+
+    const QOS_AT_LEAST_ONCE = 1;
+
+    const QOS_EXACTLY_ONCE = 2;
 
     protected Channel $channel;
 
@@ -103,7 +105,7 @@ class Client
                 }
 
                 if ($message['type'] === Types::DISCONNECT) {
-                    $this->container->get(EventDispatcherInterface::class)->dispatch(new OnDisconnectEvent($message['type'],$message['code'],$message['qos'], $this->client));
+                    $this->container->get(EventDispatcherInterface::class)->dispatch(new OnDisconnectEvent($message['type'], $message['code'], $message['qos'], $this->client));
                     return $cont->push($message);
                 }
             }
