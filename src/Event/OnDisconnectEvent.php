@@ -12,8 +12,6 @@ class OnDisconnectEvent
 
     public int $code;
 
-    public int $qos;
-
     public Client $client;
 
     public function __construct(int $type, int $code, int $qos, Client $client)
