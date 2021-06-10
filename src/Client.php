@@ -6,7 +6,6 @@ namespace Nashgao\MQTT;
 
 use Nashgao\MQTT\Event\OnDisconnectEvent;
 use Nashgao\MQTT\Event\OnReceiveEvent;
-use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Simps\MQTT\Client as SimpsClient;
 use Simps\MQTT\Protocol\Types;
@@ -24,11 +23,11 @@ class Client
 
     protected SimpsClient $client;
 
-    protected ContainerInterface $container;
+    protected EventDispatcherInterface $dispatcher;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(EventDispatcherInterface $dispatcher)
     {
-        $this->container = $container;
+        $this->dispatcher = $dispatcher;
         $this->channel = new Channel();
     }
 
@@ -105,12 +104,29 @@ class Client
                 }
 
                 if ($message['type'] === Types::DISCONNECT) {
-                    $this->container->get(EventDispatcherInterface::class)->dispatch(new OnDisconnectEvent($message['type'], $message['code'], $message['qos'], $this->client));
+                    $this->dispatcher->dispatch(
+                        new OnDisconnectEvent(
+                            $message['type'],
+                            $message['code'],
+                            $message['qos']
+                        )
+                    );
                     return $cont->push($message);
                 }
             }
 
-            $this->container->get(EventDispatcherInterface::class)->dispatch(new OnReceiveEvent($message['type'], $message['dup'], $message['qos'], $message['retain'], $message['topic'], $message['message_id'], $message['properties'], $message['message']));
+            $this->dispatcher->dispatch(
+                new OnReceiveEvent(
+                    $message['type'],
+                    $message['dup'],
+                    $message['qos'],
+                    $message['retain'],
+                    $message['topic'],
+                    $message['message_id'],
+                    $message['properties'],
+                    $message['message']
+                )
+            );
             return $cont->push($message);
         });
 
