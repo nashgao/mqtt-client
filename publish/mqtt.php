@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 return [
     'default' => [
-        'connect' => [
-            'host' => '',
-            'port' => '',
-            'time_out' => '',
-            'keepalive' => '',
-            'protocol_name' => 'MQTT',
-            'protocol_level' => 5,
-            'username' => '',
-            'password' => '',
+        'host' => '',
+        'port' => '',
+        'time_out' => '',
+        'keepalive' => '',
+        'protocol_name' => 'MQTT',
+        'protocol_level' => 5,
+        'username' => '',
+        'password' => '',
+        'properties' => [
         ],
         'swoole_config' => [
-            'open_mqtt_protocol' => true,
             'package_max_length' => 1024 * 1024,
             'connect_timeout' => 5.0,
             'keepalive' => 0, // default 0 sec which means disabled
+            'ssl_enabled' => '',
             'ssl_cert_file' => '',
             'ssl_key_file' => '',
             'ssl_cafile' => '',
@@ -31,6 +31,7 @@ return [
             'heartbeat' => -1,
             'max_idle_time' => 60,
         ],
+        'prefix' => '',
         'subscribe' => [
             'topics' => [
                 [

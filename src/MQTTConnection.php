@@ -10,6 +10,7 @@ use Hyperf\Pool\Exception\ConnectionException;
 use Hyperf\Pool\Pool;
 use Nashgao\MQTT\Config\ClientConfig;
 use Nashgao\MQTT\Exception\InvalidConfigException;
+use Nashgao\MQTT\Provider\ClientIdProviderInterface;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Swoole\Coroutine\Channel;
@@ -22,15 +23,12 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
 
     protected EventDispatcherInterface $dispatcher;
 
-    protected array $config = [
-        'connect_timeout' => 5.0,
-        'settings' => [],
-    ];
+    protected array $config = [];
 
     public function __construct(ContainerInterface $container, Pool $pool, array $config)
     {
         parent::__construct($container, $pool);
-        $this->config = array_replace_recursive($this->config, $config) ?? [];
+        $this->config = $config;
         if (empty($this->config)) {
             throw new InvalidConfigException();
         }
@@ -65,7 +63,13 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
 
     public function reconnect(): bool
     {
-        $this->connection = new ClientProxy(new ClientConfig(...$this->config));
+        $this->connection = new ClientProxy(new ClientConfig(
+            $this->config['host'],
+            $this->config['port'],
+            $this->createSimpsClientConfig(),
+            $this->config['subscribe'],
+            $this->config['publish'],
+        ));
         return true;
     }
 
@@ -79,5 +83,23 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
     public function resetLastUseTime(): void
     {
         $this->lastUseTime = 0.0;
+    }
+
+    private function createSimpsClientConfig(): \Simps\MQTT\Config\ClientConfig
+    {
+        return (new \Simps\MQTT\Config\ClientConfig())
+            ->setUserName($this->config['username'])
+            ->setPassword($this->config['password'])
+            ->setKeepAlive($this->config['keepalive'] ?? 0)
+            ->setMaxAttempts($this->config['max_attempts'] ?? 3)
+            ->setProtocolLevel($this->config['protocol_level'] ?? 5)
+            ->setProperties($this->config['properties'])
+            ->setClientId($this->container->get(ClientIdProviderInterface::class)->generate($this->config['prefix']))
+            ->setSwooleConfig($this->config['swoole_config'])
+            ->setSockType((function () {
+                return (isset($this->config['swoole_config']['ssl_enabled']) and $this->config['swoole_config']['ssl_enabled'])
+                    ? SWOOLE_SOCK_TCP | SWOOLE_SSL
+                    : SWOOLE_SOCK_TCP;
+            })());
     }
 }

@@ -63,7 +63,7 @@ class Client
             $connection = Context::get($this->getContextKey());
         }
         if (! $connection instanceof MQTTConnection) {
-            $pool = $this->factory->getPool($this->poolName, []);
+            $pool = $this->factory->getPool($this->poolName);
             $connection = $pool->get();
         }
 

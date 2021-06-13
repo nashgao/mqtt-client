@@ -24,7 +24,7 @@ class ClientProxy extends \Simps\MQTT\Client
     public function __construct(ClientConfig $config)
     {
         $this->config = $config;
-        parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType);
+        parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType ?? self::COROUTINE_CLIENT_TYPE);
     }
 
     public static function create(ClientConfig $config)
