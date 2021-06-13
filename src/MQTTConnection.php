@@ -12,14 +12,13 @@ use Nashgao\MQTT\Config\ClientConfig;
 use Nashgao\MQTT\Exception\InvalidConfigException;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Simps\MQTT\Client as SimpsClient;
 use Swoole\Coroutine\Channel;
 
 class MQTTConnection extends BaseConnection implements ConnectionInterface
 {
     protected Channel $channel;
 
-    protected SimpsClient $connection;
+    protected ClientProxy $connection;
 
     protected EventDispatcherInterface $dispatcher;
 

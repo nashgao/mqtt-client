@@ -19,9 +19,11 @@ class ClientProxy extends \Simps\MQTT\Client
 
     protected DispatcherInterface $dispatcher;
 
+    protected ClientConfig $config;
+
     public function __construct(ClientConfig $config)
     {
-        //string $host, int $port, ClientConfig $config, int $clientType = self::COROUTINE_CLIENT_TYPE
+        $this->config = $config;
         parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType);
     }
 

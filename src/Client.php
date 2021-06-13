@@ -10,9 +10,9 @@ use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
 use Nashgao\MQTT\Pool\PoolFactory;
 
 /**
- * @method subscribe
- * @method unsubscribe
- * @method publish
+ * @method subscribe(array $topics, array $properties = [])
+ * @method unSubscribe(array $topics, array $properties = [])
+ * @method publish(string $topic,string $message,int $qos = 0,int $dup = 0,int $retain = 0,array $properties = [])
  */
 class Client
 {
