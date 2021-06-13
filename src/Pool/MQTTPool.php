@@ -6,6 +6,8 @@ namespace Nashgao\MQTT\Pool;
 
 use Hyperf\Contract\ConnectionInterface;
 use Hyperf\Pool\Pool;
+use Nashgao\MQTT\Frequency;
+use Nashgao\MQTT\MQTTConnection;
 use Psr\Container\ContainerInterface;
 
 class MQTTPool extends Pool

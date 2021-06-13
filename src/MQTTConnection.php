@@ -2,18 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Nashgao\MQTT\Pool;
+namespace Nashgao\MQTT;
 
 use Hyperf\Contract\ConnectionInterface;
 use Hyperf\Pool\Connection as BaseConnection;
 use Hyperf\Pool\Exception\ConnectionException;
 use Hyperf\Pool\Pool;
+use Nashgao\MQTT\Config\ClientConfig;
+use Nashgao\MQTT\Exception\InvalidConfigException;
 use Psr\Container\ContainerInterface;
-use Swoole\Coroutine\Client as SwooleClient;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Simps\MQTT\Client as SimpsClient;
+use Swoole\Coroutine\Channel;
 
 class MQTTConnection extends BaseConnection implements ConnectionInterface
 {
-    protected SwooleClient $connection;
+    protected Channel $channel;
+
+    protected SimpsClient $connection;
+
+    protected EventDispatcherInterface $dispatcher;
 
     protected array $config = [
         'connect_timeout' => 5.0,
@@ -23,8 +31,10 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
     public function __construct(ContainerInterface $container, Pool $pool, array $config)
     {
         parent::__construct($container, $pool);
-        $this->config = array_replace($this->config, $config);
-
+        $this->config = array_replace_recursive($this->config, $config) ?? [];
+        if (empty($this->config)) {
+            throw new InvalidConfigException();
+        }
         $this->reconnect();
     }
 
@@ -56,6 +66,8 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
 
     public function reconnect(): bool
     {
+        $this->connection = new ClientProxy(new ClientConfig(...$this->config));
+        return true;
     }
 
     public function close(): bool

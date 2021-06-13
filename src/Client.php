@@ -4,132 +4,78 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT;
 
-use Nashgao\MQTT\Event\OnDisconnectEvent;
-use Nashgao\MQTT\Event\OnReceiveEvent;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Simps\MQTT\Client as SimpsClient;
-use Simps\MQTT\Protocol\Types;
-use Swoole\Coroutine\Channel;
+use Hyperf\Utils\Context;
+use Nashgao\MQTT\Exception\InvalidMethodException;
+use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
+use Nashgao\MQTT\Pool\PoolFactory;
 
+/**
+ * @method subscribe
+ * @method unsubscribe
+ * @method publish
+ */
 class Client
 {
-    const QOS_AT_MOST_ONCE = 0;
+    protected PoolFactory $factory;
 
-    const QOS_AT_LEAST_ONCE = 1;
+    protected string $poolName = 'default';
 
-    const QOS_EXACTLY_ONCE = 2;
-
-    protected Channel $channel;
-
-    protected SimpsClient $client;
-
-    protected EventDispatcherInterface $dispatcher;
-
-    public function __construct(EventDispatcherInterface $dispatcher)
+    public function __construct(PoolFactory $factory)
     {
-        $this->dispatcher = $dispatcher;
-        $this->channel = new Channel();
+        $this->factory = $factory;
     }
 
-    public function loop()
+    public function __call($name, $arguments)
     {
-        while (true) {
-            /** @var Closure $closure */
-            $closure = $this->channel->pop();
-            if (! $closure) {
-                break;
-            }
-            $closure->call($this);
+        if (! in_array($name, $this->methods())) {
+            throw new InvalidMethodException();
         }
-    }
 
-    public function socketConnect()
-    {
-        $cont = new Channel();
-        $this->channel->push(function () use ($cont) {
-            $this->client = ClientFactory::createClient();
-            $cont->push(true);
-        });
-        $cont->pop();
-    }
+        $hasContextConnection = Context::has($this->getContextKey());
+        $connection = $this->getConnection($hasContextConnection);
 
-    public function connect(bool $clean = true, array $will = [])
-    {
-        $cont = new Channel();
-        $this->channel->push(function () use ($will, $clean, $cont) {
-            $this->client->connect($clean, $will);
-            $cont->push(true);
-        });
-        $cont->pop();
-    }
-
-    public function publish(string $topic, string $message, int $qos = 2)
-    {
-        $cont = new Channel();
-        $this->channel->push(function () use ($cont, $topic, $message, $qos) {
-            $this->client->publish($topic, $message, $qos);
-            $cont->push(true);
-        });
-        $cont->pop();
-    }
-
-    public function subscribe(array $topics)
-    {
-        $cont = new Channel();
-        $this->channel->push(function () use ($cont, $topics) {
-            $res = $this->client->subscribe($topics);
-            $cont->push($res);
-        });
-        $cont->pop();
-    }
-
-    public function unsubscribe(array $topics)
-    {
-        $cont = new Channel();
-        $this->channel->push(function () use ($cont, $topics) {
-            $res = $this->client->unSubscribe($topics);
-            $cont->push($res);
-        });
-        $cont->pop();
-    }
-
-    public function recv()
-    {
-        $cont = new Channel();
-        $this->channel->push(function () use ($cont) {
-            $message = $this->client->recv();
-            if (! is_bool($message)) {
-                if ($message['type'] === Types::PUBLISH and $message['qos'] === static::QOS_AT_LEAST_ONCE) {
-                    $this->client->send(['type' => Types::PUBACK, 'message_id' => $message['message_id'], false]);
-                }
-
-                if ($message['type'] === Types::DISCONNECT) {
-                    $this->dispatcher->dispatch(
-                        new OnDisconnectEvent(
-                            $message['type'],
-                            $message['code'],
-                            $message['qos']
-                        )
-                    );
-                    return $cont->push($message);
-                }
+        try {
+            /** @var MQTTConnection $connection */
+            $connection = $connection->getConnection();
+            $result = $connection->{$name}(...$arguments);
+        } finally {
+            if (! $hasContextConnection) {
+                $connection->release();
             }
+        }
 
-            $this->dispatcher->dispatch(
-                new OnReceiveEvent(
-                    $message['type'],
-                    $message['dup'],
-                    $message['qos'],
-                    $message['retain'],
-                    $message['topic'],
-                    $message['message_id'],
-                    $message['properties'],
-                    $message['message']
-                )
-            );
-            return $cont->push($message);
-        });
+        return $result;
+    }
 
-        return $cont->pop();
+    private function methods(): array
+    {
+        return [
+            'subscribe',
+            'unsubscribe',
+            'publish',
+        ];
+    }
+
+    private function getConnection($hasContextConnection): MQTTConnection
+    {
+        $connection = null;
+        if ($hasContextConnection) {
+            $connection = Context::get($this->getContextKey());
+        }
+        if (! $connection instanceof MQTTConnection) {
+            $pool = $this->factory->getPool($this->poolName, []);
+            $connection = $pool->get();
+        }
+
+        if (! $connection instanceof MQTTConnection) {
+            throw new InvalidMQTTConnectionException('invalid mqtt connection');
+        }
+
+        return $connection;
+    }
+
+    private function getContextKey(): string
+    {
+        return sprintf('mqtt.connection.%s', $this->poolName);
     }
 }
