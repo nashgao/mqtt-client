@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Listener;
 
-use Hyperf\Event\Annotation\Listener;
+use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Nashgao\MQTT\Event\OnDisconnectEvent;
-use Psr\Log\LoggerInterface;
 use Simps\MQTT\Hex\ReasonCode;
 
 class OnDisconnectListener implements ListenerInterface
 {
-    protected LoggerInterface $logger;
+    protected StdoutLoggerInterface $logger;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(StdoutLoggerInterface $logger)
     {
         $this->logger = $logger;
     }
