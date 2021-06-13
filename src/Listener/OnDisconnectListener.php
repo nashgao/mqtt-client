@@ -10,9 +10,6 @@ use Nashgao\MQTT\Event\OnDisconnectEvent;
 use Psr\Log\LoggerInterface;
 use Simps\MQTT\Hex\ReasonCode;
 
-/**
- * @Listener
- */
 class OnDisconnectListener implements ListenerInterface
 {
     protected LoggerInterface $logger;
@@ -34,7 +31,7 @@ class OnDisconnectListener implements ListenerInterface
      */
     public function process(object $event)
     {
-        $this->logger->debug(sprintf("Broker is disconnected, the reason is %s [%d]\n", ReasonCode::getReasonPhrase($event->code), $event->code));
+        $this->logger->debug(sprintf("broker is disconnected, the reason is %s [%d]\n", ReasonCode::getReasonPhrase($event->code), $event->code));
         $event->client->close($event->code);
     }
 }
