@@ -6,6 +6,7 @@
             "email": "nashgao1992@gmail.com"
         }
     ],
+    "description": "encapsulation of mqtt client based on simps mqtt",
     "require": {
         "php": ">=7.4",
         "ext-swoole": ">=4.5",
@@ -25,6 +26,11 @@
     "autoload": {
         "psr-4": {
             "Nashgao\\MQTT\\": "src/"
+        }
+    },
+    "extra": {
+        "hyperf":{
+            "config": "Nashgao\\MQTT\\ConfigProvider"
         }
     },
     "scripts": {

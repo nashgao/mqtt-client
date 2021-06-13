@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 return [
@@ -19,7 +20,7 @@ return [
         'keepalive' => 0, // default 0 sec which means disabled
         'ssl_cert_file' => '',
         'ssl_key_file' => '',
-        'ssl_cafile' => ''
+        'ssl_cafile' => '',
     ],
     'pool' => [
         'min_connections' => 1,
@@ -27,7 +28,7 @@ return [
         'connect_timeout' => 10.0,
         'wait_timeout' => 20.0,
         'heartbeat' => -1,
-        'max_idle_time' => 60
+        'max_idle_time' => 60,
     ],
     'subscribe' => [
         'topics' => [
@@ -38,8 +39,8 @@ return [
                 'no_local' => true,
                 'retain_as_published' => true,
                 'retain_handling' => 2,
-            ]
-        ]
+            ],
+        ],
     ],
     'publish' => [
         'topics' => [
@@ -50,9 +51,7 @@ return [
                 'no_local' => true,
                 'retain_as_published' => true,
                 'retain_handling' => 2,
-            ]
-        ]
+            ],
+        ],
     ],
-
-
 ];
