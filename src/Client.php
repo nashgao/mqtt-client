@@ -13,6 +13,8 @@ use Nashgao\MQTT\Pool\PoolFactory;
  * @method subscribe(array $topics, array $properties = [])
  * @method unSubscribe(array $topics, array $properties = [])
  * @method publish(string $topic,string $message,int $qos = 0,int $dup = 0,int $retain = 0,array $properties = [])
+ * @method multiSub(array $topics, array $properties = [], int $num = 2)
+ * @method receive()
  */
 class Client
 {
@@ -20,9 +22,25 @@ class Client
 
     protected string $poolName = 'default';
 
+    protected \Closure $getConnection;
+
     public function __construct(PoolFactory $factory)
     {
         $this->factory = $factory;
+        $this->getConnection = function ($hasContextConnection, $name, $arguments) {
+            $connection = $this->getConnection($hasContextConnection);
+            try {
+                /** @var MQTTConnection $connection */
+                $connection = $connection->getConnection();
+                $result = $connection->{$name}(...$arguments);
+            } finally {
+                if (! $hasContextConnection) {
+                    $connection->release();
+                }
+            }
+
+            return $result;
+        };
     }
 
     public function __call($name, $arguments)
@@ -31,17 +49,17 @@ class Client
             throw new InvalidMethodException();
         }
 
+        $result = null;
         $hasContextConnection = Context::has($this->getContextKey());
-        $connection = $this->getConnection($hasContextConnection);
 
-        try {
-            /** @var MQTTConnection $connection */
-            $connection = $connection->getConnection();
-            $result = $connection->{$name}(...$arguments);
-        } finally {
-            if (! $hasContextConnection) {
-                $connection->release();
-            }
+        $num = 1;
+        if ($name === 'multiSub') {
+            [$topics, $properties, $num] = $arguments;
+            $num = $num < 1 ? 1 : $num;
+            $name = 'subscribe';
+        }
+        for ($count = 0; $count < $num; ++$count) {
+            $result = ($this->getConnection)($hasContextConnection, $name, $arguments);
         }
 
         return $result;
@@ -53,6 +71,8 @@ class Client
             'subscribe',
             'unsubscribe',
             'publish',
+            'receive',
+            'multiSub',
         ];
     }
 

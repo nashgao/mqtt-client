@@ -63,7 +63,7 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
 
     public function reconnect(): bool
     {
-        (new ClientFactory())->create(new ClientConfig(
+        $this->connection = (new ClientFactory())->create(new ClientConfig(
             $this->config['host'],
             $this->config['port'],
             $this->createSimpsClientConfig(),
@@ -94,7 +94,7 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
             ->setMaxAttempts($this->config['max_attempts'] ?? 3)
             ->setProtocolLevel($this->config['protocol_level'] ?? 5)
             ->setProperties($this->config['properties'])
-            ->setClientId($this->container->get(ClientIdProviderInterface::class)->generate($this->config['prefix']))
+            ->setClientId($this->container->get(ClientIdProviderInterface::class)->generate($this->config['prefix']) ?? '')
             ->setSwooleConfig($this->config['swoole_config'])
             ->setSockType((function () {
                 return (isset($this->config['swoole_config']['ssl_enabled']) and $this->config['swoole_config']['ssl_enabled'])
