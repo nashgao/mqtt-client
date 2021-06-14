@@ -18,26 +18,29 @@ class ClientConfig
 
     public array $publish;
 
+    public bool $cleanSession;
+
+    public array $will;
+
     public int $clientType;
 
-    /**
-     * ClientConfig constructor.
-     */
     public function __construct(
         string $host,
         int $port,
         SimpsClientConfig $clientConfig,
         array $subscribe = [],
         array $publish = [],
-        int $clientType = null
+        bool $cleanSession = false,
+        array $will = [],
+        int $clientType = 1 // 1 means coroutine client
     ) {
         $this->host = $host;
         $this->port = $port;
         $this->clientConfig = $clientConfig;
         $this->subscribe = $subscribe;
         $this->publish = $publish;
-        if (isset($clientType) and is_int($clientType)) {
-            $this->clientType = $clientType;
-        }
+        $this->cleanSession = $cleanSession;
+        $this->will = $will;
+        $this->clientType = $clientType;
     }
 }

@@ -10,7 +10,6 @@ use Nashgao\MQTT\Event\OnDisconnectEvent;
 use Nashgao\MQTT\Event\OnReceiveEvent;
 use Nashgao\MQTT\Utils\QualityOfService;
 use Simps\MQTT\Protocol\Types;
-use Swoole\Coroutine;
 use Swoole\Coroutine\Channel;
 
 class ClientProxy extends \Simps\MQTT\Client
@@ -24,28 +23,8 @@ class ClientProxy extends \Simps\MQTT\Client
     public function __construct(ClientConfig $config)
     {
         $this->config = $config;
-        parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType ?? self::COROUTINE_CLIENT_TYPE);
-    }
-
-    public static function create(ClientConfig $config)
-    {
-        Coroutine::create(
-            function () {
-                $this->loop();
-            }
-        );
-
-        Coroutine::create(
-            function () use ($config) {
-                $this->socketConnect($config);
-            }
-        );
-
-        Coroutine::create(
-            function () {
-                $this->connect();
-            }
-        );
+        $this->channel = new Channel();
+        parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType);
     }
 
     public function loop()
@@ -63,18 +42,8 @@ class ClientProxy extends \Simps\MQTT\Client
     public function connect(bool $clean = true, array $will = [])
     {
         $cont = new Channel();
-        $this->channel->push(static function () use ($will, $clean, $cont) {
+        $this->channel->push(function () use ($will, $clean, $cont) {
             parent::connect($clean, $will);
-            $cont->push(true);
-        });
-        $cont->pop();
-    }
-
-    public function socketConnect(ClientConfig $config)
-    {
-        $cont = new Channel();
-        $this->channel->push(function () use ($config, $cont) {
-            new static($config);
             $cont->push(true);
         });
         $cont->pop();
@@ -90,7 +59,7 @@ class ClientProxy extends \Simps\MQTT\Client
     ) {
         $cont = new Channel();
         $this->channel->push(
-            static function () use ($properties, $retain, $dup, $cont, $topic, $message, $qos) {
+            function () use ($properties, $retain, $dup, $cont, $topic, $message, $qos) {
                 parent::publish($topic, $message, $qos, $dup, $retain, $properties);
                 $cont->push(true);
             }
@@ -102,7 +71,7 @@ class ClientProxy extends \Simps\MQTT\Client
     {
         $cont = new Channel();
         $this->channel->push(
-            static function () use ($properties, $cont, $topics) {
+            function () use ($properties, $cont, $topics) {
                 $cont->push(parent::subscribe($topics, $properties));
             }
         );
@@ -113,7 +82,7 @@ class ClientProxy extends \Simps\MQTT\Client
     {
         $cont = new Channel();
         $this->channel->push(
-            static function () use ($properties, $cont, $topics) {
+            function () use ($properties, $cont, $topics) {
                 $cont->push(parent::unSubscribe($topics, $properties));
             }
         );

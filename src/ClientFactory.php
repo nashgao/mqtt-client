@@ -4,40 +4,36 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT;
 
-use Hyperf\Contract\ConfigInterface;
-use Hyperf\Utils\ApplicationContext;
-use Simps\MQTT\Client;
-use Simps\MQTT\Config\ClientConfig;
+use Nashgao\MQTT\Config\ClientConfig;
+use Swoole\Coroutine;
+use Swoole\Coroutine\Channel;
 
 class ClientFactory
 {
-    public static function createClient(): Client
+    public Channel $channel;
+
+    public function __construct()
     {
-        $config = ApplicationContext::getContainer()->get(ConfigInterface::class);
-        $mqttConfig = $config->get('mqtt.client.connect');
-        $swooleConfig = $config->get('mqtt.client.settings');
-        return new Client(
-            $mqttConfig['host'],
-            $mqttConfig['port'],
-            make(ClientConfig::class)
-                ->setUserName($mqttConfig['username'])
-                ->setPassword($mqttConfig['password'])
-                ->setKeepAlive(array_key_exists('keepalive', $mqttConfig) ? $mqttConfig['keepalive'] : 0)
-                ->setSwooleConfig($swooleConfig)
-                ->setMaxAttempts(array_key_exists('max_attempts', $mqttConfig) ? $mqttConfig['max_attempts'] : 3)
-                ->setClientId(static::getClientId())
-                ->setProtocolLevel(5)
-                ->setProperties([
-                    'session_expiry_interval' => 60,
-                    'receive_maximum' => 65535,
-                    'topic_alias_maximum' => 65535,
-                ])
-                ->setSockType(SWOOLE_SOCK_TCP | SWOOLE_SSL)
-        );
+        $this->channel = new Channel();
     }
 
-    public static function getClientId(string $prefix = 'mqtt'): string
+    public function create(ClientConfig $config)
     {
-        return uniqid($prefix);
+        $client = new ClientProxy($config);
+        Coroutine::create(
+            function () use ($client) {
+                $client->loop();
+            }
+        );
+
+        Coroutine::create(
+            function () use ($client) {
+                $client->connect();
+            }
+        );
+
+        for (;;) {
+            $this->channel->push($client->recv());
+        }
     }
 }

@@ -63,7 +63,7 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
 
     public function reconnect(): bool
     {
-        $this->connection = new ClientProxy(new ClientConfig(
+        (new ClientFactory())->create(new ClientConfig(
             $this->config['host'],
             $this->config['port'],
             $this->createSimpsClientConfig(),

@@ -25,7 +25,7 @@ return [
         ],
         'pool' => [
             'min_connections' => 1,
-            'max_connections' => 3,
+            'max_connections' => 10,
             'connect_timeout' => 10.0,
             'wait_timeout' => 20.0,
             'heartbeat' => -1,
