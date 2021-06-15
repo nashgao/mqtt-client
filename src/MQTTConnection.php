@@ -15,6 +15,15 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Swoole\Coroutine\Channel;
 
+/**
+ * @method subscribe(array $topics, array $properties = [])
+ * @method unSubscribe(array $topics, array $properties = [])
+ * @method publish(string $topic,string $message,int $qos = 0,int $dup = 0,int $retain = 0,array $properties = [])
+ * @method multiSub(array $topics, array $properties = [], int $num = 2)
+ * @method loop()
+ * @method connect(bool $clean, array $will = [])
+ * @method receive()
+ */
 class MQTTConnection extends BaseConnection implements ConnectionInterface
 {
     protected Channel $channel;

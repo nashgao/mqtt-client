@@ -120,9 +120,9 @@ class ClientProxy extends \Simps\MQTT\Client
                             $message['qos'],
                             $message['retain'],
                             $message['topic'],
-                            $message['message_id'],
-                            $message['properties'],
-                            $message['message']
+                            $message['message_id'] ?? 0,
+                            $message['properties'] ?? [],
+                            $message['message'] ?? []
                         )
                     );
                 }

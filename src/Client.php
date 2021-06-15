@@ -8,13 +8,14 @@ use Hyperf\Utils\Context;
 use Nashgao\MQTT\Exception\InvalidMethodException;
 use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
 use Nashgao\MQTT\Pool\PoolFactory;
+use Swoole\Coroutine;
 
 /**
  * @method subscribe(array $topics, array $properties = [])
  * @method unSubscribe(array $topics, array $properties = [])
  * @method publish(string $topic,string $message,int $qos = 0,int $dup = 0,int $retain = 0,array $properties = [])
  * @method multiSub(array $topics, array $properties = [], int $num = 2)
- * @method receive()
+ * @method connect(bool $clean, array $will = [])
  */
 class Client
 {
@@ -34,19 +35,32 @@ class Client
                 $connection = $connection->getConnection();
                 $result = $connection->{$name}(...$arguments);
             } finally {
-                if (! $hasContextConnection) {
-                    $connection->release();
+                if ($name === 'subscribe' or $name === 'multiSub') {
+                    Coroutine::create(
+                        function () use ($hasContextConnection, $connection) {
+                            for (;;) {
+                                $connection->receive();
+                                if (! $hasContextConnection) {
+                                    $connection->release();
+                                }
+                            }
+                        }
+                    );
+                } else {
+                    if (! $hasContextConnection) {
+                        $connection->release();
+                    }
                 }
             }
 
-            return $result;
+            return $result ?? null;
         };
     }
 
     public function __call($name, $arguments)
     {
         if (! in_array($name, $this->methods())) {
-            throw new InvalidMethodException();
+            throw new InvalidMethodException(sprintf('method %s does not exist', $name));
         }
 
         $result = null;
@@ -62,7 +76,7 @@ class Client
             $result = ($this->getConnection)($hasContextConnection, $name, $arguments);
         }
 
-        return $result;
+        return $result ?? null;
     }
 
     private function methods(): array
@@ -71,8 +85,8 @@ class Client
             'subscribe',
             'unsubscribe',
             'publish',
-            'receive',
             'multiSub',
+            'connect',
         ];
     }
 
