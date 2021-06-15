@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nashgao\MQTT;
 
 use Hyperf\Utils\Context;
+use Nashgao\MQTT\Constants\MQTTConstants;
 use Nashgao\MQTT\Exception\InvalidMethodException;
 use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
 use Nashgao\MQTT\Pool\PoolFactory;
@@ -35,7 +36,7 @@ class Client
                 $connection = $connection->getConnection();
                 $result = $connection->{$name}(...$arguments);
             } finally {
-                if ($name === 'subscribe' or $name === 'multiSub') {
+                if ($name === MQTTConstants::SUBSCRIBE or $name === MQTTConstants::MULTISUB) {
                     Coroutine::create(
                         function () use ($hasContextConnection, $connection) {
                             for (;;) {
@@ -67,10 +68,10 @@ class Client
         $hasContextConnection = Context::has($this->getContextKey());
 
         $num = 1;
-        if ($name === 'multiSub') {
+        if ($name === MQTTConstants::MULTISUB) {
             [$topics, $properties, $num] = $arguments;
             $num = $num < 1 ? 1 : $num;
-            $name = 'subscribe';
+            $name = MQTTConstants::SUBSCRIBE;
         }
         for ($count = 0; $count < $num; ++$count) {
             $result = ($this->getConnection)($hasContextConnection, $name, $arguments);
@@ -82,11 +83,11 @@ class Client
     private function methods(): array
     {
         return [
-            'subscribe',
-            'unsubscribe',
-            'publish',
-            'multiSub',
-            'connect',
+            MQTTConstants::SUBSCRIBE,
+            MQTTConstants::MULTISUB,
+            MQTTConstants::UNSUBSCRIBE,
+            MQTTConstants::PUBLISH,
+            MQTTConstants::CONNECT,
         ];
     }
 

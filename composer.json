@@ -11,6 +11,7 @@
         "php": ">=7.4",
         "ext-swoole": ">=4.5",
         "hyperf/di": "~2.1",
+        "hyperf/framework": "~2.1",
         "hyperf/event": "~2.1",
         "hyperf/pool": "~2.1",
         "hyperf/logger": "~2.1",

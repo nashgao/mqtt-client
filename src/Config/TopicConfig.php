@@ -8,6 +8,12 @@ class TopicConfig
 {
     public string $topic;
 
+    public bool $auto_subscribe;
+
+    public bool $enable_multisub;
+
+    public int $multisub_num;
+
     public bool $enable_share_topic;
 
     public array $share_topic;
@@ -34,6 +40,21 @@ class TopicConfig
     public function setTopic(string $topic): void
     {
         $this->topic = $topic;
+    }
+
+    public function setAutoSubscribe(bool $auto_subscribe): void
+    {
+        $this->auto_subscribe = $auto_subscribe;
+    }
+
+    public function setEnableMultisub(bool $enable_multisub): void
+    {
+        $this->enable_multisub = $enable_multisub;
+    }
+
+    public function setMultisubNum(int $multisub_num): void
+    {
+        $this->multisub_num = $multisub_num;
     }
 
     public function setEnableShareTopic(bool $enable_share_topic): void

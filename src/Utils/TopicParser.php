@@ -21,4 +21,9 @@ class TopicParser
     {
         return join(static::SEPARATOR, [static::QUEUE, $topic]);
     }
+
+    public static function generateTopicArray(string $topic, int $qos = 0): array
+    {
+        return [$topic => $qos];
+    }
 }

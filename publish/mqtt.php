@@ -36,6 +36,9 @@ return [
             'topics' => [
                 [
                     'topic' => '',
+                    'auto_subscribe' => false,
+                    'enable_multisub' => false,
+                    'multisub_num' => 2,
                     'enable_share_topic' => false,
                     'share_topic' => [
                         'group_name' => [], // list of group names that
