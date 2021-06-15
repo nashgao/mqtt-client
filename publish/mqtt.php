@@ -36,7 +36,11 @@ return [
             'topics' => [
                 [
                     'topic' => '',
-                    'shared_topic' => '',
+                    'enable_share_topic' => false,
+                    'share_topic' => [
+                        'group_name' => [], // list of group names that
+                    ],
+                    'enable_queue_topic' => false, // queue topic has more priority, if queue topic is define then share topic would be useless
                     'qos' => '',
                     'no_local' => true,
                     'retain_as_published' => true,
