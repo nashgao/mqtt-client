@@ -34,6 +34,8 @@
             "config": "Nashgao\\MQTT\\ConfigProvider"
         }
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "scripts": {
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

@@ -10,7 +10,6 @@ use Nashgao\MQTT\Exception\InvalidMethodException;
 use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
 use Nashgao\MQTT\Pool\PoolFactory;
 use Swoole\Coroutine;
-use Nashgao\MQTT\Coroutine\Coroutine as CoroutineEntity;
 
 /**
  * @method subscribe(array| $topics, array $properties = [])
@@ -35,6 +34,11 @@ class Client
         $this->factory = $factory;
         $this->channel = new Coroutine\Channel();
         $this->getConnection = function ($hasContextConnection, $name, $arguments): mixed {
+            // check the available connection num
+            $pool = $this->factory->getPool($this->poolName);
+            if (($name === MQTTConstants::SUBSCRIBE or $name === MQTTConstants::MULTISUB) and $pool->getAvailableConnectionNum() < 2) {
+                throw new \RuntimeException('Connection pool exhausted. Cannot establish new connection before wait_timeout.');
+            }
             $connection = $this->getConnection($hasContextConnection);
             try {
                 /** @var MQTTConnection $connection */
@@ -82,7 +86,7 @@ class Client
         return $result ?? null;
     }
 
-    public function getChannel()
+    public function getChannel(): Coroutine\Channel
     {
         return $this->channel;
     }
