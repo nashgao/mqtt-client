@@ -12,7 +12,7 @@ use Nashgao\MQTT\Pool\PoolFactory;
 use Swoole\Coroutine;
 
 /**
- * @method subscribe(array $topics, array $properties = [])
+ * @method subscribe(array| $topics, array $properties = [])
  * @method unSubscribe(array $topics, array $properties = [])
  * @method publish(string $topic,string $message,int $qos = 0,int $dup = 0,int $retain = 0,array $properties = [])
  * @method multiSub(array $topics, array $properties = [], int $num = 2)
@@ -29,7 +29,7 @@ class Client
     public function __construct(PoolFactory $factory)
     {
         $this->factory = $factory;
-        $this->getConnection = function ($hasContextConnection, $name, $arguments) {
+        $this->getConnection = function ($hasContextConnection, $name, $arguments): mixed {
             $connection = $this->getConnection($hasContextConnection);
             try {
                 /** @var MQTTConnection $connection */

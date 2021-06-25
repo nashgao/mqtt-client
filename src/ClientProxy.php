@@ -41,7 +41,7 @@ class ClientProxy extends \Simps\MQTT\Client
         }
     }
 
-    public function connect(bool $clean = true, array $will = [])
+    public function connect(bool $clean = true, array $will = []): bool | array
     {
         $cont = new Channel();
         $this->channel->push(function () use ($will, $clean, $cont) {
@@ -58,7 +58,7 @@ class ClientProxy extends \Simps\MQTT\Client
         int $dup = 0,
         int $retain = 0,
         array $properties = []
-    ) {
+    ): bool | array {
         $cont = new Channel();
         $this->channel->push(
             function () use ($properties, $retain, $dup, $cont, $topic, $message, $qos) {
@@ -69,7 +69,7 @@ class ClientProxy extends \Simps\MQTT\Client
         $cont->pop();
     }
 
-    public function subscribe(array $topics, array $properties = [])
+    public function subscribe(array $topics, array $properties = []): bool | array
     {
         $cont = new Channel();
         $this->channel->push(
@@ -80,7 +80,7 @@ class ClientProxy extends \Simps\MQTT\Client
         $cont->pop();
     }
 
-    public function unsubscribe(array $topics, array $properties = [])
+    public function unsubscribe(array $topics, array $properties = []): bool | array
     {
         $cont = new Channel();
         $this->channel->push(

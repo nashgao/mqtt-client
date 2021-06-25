@@ -31,6 +31,7 @@ class AfterWorkerStartListener implements ListenerInterface
 
     public function process(object $event)
     {
+        //todo: consider how to add other attributes when client is subscribing
         $config = $this->container->get(ConfigInterface::class);
         foreach ($config->get('mqtt') ?? [] as $key => $value) {
             if ($key === MQTTConstants::SUBSCRIBE) {

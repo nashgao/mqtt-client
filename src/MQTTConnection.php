@@ -21,7 +21,7 @@ use Swoole\Coroutine\Channel;
  * @method publish(string $topic,string $message,int $qos = 0,int $dup = 0,int $retain = 0,array $properties = [])
  * @method multiSub(array $topics, array $properties = [], int $num = 2)
  * @method loop()
- * @method connect(bool $clean, array $will = [])
+ * @method connect(bool $clean = true, array $will = [])
  * @method receive()
  */
 class MQTTConnection extends BaseConnection implements ConnectionInterface
