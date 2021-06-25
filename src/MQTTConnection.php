@@ -13,7 +13,6 @@ use Nashgao\MQTT\Exception\InvalidConfigException;
 use Nashgao\MQTT\Provider\ClientIdProviderInterface;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Swoole\Coroutine\Channel;
 
 /**
  * @method subscribe(array $topics, array $properties = [])
@@ -26,8 +25,6 @@ use Swoole\Coroutine\Channel;
  */
 class MQTTConnection extends BaseConnection implements ConnectionInterface
 {
-    protected Channel $channel;
-
     protected ClientProxy $connection;
 
     protected EventDispatcherInterface $dispatcher;
@@ -79,6 +76,8 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
             $this->config['subscribe'],
             $this->config['publish'],
         ));
+
+        $this->lastUseTime = microtime(true);
         return true;
     }
 

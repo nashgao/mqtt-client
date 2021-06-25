@@ -31,23 +31,26 @@ class ClientProxy extends \Simps\MQTT\Client
 
     public function loop()
     {
-        while (true) {
+        for (;;) {
             /** @var Closure $closure */
             $closure = $this->channel->pop();
             if (! $closure) {
                 break;
             }
+
             $closure->call($this);
         }
     }
 
-    public function connect(bool $clean = true, array $will = []): bool | array
+    public function connect(bool $clean = true, array $will = [])
     {
         $cont = new Channel();
-        $this->channel->push(function () use ($will, $clean, $cont) {
-            parent::connect($clean, $will);
-            $cont->push(true);
-        });
+        $this->channel->push(
+            function () use ($will, $clean, $cont) {
+                parent::connect($clean, $will);
+                $cont->push(true);
+            }
+        );
         $cont->pop();
     }
 
@@ -58,7 +61,7 @@ class ClientProxy extends \Simps\MQTT\Client
         int $dup = 0,
         int $retain = 0,
         array $properties = []
-    ): bool | array {
+    ) {
         $cont = new Channel();
         $this->channel->push(
             function () use ($properties, $retain, $dup, $cont, $topic, $message, $qos) {
@@ -69,7 +72,7 @@ class ClientProxy extends \Simps\MQTT\Client
         $cont->pop();
     }
 
-    public function subscribe(array $topics, array $properties = []): bool | array
+    public function subscribe(array $topics, array $properties = [])
     {
         $cont = new Channel();
         $this->channel->push(
@@ -80,7 +83,7 @@ class ClientProxy extends \Simps\MQTT\Client
         $cont->pop();
     }
 
-    public function unsubscribe(array $topics, array $properties = []): bool | array
+    public function unsubscribe(array $topics, array $properties = [])
     {
         $cont = new Channel();
         $this->channel->push(

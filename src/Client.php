@@ -10,9 +10,11 @@ use Nashgao\MQTT\Exception\InvalidMethodException;
 use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
 use Nashgao\MQTT\Pool\PoolFactory;
 use Swoole\Coroutine;
+use Nashgao\MQTT\Coroutine\Coroutine as CoroutineEntity;
 
 /**
  * @method subscribe(array| $topics, array $properties = [])
+ * @todo:verify the unsub function
  * @method unSubscribe(array $topics, array $properties = [])
  * @method publish(string $topic,string $message,int $qos = 0,int $dup = 0,int $retain = 0,array $properties = [])
  * @method multiSub(array $topics, array $properties = [], int $num = 2)
@@ -22,6 +24,8 @@ class Client
 {
     protected PoolFactory $factory;
 
+    protected Coroutine\Channel $channel;
+
     protected string $poolName = 'default';
 
     protected \Closure $getConnection;
@@ -29,6 +33,7 @@ class Client
     public function __construct(PoolFactory $factory)
     {
         $this->factory = $factory;
+        $this->channel = new Coroutine\Channel();
         $this->getConnection = function ($hasContextConnection, $name, $arguments): mixed {
             $connection = $this->getConnection($hasContextConnection);
             try {
@@ -38,12 +43,9 @@ class Client
             } finally {
                 if ($name === MQTTConstants::SUBSCRIBE or $name === MQTTConstants::MULTISUB) {
                     Coroutine::create(
-                        function () use ($hasContextConnection, $connection) {
+                        function () use ($connection) {
                             for (;;) {
-                                $connection->receive();
-                                if (! $hasContextConnection) {
-                                    $connection->release();
-                                }
+                                $this->channel->push($connection->receive());
                             }
                         }
                     );
@@ -78,6 +80,11 @@ class Client
         }
 
         return $result ?? null;
+    }
+
+    public function getChannel()
+    {
+        return $this->channel;
     }
 
     private function methods(): array
