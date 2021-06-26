@@ -47,7 +47,7 @@ class AfterWorkerStartListener implements ListenerInterface
                                     if ($topicConfig->enable_multisub) {
                                         $multiSubConfig[$topic] = $topicConfig->multisub_num;
                                     }
-                                    return TopicParser::generateTopicArray($topic, $topicConfig->qos);
+                                    return [TopicParser::generateTopicArray($topic, $topicConfig->qos)];
                                 }
 
                                 if ($topicConfig->enable_share_topic) {
