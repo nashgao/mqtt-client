@@ -33,56 +33,59 @@ class AfterWorkerStartListener implements ListenerInterface
     {
         //todo: consider how to add other attributes when client is subscribing
         $config = $this->container->get(ConfigInterface::class);
-        foreach ($config->get('mqtt') ?? [] as $key => $value) {
-            if ($key === MQTTConstants::SUBSCRIBE) {
-                $subConfig = [];
-                $multiSubConfig = [];
-                foreach ($value as $topic) {
-                    $topicConfig = new TopicConfig($topic);
-                    if ($topicConfig->auto_subscribe) {
-                        $subConfig[] = (function () use ($topicConfig, &$multiSubConfig) {
-                            if ($topicConfig->enable_queue_topic) {
-                                $topic = TopicParser::generateQueueTopic($topicConfig->topic);
-                                if ($topicConfig->enable_multisub) {
-                                    $multiSubConfig[$topic] = $topicConfig->multisub_num;
-                                }
-                                return TopicParser::generateTopicArray($topic, $topicConfig->qos);
-                            }
-
-                            if ($topicConfig->enable_share_topic) {
-                                $shareTopics = [];
-                                foreach ($topicConfig->share_topic as $groupName) {
-                                    $topic = TopicParser::generateShareTopic($topicConfig->topic, $groupName);
+        foreach ($config->get('mqtt') ?? [] as $pool => $values) {
+            foreach ($values as $key => $value) {
+                if ($key === MQTTConstants::SUBSCRIBE) {
+                    $subConfig = [];
+                    $multiSubConfig = [];
+                    foreach ($value as $topic) {
+                        $topicConfig = new TopicConfig($topic);
+                        if ($topicConfig->auto_subscribe) {
+                            $subConfig[] = (function () use ($topicConfig, &$multiSubConfig) {
+                                if ($topicConfig->enable_queue_topic) {
+                                    $topic = TopicParser::generateQueueTopic($topicConfig->topic);
                                     if ($topicConfig->enable_multisub) {
                                         $multiSubConfig[$topic] = $topicConfig->multisub_num;
                                     }
-                                    $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->qos);
+                                    return TopicParser::generateTopicArray($topic, $topicConfig->qos);
                                 }
-                                return $shareTopics;
-                            }
 
-                            if ($topicConfig->enable_multisub) {
-                                $multiSubConfig[$topicConfig->topic] = $topicConfig->multisub_num;
-                            }
+                                if ($topicConfig->enable_share_topic) {
+                                    $shareTopics = [];
+                                    foreach ($topicConfig->share_topic as $groupName) {
+                                        $topic = TopicParser::generateShareTopic($topicConfig->topic, $groupName);
+                                        if ($topicConfig->enable_multisub) {
+                                            $multiSubConfig[$topic] = $topicConfig->multisub_num;
+                                        }
+                                        $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->qos);
+                                    }
+                                    return $shareTopics;
+                                }
 
-                            return TopicParser::generateTopicArray($topicConfig->topic, $topicConfig->qos);
-                        })();
-                    }
-                }
+                                if ($topicConfig->enable_multisub) {
+                                    $multiSubConfig[$topicConfig->topic] = $topicConfig->multisub_num;
+                                }
 
-                if (! empty($subConfig)) {
-                    $client = make(Client::class);
-                    $properties = $value['properties'] ?? [];
-                    foreach ($subConfig as $config) {
-                        $key = key($config);
-                        if (array_key_exists($key, $multiSubConfig)) {
-                            $client->multiSub($config, $multiSubConfig[$key]);
-                            continue;
+                                return TopicParser::generateTopicArray($topicConfig->topic, $topicConfig->qos);
+                            })();
                         }
-                        $client->subscribe($config, $properties);
+                    }
+
+                    if (! empty($subConfig)) {
+                        $client = make(Client::class);
+                        $properties = $value['properties'] ?? [];
+                        foreach ($subConfig as $config) {
+                            $key = key($config);
+                            if (array_key_exists($key, $multiSubConfig)) {
+                                $client->multiSub($config, $multiSubConfig[$key]);
+                                continue;
+                            }
+                            $client->subscribe($config, $properties);
+                        }
                     }
                 }
             }
+
         }
     }
 }
