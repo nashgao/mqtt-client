@@ -33,7 +33,7 @@ class Client
     {
         $this->factory = $factory;
         $this->channel = new Coroutine\Channel();
-        $this->getConnection = function ($hasContextConnection, $name, $arguments): mixed {
+        $this->getConnection = function ($hasContextConnection, $name, $arguments): void {
             // check the available connection num
             $pool = $this->factory->getPool($this->poolName);
             if (($name === MQTTConstants::SUBSCRIBE or $name === MQTTConstants::MULTISUB) and $pool->getAvailableConnectionNum() < 2) {
@@ -41,9 +41,14 @@ class Client
             }
             $connection = $this->getConnection($hasContextConnection);
             try {
-                /** @var MQTTConnection $connection */
-                $connection = $connection->getConnection();
-                $result = $connection->{$name}(...$arguments);
+                Coroutine::create(
+                    function () use ($connection, $name, $arguments) {
+                        /** @var MQTTConnection $connection */
+                        $connection = $connection->getConnection();
+                        $connection->{$name}(...$arguments);
+                    }
+                );
+
             } finally {
                 if ($name === MQTTConstants::SUBSCRIBE or $name === MQTTConstants::MULTISUB) {
                     Coroutine::create(
@@ -59,8 +64,6 @@ class Client
                     }
                 }
             }
-
-            return $result ?? null;
         };
     }
 

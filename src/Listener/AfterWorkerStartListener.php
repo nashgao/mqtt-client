@@ -77,13 +77,15 @@ class AfterWorkerStartListener implements ListenerInterface
                     if (! empty($subConfig)) {
                         $client = make(Client::class);
                         $properties = $value['properties'] ?? [];
-                        foreach ($subConfig as $config) {
-                            $key = key($config);
-                            if (array_key_exists($key, $multiSubConfig)) {
-                                $client->multiSub($config, $multiSubConfig[$key]);
-                                continue;
+                        foreach ($subConfig as $configs) {
+                            foreach ($configs as $config) {
+                                $key = key($config);
+                                if (array_key_exists($key, $multiSubConfig)) {
+                                    $client->multiSub($config, $properties, $multiSubConfig[$key]);
+                                    continue;
+                                }
+                                $client->subscribe($config, $properties);
                             }
-                            $client->subscribe($config, $properties);
                         }
                     }
                 }
