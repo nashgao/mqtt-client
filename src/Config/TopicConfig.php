@@ -28,7 +28,7 @@ class TopicConfig
 
     public int $retain_handling;
 
-    public function __construct(...$params)
+    public function __construct($params)
     {
         foreach ($params ?? [] as $key => $value) {
             if (property_exists($this, $key)) {

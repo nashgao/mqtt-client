@@ -38,7 +38,7 @@ class AfterWorkerStartListener implements ListenerInterface
                 if ($key === MQTTConstants::SUBSCRIBE) {
                     $subConfig = [];
                     $multiSubConfig = [];
-                    foreach ($value as $topic) {
+                    foreach ($value['topics'] as $topic) {
                         $topicConfig = new TopicConfig($topic);
                         if ($topicConfig->auto_subscribe) {
                             $subConfig[] = (function () use ($topicConfig, &$multiSubConfig) {
@@ -52,12 +52,15 @@ class AfterWorkerStartListener implements ListenerInterface
 
                                 if ($topicConfig->enable_share_topic) {
                                     $shareTopics = [];
-                                    foreach ($topicConfig->share_topic as $groupName) {
-                                        $topic = TopicParser::generateShareTopic($topicConfig->topic, $groupName);
-                                        if ($topicConfig->enable_multisub) {
-                                            $multiSubConfig[$topic] = $topicConfig->multisub_num;
+                                    foreach ($topicConfig->share_topic as $groupNames) {
+                                        foreach ($groupNames as $groupName) {
+                                            $topic = TopicParser::generateShareTopic($topicConfig->topic, $groupName);
+                                            if ($topicConfig->enable_multisub) {
+                                                $multiSubConfig[$topic] = $topicConfig->multisub_num;
+                                            }
+                                            $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->qos);
                                         }
-                                        $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->qos);
+
                                     }
                                     return $shareTopics;
                                 }
