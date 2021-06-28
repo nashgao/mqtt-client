@@ -24,6 +24,6 @@ class TopicParser
 
     public static function generateTopicArray(string $topic, int $qos = 0): array
     {
-        return [$topic => $qos];
+        return [$topic => ['qos' => $qos]];
     }
 }

@@ -77,6 +77,7 @@ class ClientProxy extends \Simps\MQTT\Client
         $cont = new Channel();
         $this->channel->push(
             function () use ($properties, $cont, $topics) {
+                var_dump($topics);
                 $cont->push(parent::subscribe($topics, $properties));
             }
         );

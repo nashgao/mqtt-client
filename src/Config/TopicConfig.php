@@ -36,59 +36,72 @@ class TopicConfig
             }
         }
     }
-
-    public function setTopic(string $topic): void
+    
+    public function setTopic(string $topic): TopicConfig
     {
         $this->topic = $topic;
+        return $this;
     }
-
-    public function setAutoSubscribe(bool $auto_subscribe): void
+    
+    public function setAutoSubscribe(bool $auto_subscribe): TopicConfig
     {
         $this->auto_subscribe = $auto_subscribe;
+        return $this;
     }
-
-    public function setEnableMultisub(bool $enable_multisub): void
+    
+    public function setEnableMultisub(bool $enable_multisub): TopicConfig
     {
         $this->enable_multisub = $enable_multisub;
+        return $this;
     }
-
-    public function setMultisubNum(int $multisub_num): void
+    
+    public function setMultisubNum(int $multisub_num): TopicConfig
     {
         $this->multisub_num = $multisub_num;
+        return $this;
     }
-
-    public function setEnableShareTopic(bool $enable_share_topic): void
+    
+    public function setEnableShareTopic(bool $enable_share_topic): TopicConfig
     {
         $this->enable_share_topic = $enable_share_topic;
+        return $this;
     }
-
-    public function setShareTopic(array $share_topic): void
+    
+    public function setShareTopic(array $share_topic): TopicConfig
     {
         $this->share_topic = $share_topic;
+        return $this;
     }
-
-    public function setEnableQueueTopic(bool $enable_queue_topic): void
+    
+    public function setEnableQueueTopic(bool $enable_queue_topic): TopicConfig
     {
         $this->enable_queue_topic = $enable_queue_topic;
+        return $this;
     }
-
-    public function setQos(int $qos): void
+    
+    public function setQos(int $qos): TopicConfig
     {
         $this->qos = $qos;
+        return $this;
     }
-
-    public function setNoLocal(bool $no_local): void
+    
+    public function setNoLocal(bool $no_local): TopicConfig
     {
         $this->no_local = $no_local;
+        return $this;
     }
-
-    public function setRetainAsPublished(bool $retain_as_published): void
+    
+    public function setRetainAsPublished(bool $retain_as_published): TopicConfig
     {
         $this->retain_as_published = $retain_as_published;
+        return $this;
     }
-
-    public function setRetainHandling(int $retain_handling): void
+    
+    public function setRetainHandling(int $retain_handling): TopicConfig
     {
         $this->retain_handling = $retain_handling;
+        return $this;
     }
+
+   
 }

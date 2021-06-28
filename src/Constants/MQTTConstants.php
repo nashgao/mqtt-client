@@ -15,4 +15,6 @@ class MQTTConstants
     public const PUBLISH = 'publish';
 
     public const CONNECT = 'connect';
+
+    public const RECEIVE = 'receive';
 }
