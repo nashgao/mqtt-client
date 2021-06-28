@@ -40,13 +40,14 @@ class AfterWorkerStartListener implements ListenerInterface
                     foreach ($value['topics'] as $topic) {
                         $topicConfig = new TopicConfig($topic);
                         if ($topicConfig->auto_subscribe) {
-                            $subConfigs[] = (function () use ($topicConfig, &$multiSubConfig) {
+                            (function () use ($topicConfig, &$multiSubConfig, &$subConfigs): void {
                                 if ($topicConfig->enable_queue_topic) {
                                     $topic = TopicParser::generateQueueTopic($topicConfig->topic);
                                     if ($topicConfig->enable_multisub) {
                                         $multiSubConfig[$topic] = $topicConfig->multisub_num;
                                     }
-                                    return [TopicParser::generateTopicArray($topic, $topicConfig->qos)];
+                                    $subConfigs[] = TopicParser::generateTopicArray($topic, $topicConfig->qos);
+                                    return;
                                 }
 
                                 if ($topicConfig->enable_share_topic) {
@@ -60,14 +61,16 @@ class AfterWorkerStartListener implements ListenerInterface
                                             $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->qos);
                                         }
                                     }
-                                    return $shareTopics;
+
+                                    $subConfigs = array_merge($subConfigs, $shareTopics);
+                                    return;
                                 }
 
                                 if ($topicConfig->enable_multisub) {
                                     $multiSubConfig[$topicConfig->topic] = $topicConfig->multisub_num;
                                 }
 
-                                return TopicParser::generateTopicArray($topicConfig->topic, $topicConfig->qos);
+                                $subConfigs[] = TopicParser::generateTopicArray($topicConfig->topic, $topicConfig->qos);
                             })();
                         }
                     }
