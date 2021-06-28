@@ -35,12 +35,12 @@ class AfterWorkerStartListener implements ListenerInterface
         foreach ($config->get('mqtt') ?? [] as $pool => $values) {
             foreach ($values as $key => $value) {
                 if ($key === MQTTConstants::SUBSCRIBE) {
-                    $subConfig = [];
+                    $subConfigs = [];
                     $multiSubConfig = [];
                     foreach ($value['topics'] as $topic) {
                         $topicConfig = new TopicConfig($topic);
                         if ($topicConfig->auto_subscribe) {
-                            $subConfig[] = (function () use ($topicConfig, &$multiSubConfig) {
+                            $subConfigs[] = (function () use ($topicConfig, &$multiSubConfig) {
                                 if ($topicConfig->enable_queue_topic) {
                                     $topic = TopicParser::generateQueueTopic($topicConfig->topic);
                                     if ($topicConfig->enable_multisub) {
@@ -73,30 +73,29 @@ class AfterWorkerStartListener implements ListenerInterface
                     }
 
                     /**
-                     * $subConfig = [
-                     *      [
-                     *          [$topic => $qos],
-                     *          [$topic => $qos]
+                     * $subConfigs = [
+                     *      'topic' => [
+                     *          'qos' => $qos,
+                     *          ...
+                     *      ],
+                     *      'topic' => [
+                     *          'qos' => $qos
                      *      ]
                      * ].
                      * $multiSubConfig = [
-                     *      [
-                     *          [$topic => $num]
-                     *      ]
-                     * ].
+                     *      $topic => $num
+                     *].
                      */
-                    if (! empty($subConfig)) {
+                    if (! empty($subConfigs)) {
                         $client = make(Client::class);
                         $properties = $value['properties'] ?? [];
-                        foreach ($subConfig as $configs) {
-                            foreach ($configs as $config) {
-                                $key = key($config);
-                                if (array_key_exists($key, $multiSubConfig)) {
-                                    $client->multiSub($config, $properties, $multiSubConfig[$key]);
-                                    continue;
-                                }
-                                $client->subscribe($config, $properties);
+                        foreach ($subConfigs as $subConfig) {
+                            if (array_key_exists(key($subConfig), $multiSubConfig)) {
+                                $client->multiSub($subConfig, $properties, $multiSubConfig[key($subConfig)]);
+                                continue;
                             }
+                            
+                            $client->subscribe($subConfig, $properties);
                         }
                     }
                 }
