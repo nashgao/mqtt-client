@@ -94,7 +94,7 @@ class AfterWorkerStartListener implements ListenerInterface
                                 $client->multiSub($subConfig, $properties, $multiSubConfig[key($subConfig)]);
                                 continue;
                             }
-                            
+
                             $client->subscribe($subConfig, $properties);
                         }
                     }
