@@ -60,7 +60,6 @@ class AfterWorkerStartListener implements ListenerInterface
                                             }
                                             $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->qos);
                                         }
-
                                     }
                                     return $shareTopics;
                                 }
@@ -74,6 +73,19 @@ class AfterWorkerStartListener implements ListenerInterface
                         }
                     }
 
+                    /**
+                     * $subConfig = [
+                     *      [
+                     *          [$topic => $qos],
+                     *          [$topic => $qos]
+                     *      ]
+                     * ].
+                     * $multiSubConfig = [
+                     *      [
+                     *          [$topic => $num]
+                     *      ]
+                     * ].
+                     */
                     if (! empty($subConfig)) {
                         $client = make(Client::class);
                         $properties = $value['properties'] ?? [];
@@ -90,7 +102,6 @@ class AfterWorkerStartListener implements ListenerInterface
                     }
                 }
             }
-
         }
     }
 }
