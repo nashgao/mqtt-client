@@ -48,7 +48,6 @@ class Client
                 );
 
             } finally {
-                var_dump([$name => get_class($connection)]);
                 if ($name === MQTTConstants::SUBSCRIBE or $name === MQTTConstants::MULTISUB) {
                     Coroutine::create(
                         function () use ($connection) {
