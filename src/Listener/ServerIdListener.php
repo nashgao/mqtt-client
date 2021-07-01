@@ -6,7 +6,7 @@ namespace Nashgao\MQTT\Listener;
 
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
-use Hyperf\Framework\Event\BeforeWorkerStart;
+use Hyperf\Framework\Event\BeforeMainServerStart;
 
 /**
  * @Listener
@@ -18,7 +18,7 @@ class ServerIdListener implements ListenerInterface
     public function listen(): array
     {
         return [
-            BeforeWorkerStart::class,
+            BeforeMainServerStart::class,
         ];
     }
 
