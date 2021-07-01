@@ -23,8 +23,6 @@ class Client
 {
     protected PoolFactory $factory;
 
-    protected Coroutine\Channel $channel;
-
     protected string $poolName = 'default';
 
     protected \Closure $getConnection;
@@ -50,18 +48,17 @@ class Client
                 );
 
             } finally {
+                var_dump([$name => get_class($connection)]);
                 if ($name === MQTTConstants::SUBSCRIBE or $name === MQTTConstants::MULTISUB) {
                     Coroutine::create(
                         function () use ($connection) {
                             for (;;) {
-                                $this->channel->push($connection->receive());
+                                $connection->receive();
                             }
                         }
                     );
                 } else {
-                    if (! $hasContextConnection) {
-                        $connection->release();
-                    }
+                    $connection->release();
                 }
             }
         };
