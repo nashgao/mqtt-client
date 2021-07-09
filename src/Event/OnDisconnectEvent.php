@@ -10,9 +10,9 @@ class OnDisconnectEvent
 
     public int $code;
 
-    public int $qos;
+    public ?int $qos;
 
-    public function __construct(int $type, int $code, int $qos)
+    public function __construct(int $type, int $code, int $qos = null)
     {
         $this->type = $type;
         $this->code = $code;

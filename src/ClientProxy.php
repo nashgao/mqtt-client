@@ -110,9 +110,10 @@ class ClientProxy extends \Simps\MQTT\Client
                             new OnDisconnectEvent(
                                 $message['type'],
                                 $message['code'],
-                                $message['qos']
+                                $message['qos'] ?? null
                             )
                         );
+                        parent::close($message['code']);
                         return $cont->push($message);
                     }
 
