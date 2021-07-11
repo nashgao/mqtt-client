@@ -102,7 +102,7 @@ class ClientProxy extends \Simps\MQTT\Client
                 $message = parent::recv();
                 if (! is_bool($message)) {
                     if ($message['type'] === Types::PUBLISH and $message['qos'] === QualityOfService::QOS_AT_LEAST_ONCE) {
-                        parent::send(['type' => Types::PUBACK, 'message_id' => $message['message_id'], false]);
+                        parent::send(['type' => Types::PUBACK, 'message_id' => $message['message_id']], true);
                     }
 
                     if ($message['type'] === Types::DISCONNECT) {
