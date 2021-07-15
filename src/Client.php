@@ -52,13 +52,12 @@ class Client
                     Coroutine::create(
                         function () use ($connection) {
                             for (;;) {
-                                $connection->receive();
+                                $recv = $connection->receive();
                             }
                         }
                     );
-                } else {
-                    $connection->release();
                 }
+                $connection->release();
             }
         };
     }

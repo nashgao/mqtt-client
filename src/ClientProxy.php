@@ -51,7 +51,7 @@ class ClientProxy extends \Simps\MQTT\Client
                 $cont->push(true);
             }
         );
-        $cont->pop();
+        return $cont->pop();
     }
 
     public function publish(
@@ -69,10 +69,10 @@ class ClientProxy extends \Simps\MQTT\Client
                 $cont->push(true);
             }
         );
-        $cont->pop();
+        return $cont->pop();
     }
 
-    public function subscribe(array $topics, array $properties = [])
+    public function subscribe(array $topics, array $properties = []): bool | array
     {
         $cont = new Channel();
         $this->channel->push(
@@ -80,7 +80,7 @@ class ClientProxy extends \Simps\MQTT\Client
                 $cont->push(parent::subscribe($topics, $properties));
             }
         );
-        $cont->pop();
+        return $cont->pop();
     }
 
     public function unsubscribe(array $topics, array $properties = [])
@@ -91,7 +91,7 @@ class ClientProxy extends \Simps\MQTT\Client
                 $cont->push(parent::unSubscribe($topics, $properties));
             }
         );
-        $cont->pop();
+        return $cont->pop();
     }
 
     public function receive()
@@ -135,6 +135,6 @@ class ClientProxy extends \Simps\MQTT\Client
             }
         );
 
-        return $cont->pop();
+        return $cont->pop($this->config->clientConfig->getKeepAlive());
     }
 }
