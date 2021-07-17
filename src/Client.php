@@ -12,11 +12,11 @@ use Nashgao\MQTT\Pool\PoolFactory;
 use Swoole\Coroutine;
 
 /**
- * @method subscribe(string $topics, array $properties = [])
+ * @method subscribe(array $topics, array $properties = [])
  * @todo:verify the unsub function
  * @method unSubscribe(array $topics, array $properties = [])
  * @method publish(string $topic,string $message,int $qos = 0,int $dup = 0,int $retain = 0,array $properties = [])
- * @method multiSub(string $topics, array $properties = [], int $num = 2)
+ * @method multiSub(array $topics, array $properties, int $num = 2)
  * @method connect(bool $clean, array $will = [])
  */
 class Client
@@ -45,9 +45,8 @@ class Client
                         $connection->{$name}(...$arguments);
                     }
                 );
-
             } finally {
-                if ($name === MQTTConstants::SUBSCRIBE or $name === MQTTConstants::MULTISUB) {
+                if ($name === MQTTConstants::SUBSCRIBE) {
                     Coroutine::create(
                         function () use ($connection) {
                             for (;;) {
@@ -61,26 +60,26 @@ class Client
         };
     }
 
-    public function __call($name, $arguments)
+    public function __call($name, $arguments): void
     {
         if (! in_array($name, $this->methods())) {
             throw new InvalidMethodException(sprintf('method %s does not exist', $name));
         }
 
-        $result = null;
         $hasContextConnection = Context::has($this->getContextKey());
-
-        $num = 1;
-        if ($name === MQTTConstants::MULTISUB) {
-            [$topics, $properties, $num] = $arguments;
-            $num = $num < 1 ? 1 : $num;
-            $name = MQTTConstants::SUBSCRIBE;
-        }
-        for ($count = 0; $count < $num; ++$count) {
-            $result = ($this->getConnection)($hasContextConnection, $name, $arguments);
+        if ($name = $name === MQTTConstants::MULTISUB ? MQTTConstants::SUBSCRIBE : $name) {
+            $num = count($arguments) !== 3 ? 2 : last($arguments); // set multi sub default as 2
         }
 
-        return $result ?? null;
+        for ($count = 0; $count < ($num ?? 1); ++$count) {
+            ($this->getConnection)($hasContextConnection, $name, $arguments);
+        }
+    }
+
+    public function setPoolName(string $poolName): static
+    {
+        $this->poolName = $poolName;
+        return $this;
     }
 
     private function methods(): array

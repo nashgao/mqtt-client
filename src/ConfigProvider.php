@@ -6,6 +6,7 @@ namespace Nashgao\MQTT;
 
 use Nashgao\MQTT\Listener\AfterWorkerStartListener;
 use Nashgao\MQTT\Listener\OnDisconnectListener;
+use Nashgao\MQTT\Listener\OnSubscribeListener;
 use Nashgao\MQTT\Listener\ServerIdListener;
 use Nashgao\MQTT\Provider\ClientIdProviderInterface;
 use Nashgao\MQTT\Provider\RandomClientIdProvider;
@@ -19,6 +20,7 @@ class ConfigProvider
                 OnDisconnectListener::class,
                 AfterWorkerStartListener::class,
                 ServerIdListener::class,
+                OnSubscribeListener::class,
             ],
             'dependencies' => [
                 ClientIdProviderInterface::class => RandomClientIdProvider::class,

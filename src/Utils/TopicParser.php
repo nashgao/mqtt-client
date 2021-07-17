@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Utils;
 
+use Nashgao\MQTT\Exception\InvalidConfigException;
+
 class TopicParser
 {
     const SHARE = '$share';
@@ -22,8 +24,13 @@ class TopicParser
         return join(static::SEPARATOR, [static::QUEUE, $topic]);
     }
 
-    public static function generateTopicArray(string $topic, int $qos = 0): array
+    public static function generateTopicArray(string $topic, array $properties = []): array
     {
-        return [$topic => ['qos' => $qos]];
+        if (! array_key_exists('qos', $properties)) {
+            throw new InvalidConfigException(
+                sprintf('invalid config, must have qos')
+            );
+        }
+        return [$topic => $properties];
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Utils;
 
-class QualityOfService
+class Qos
 {
     const QOS_AT_MOST_ONCE = 0;
 

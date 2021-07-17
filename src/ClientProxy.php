@@ -8,7 +8,7 @@ use Hyperf\Utils\ApplicationContext;
 use Nashgao\MQTT\Config\ClientConfig;
 use Nashgao\MQTT\Event\OnDisconnectEvent;
 use Nashgao\MQTT\Event\OnReceiveEvent;
-use Nashgao\MQTT\Utils\QualityOfService;
+use Nashgao\MQTT\Utils\Qos;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Simps\MQTT\Protocol\Types;
 use Swoole\Coroutine\Channel;
@@ -101,7 +101,7 @@ class ClientProxy extends \Simps\MQTT\Client
             function () use ($cont) {
                 $message = parent::recv();
                 if (! is_bool($message)) {
-                    if ($message['type'] === Types::PUBLISH and $message['qos'] === QualityOfService::QOS_AT_LEAST_ONCE) {
+                    if ($message['type'] === Types::PUBLISH and $message['qos'] === Qos::QOS_AT_LEAST_ONCE) {
                         parent::send(['type' => Types::PUBACK, 'message_id' => $message['message_id']], true);
                     }
 

@@ -38,7 +38,7 @@ return [
                     'topic' => '',
                     'auto_subscribe' => false,
                     'enable_multisub' => false,
-                    'multisub_num' => 2,
+                    'multisub_num' => 2, // let multiple subscribe the same topic, usually works with queue topic and shared topic
                     'enable_share_topic' => false,
                     'share_topic' => [
                         'group_name' => [], // list of group names that

@@ -8,14 +8,15 @@ class TopicConfig
 {
     public string $topic;
 
-    public bool $auto_subscribe;
-
     public bool $enable_multisub;
 
     public int $multisub_num;
 
     public bool $enable_share_topic;
 
+    /**
+     * @var string[]
+     */
     public array $share_topic;
 
     public bool $enable_queue_topic;
@@ -40,12 +41,6 @@ class TopicConfig
     public function setTopic(string $topic): TopicConfig
     {
         $this->topic = $topic;
-        return $this;
-    }
-
-    public function setAutoSubscribe(bool $auto_subscribe): TopicConfig
-    {
-        $this->auto_subscribe = $auto_subscribe;
         return $this;
     }
 
@@ -103,9 +98,10 @@ class TopicConfig
         return $this;
     }
 
-    public function getProperty(): array
+    public function getTopicProperties(): array
     {
         return [
+            'qos' => $this->qos,
             'no_local' => $this->no_local,
             'retain_as_published' => $this->retain_as_published,
             'retain_handling' => $this->retain_handling,
