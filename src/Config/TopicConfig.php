@@ -102,4 +102,13 @@ class TopicConfig
         $this->retain_handling = $retain_handling;
         return $this;
     }
+
+    public function getProperty(): array
+    {
+        return [
+            'no_local' => $this->no_local,
+            'retain_as_published' => $this->retain_as_published,
+            'retain_handling' => $this->retain_handling,
+        ];
+    }
 }

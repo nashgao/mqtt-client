@@ -12,11 +12,11 @@ use Nashgao\MQTT\Pool\PoolFactory;
 use Swoole\Coroutine;
 
 /**
- * @method subscribe(array| $topics, array $properties = [])
+ * @method subscribe(string $topics, array $properties = [])
  * @todo:verify the unsub function
  * @method unSubscribe(array $topics, array $properties = [])
  * @method publish(string $topic,string $message,int $qos = 0,int $dup = 0,int $retain = 0,array $properties = [])
- * @method multiSub(array $topics, array $properties = [], int $num = 2)
+ * @method multiSub(string $topics, array $properties = [], int $num = 2)
  * @method connect(bool $clean, array $will = [])
  */
 class Client
@@ -52,7 +52,7 @@ class Client
                     Coroutine::create(
                         function () use ($connection) {
                             for (;;) {
-                                $recv = $connection->receive();
+                                $connection->receive();
                             }
                         }
                     );
