@@ -30,7 +30,6 @@ class Client
     public function __construct(PoolFactory $factory)
     {
         $this->factory = $factory;
-        $this->channel = new Coroutine\Channel();
         $this->getConnection = function ($hasContextConnection, $name, $arguments): void {
             // check the available connection num
             $pool = $this->factory->getPool($this->poolName);
@@ -82,11 +81,6 @@ class Client
         }
 
         return $result ?? null;
-    }
-
-    public function getChannel(): Coroutine\Channel
-    {
-        return $this->channel;
     }
 
     private function methods(): array
