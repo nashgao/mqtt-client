@@ -8,21 +8,21 @@ class OnReceiveEvent
 {
     public int $type;
 
-    public int $dup;
+    public ?int $dup;
 
-    public int $qos;
+    public ?int $qos;
 
     public int $retain;
 
     public string $topic;
 
-    public int $message_id;
+    public ?int $message_id;
 
-    public array $properties;
+    public ?array $properties;
 
-    public string $message;
+    public ?string $message;
 
-    public function __construct(int $type, int $dup, int $qos, int $retain, string $topic, int $message_id, array $properties, string $message)
+    public function __construct(int $type, ?int $dup, ?int $qos, int $retain, string $topic, ?int $message_id, ?array $properties, ?string $message)
     {
         $this->type = $type;
         $this->dup = $dup;
