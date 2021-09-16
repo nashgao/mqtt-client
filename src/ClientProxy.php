@@ -23,12 +23,15 @@ class ClientProxy extends \Simps\MQTT\Client
 
     protected ClientConfig $config;
 
+    protected float $timeSincePing;
+
     public function __construct(ClientConfig $config, string $poolName)
     {
         $this->config = $config;
         $this->poolName = $poolName;
         $this->dispatcher = ApplicationContext::getContainer()->get(EventDispatcherInterface::class);
         $this->channel = new Channel();
+        $this->timeSincePing = time();
         parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType);
     }
 
@@ -48,12 +51,7 @@ class ClientProxy extends \Simps\MQTT\Client
     public function connect(bool $clean = true, array $will = [])
     {
         $cont = new Channel();
-        $this->channel->push(
-            function () use ($will, $clean, $cont) {
-                parent::connect($clean, $will);
-                $cont->push(true);
-            }
-        );
+        $this->channel->push(fn () => $cont->push(parent::connect($clean, $will)));
         return $cont->pop();
     }
 
@@ -66,34 +64,21 @@ class ClientProxy extends \Simps\MQTT\Client
         array $properties = []
     ) {
         $cont = new Channel();
-        $this->channel->push(
-            function () use ($properties, $retain, $dup, $cont, $topic, $message, $qos) {
-                parent::publish($topic, $message, $qos, $dup, $retain, $properties);
-                $cont->push(true);
-            }
-        );
+        $this->channel->push(fn () => $cont->push(parent::publish($topic, $message, $qos, $dup, $retain, $properties)));
         return $cont->pop();
     }
 
     public function subscribe(array $topics, array $properties = []): bool | array
     {
         $cont = new Channel();
-        $this->channel->push(
-            function () use ($properties, $cont, $topics) {
-                $cont->push(parent::subscribe($topics, $properties));
-            }
-        );
+        $this->channel->push(fn () => $cont->push(parent::subscribe($topics, $properties)));
         return $cont->pop();
     }
 
     public function unsubscribe(array $topics, array $properties = [])
     {
         $cont = new Channel();
-        $this->channel->push(
-            function () use ($properties, $cont, $topics) {
-                $cont->push(parent::unSubscribe($topics, $properties));
-            }
-        );
+        $this->channel->push(fn () => $cont->push(parent::unSubscribe($topics, $properties)));
         return $cont->pop();
     }
 
@@ -103,6 +88,13 @@ class ClientProxy extends \Simps\MQTT\Client
         $this->channel->push(
             function () use ($cont) {
                 $message = parent::recv();
+                if ($this->timeSincePing <= (time() - $this->config->clientConfig->getKeepAlive())) {
+                    if (parent::ping()) {
+                        $this->timeSincePing = time();
+                    } else {
+                        return $cont->push(false);
+                    }
+                }
                 if (! is_bool($message)) {
                     if ($message['type'] === Types::PUBLISH and $message['qos'] === Qos::QOS_AT_LEAST_ONCE) {
                         parent::send(['type' => Types::PUBACK, 'message_id' => $message['message_id']], true);
@@ -119,7 +111,7 @@ class ClientProxy extends \Simps\MQTT\Client
                             )
                         );
                         parent::close($message['code']);
-                        return $cont->push($message);
+                        return $cont->push(false);
                     }
 
                     $this->dispatcher->dispatch(
@@ -135,7 +127,7 @@ class ClientProxy extends \Simps\MQTT\Client
                         )
                     );
                 }
-                return $cont->push($message);
+                return $cont->push($this->timeSincePing);
             }
         );
 

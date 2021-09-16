@@ -18,7 +18,7 @@ class OnDisconnectEvent
 
     public ClientConfig $clientConfig;
 
-    public function __construct(int $type, int $code, string $poolName, ClientConfig $clientConfig,  int $qos = null)
+    public function __construct(int $type, int $code, string $poolName, ClientConfig $clientConfig, int $qos = null)
     {
         $this->type = $type;
         $this->code = $code;

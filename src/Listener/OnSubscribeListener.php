@@ -68,6 +68,7 @@ class OnSubscribeListener implements ListenerInterface
                     $subscribeConfigs[] = TopicParser::generateTopicArray($topicConfig->topic, $topicConfig->getTopicProperties());
                 })();
             }
+
             if (! empty($subscribeConfigs)) {
                 $properties = $value['properties'] ?? [];
                 /** @var Client $client */

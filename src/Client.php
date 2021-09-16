@@ -36,12 +36,11 @@ class Client
             if (($name === MQTTConstants::SUBSCRIBE or $name === MQTTConstants::MULTISUB) and $pool->getAvailableConnectionNum() < 2) {
                 throw new \RuntimeException('Connection pool exhausted. Cannot establish new connection before wait_timeout.');
             }
-            $connection = $this->getConnection($hasContextConnection);
+            $connection = $this->getConnection($hasContextConnection)->getConnection();
             try {
                 Coroutine::create(
                     function () use ($connection, $name, $arguments) {
-                        /** @var MQTTConnection $connection */
-                        $connection = $connection->getConnection();
+                        /* @var MQTTConnection $connection */
                         $connection->{$name}(...$arguments);
                     }
                 );
@@ -50,17 +49,21 @@ class Client
                     Coroutine::create(
                         function () use ($connection) {
                             for (;;) {
-                                $connection->receive();
+                                if (! $connection->receive()) {
+                                    break;
+                                }
                             }
+
+                            $connection->close();
+                            $connection->release();
                         }
                     );
                 }
-                $connection->release();
             }
         };
     }
 
-    public function __call($name, $arguments): void
+    public function __call(string $name, mixed $arguments): void
     {
         if (! in_array($name, $this->methods())) {
             throw new InvalidMethodException(sprintf('method %s does not exist', $name));
@@ -99,6 +102,7 @@ class Client
         if ($hasContextConnection) {
             $connection = Context::get($this->getContextKey());
         }
+
         if (! $connection instanceof MQTTConnection) {
             $pool = $this->factory->getPool($this->poolName);
             $connection = $pool->get();
