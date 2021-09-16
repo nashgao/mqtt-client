@@ -40,6 +40,10 @@ class AfterWorkerStartListener implements ListenerInterface
                 if ($key === MQTTConstants::SUBSCRIBE) {
                     $topics = [];
                     foreach ($value['topics'] ?? [] as $topic) {
+                        if (isset($value['filter']) and is_callable($value['filter']) and ! $value['filter']()) {
+                            continue;
+                        }
+
                         if (! $topic['auto_subscribe']) {
                             continue;
                         }
