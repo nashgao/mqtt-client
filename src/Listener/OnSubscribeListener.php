@@ -6,6 +6,7 @@ namespace Nashgao\MQTT\Listener;
 
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
+use Nashgao\MQTT\Client;
 use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Event\OnSubscribeEvent;
 use Nashgao\MQTT\Utils\TopicParser;
@@ -45,6 +46,7 @@ class OnSubscribeListener implements ListenerInterface
 
                     if ($topicConfig->enable_share_topic) {
                         $shareTopics = [];
+                        /** @var array $groupNames */
                         foreach ($topicConfig->share_topic as $groupNames) {
                             foreach ($groupNames as $groupName) {
                                 $topic = TopicParser::generateShareTopic($topicConfig->topic, $groupName);
@@ -68,13 +70,16 @@ class OnSubscribeListener implements ListenerInterface
             }
             if (! empty($subscribeConfigs)) {
                 $properties = $value['properties'] ?? [];
+                /** @var Client $client */
+                $client = make(Client::class);
+                $client->setPoolName($event->poolName);
                 foreach ($subscribeConfigs as $subscribeConfig) {
                     if (array_key_exists(key($subscribeConfig), $multiSubscribeConfigs)) {
-                        $event->client->multiSub($subscribeConfig, $properties, $multiSubscribeConfigs[key($subscribeConfig)]);
+                        $client->multiSub($subscribeConfig, $properties, $multiSubscribeConfigs[key($subscribeConfig)]);
                         continue;
                     }
 
-                    $event->client->subscribe($subscribeConfig, $properties);
+                    $client->subscribe($subscribeConfig, $properties);
                 }
             }
         }

@@ -69,13 +69,16 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
 
     public function reconnect(): bool
     {
-        $this->connection = (new ClientFactory())->create(new ClientConfig(
-            $this->config['host'],
-            $this->config['port'],
-            $this->createSimpsClientConfig(),
-            $this->config['subscribe'],
-            $this->config['publish'],
-        ));
+        $this->connection = $this->container->get(ClientFactory::class)
+            ->create(
+                new ClientConfig(
+                    $this->config['host'],
+                    $this->config['port'],
+                    $this->createSimpsClientConfig(),
+                    $this->config['subscribe'],
+                    $this->config['publish'],
+                )
+            );
 
         $this->lastUseTime = microtime(true);
         return true;

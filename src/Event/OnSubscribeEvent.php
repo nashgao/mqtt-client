@@ -4,21 +4,29 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Event;
 
-use Nashgao\MQTT\Client;
 use Nashgao\MQTT\Config\TopicConfig;
 
 class OnSubscribeEvent
 {
-    public Client $client;
+    public string $poolName;
 
     /**
      * @var TopicConfig[]
      */
     public array $topicConfigs;
 
-    public function setClient(Client $client): OnSubscribeEvent
+    public function __construct(array $configs)
     {
-        $this->client = $client;
+        foreach ($configs as $name => $value) {
+            if (isset($value) and property_exists($this, $name)) {
+                $this->{$name} = $value;
+            }
+        }
+    }
+
+    public function setPoolName(string $poolName): OnSubscribeEvent
+    {
+        $this->poolName = $poolName;
         return $this;
     }
 

@@ -8,7 +8,6 @@ use Hyperf\Contract\ConfigInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Framework\Event\AfterWorkerStart;
 use Hyperf\Utils\ApplicationContext;
-use Nashgao\MQTT\Client;
 use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Constants\MQTTConstants;
 use Nashgao\MQTT\Event\OnSubscribeEvent;
@@ -36,7 +35,6 @@ class AfterWorkerStartListener implements ListenerInterface
         $dispatcher = ApplicationContext::getContainer()->get(EventDispatcherInterface::class);
         $config = $this->container->get(ConfigInterface::class);
         foreach ($config->get('mqtt') ?? [] as $poolName => $poolConfig) {
-            $client = make(Client::class)->setPoolName($poolName ?? 'default');
             /* e.g. host => localhost*/
             foreach ($poolConfig as $key => $value) {
                 if ($key === MQTTConstants::SUBSCRIBE) {
@@ -47,7 +45,12 @@ class AfterWorkerStartListener implements ListenerInterface
                         }
                         $topics[] = make(TopicConfig::class, [$topic]);
                     }
-                    $dispatcher->dispatch(make(OnSubscribeEvent::class)->setClient($client)->setTopicConfigs($topics));
+                    $dispatcher->dispatch(
+                        new OnSubscribeEvent([
+                            'poolName' => $poolName,
+                            'topicConfig' => $topics,
+                        ])
+                    );
                 }
             }
         }
