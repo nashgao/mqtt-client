@@ -45,12 +45,7 @@ class AfterWorkerStartListener implements ListenerInterface
                         }
                         $topics[] = make(TopicConfig::class, [$topic]);
                     }
-                    $dispatcher->dispatch(
-                        new OnSubscribeEvent([
-                            'poolName' => $poolName,
-                            'topicConfig' => $topics,
-                        ])
-                    );
+                    $dispatcher->dispatch(new OnSubscribeEvent($poolName, $topics));
                 }
             }
         }

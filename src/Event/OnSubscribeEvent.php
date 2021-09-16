@@ -8,20 +8,13 @@ use Nashgao\MQTT\Config\TopicConfig;
 
 class OnSubscribeEvent
 {
-    public string $poolName;
-
     /**
-     * @var TopicConfig[]
+     * @param TopicConfig[] $topicConfigs
      */
-    public array $topicConfigs;
-
-    public function __construct(array $configs)
-    {
-        foreach ($configs as $name => $value) {
-            if (isset($value) and property_exists($this, $name)) {
-                $this->{$name} = $value;
-            }
-        }
+    public function __construct(
+        public ?string $poolName = null,
+        public ?array $topicConfigs = null
+    ) {
     }
 
     public function setPoolName(string $poolName): OnSubscribeEvent
