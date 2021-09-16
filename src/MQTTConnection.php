@@ -77,7 +77,8 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
                     $this->createSimpsClientConfig(),
                     $this->config['subscribe'],
                     $this->config['publish'],
-                )
+                ),
+                $this->pool->getName()
             );
 
         $this->lastUseTime = microtime(true);

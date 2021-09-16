@@ -19,11 +19,14 @@ class ClientProxy extends \Simps\MQTT\Client
 
     protected EventDispatcherInterface $dispatcher;
 
+    protected string $poolName;
+
     protected ClientConfig $config;
 
-    public function __construct(ClientConfig $config)
+    public function __construct(ClientConfig $config, string $poolName)
     {
         $this->config = $config;
+        $this->poolName = $poolName;
         $this->dispatcher = ApplicationContext::getContainer()->get(EventDispatcherInterface::class);
         $this->channel = new Channel();
         parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType);
@@ -110,8 +113,9 @@ class ClientProxy extends \Simps\MQTT\Client
                             new OnDisconnectEvent(
                                 $message['type'],
                                 $message['code'],
+                                $this->poolName,
+                                $this->config,
                                 $message['qos'] ?? null,
-                                $this
                             )
                         );
                         parent::close($message['code']);

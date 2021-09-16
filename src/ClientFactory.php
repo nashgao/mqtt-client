@@ -9,9 +9,9 @@ use Swoole\Coroutine;
 
 class ClientFactory
 {
-    public function create(ClientConfig $config): ClientProxy
+    public function create(ClientConfig $config, string $poolName): ClientProxy
     {
-        $client = new ClientProxy($config);
+        $client = new ClientProxy($config, $poolName);
         Coroutine::create(
             function () use ($client) {
                 $client->loop();
