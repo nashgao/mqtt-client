@@ -8,6 +8,7 @@ use Hyperf\Utils\ApplicationContext;
 use Nashgao\MQTT\Config\ClientConfig;
 use Nashgao\MQTT\Event\OnDisconnectEvent;
 use Nashgao\MQTT\Event\OnReceiveEvent;
+use Nashgao\MQTT\Event\OnSubscribeEvent;
 use Nashgao\MQTT\Utils\Qos;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Simps\MQTT\Protocol\Types;
@@ -71,7 +72,11 @@ class ClientProxy extends \Simps\MQTT\Client
     public function subscribe(array $topics, array $properties = []): bool | array
     {
         $cont = new Channel();
-        $this->channel->push(fn () => $cont->push(parent::subscribe($topics, $properties)));
+        $this->channel->push(
+            function () use ($cont, $topics, $properties) {
+                $this->dispatcher->dispatch(new OnSubscribeEvent(parent::getConfig()->getClientId(), $topics, parent::subscribe($topics, $properties)));
+            }
+        );
         return $cont->pop();
     }
 
