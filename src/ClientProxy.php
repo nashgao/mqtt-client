@@ -74,7 +74,7 @@ class ClientProxy extends \Simps\MQTT\Client
         $cont = new Channel();
         $this->channel->push(
             function () use ($cont, $topics, $properties) {
-                $this->dispatcher->dispatch(new OnSubscribeEvent(parent::getConfig()->getClientId(), $topics, parent::subscribe($topics, $properties)));
+                $this->dispatcher->dispatch(new OnSubscribeEvent($this->poolName, parent::getConfig()->getClientId(), $topics, parent::subscribe($topics, $properties)));
             }
         );
         return $cont->pop();
