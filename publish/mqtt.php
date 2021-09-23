@@ -6,6 +6,7 @@ return [
     'default' => [
         'host' => '',
         'port' => '',
+        'http_port' => '1883',
         'time_out' => '',
         'keepalive' => '',
         'protocol_name' => 'MQTT',
