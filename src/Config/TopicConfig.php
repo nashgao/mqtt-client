@@ -8,18 +8,18 @@ class TopicConfig
 {
     public string $topic;
 
-    public bool $enable_multisub;
+    public bool $enable_multisub = false;
 
     public int $multisub_num;
 
-    public bool $enable_share_topic;
+    public bool $enable_share_topic = false;
 
     /**
      * @var string[]
      */
     public array $share_topic;
 
-    public bool $enable_queue_topic;
+    public bool $enable_queue_topic = false;
 
     public int $qos;
 
@@ -29,7 +29,7 @@ class TopicConfig
 
     public int $retain_handling;
 
-    public function __construct($params)
+    public function __construct(array $params = [])
     {
         foreach ($params ?? [] as $key => $value) {
             if (property_exists($this, $key)) {
