@@ -51,7 +51,7 @@ class TopicParser
             $group = ltrim($group, '$');
             array_shift($topicArray);
             return $topicTemplate->setEnableShareTopic(true)
-                ->setShareTopic([$group])
+                ->setShareTopic(['group_name' => $group])
                 ->setTopic(join(self::SEPARATOR, $topicArray));
         }
 

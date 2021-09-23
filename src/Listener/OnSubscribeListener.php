@@ -46,15 +46,13 @@ class OnSubscribeListener implements ListenerInterface
 
                     if ($topicConfig->enable_share_topic) {
                         $shareTopics = [];
-                        /** @var array $groupNames */
-                        foreach ($topicConfig->share_topic as $groupNames) {
-                            foreach ($groupNames as $groupName) {
+                        foreach ($topicConfig->share_topic['group_name'] as $groupName) {
                                 $topic = TopicParser::generateShareTopic($topicConfig->topic, $groupName);
                                 if ($topicConfig->enable_multisub) {
                                     $multiSubscribeConfigs[$topic] = $topicConfig->multisub_num;
                                 }
                                 $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->getTopicProperties());
-                            }
+
                         }
 
                         $subscribeConfigs = array_merge($subscribeConfigs, $shareTopics);
