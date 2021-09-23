@@ -8,7 +8,7 @@ use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
 use Nashgao\MQTT\Client;
 use Nashgao\MQTT\Config\TopicConfig;
-use Nashgao\MQTT\Event\BeforeSubscribeEvent;
+use Nashgao\MQTT\Event\SubscribeEvent;
 use Nashgao\MQTT\Utils\TopicParser;
 
 /**
@@ -19,12 +19,12 @@ class OnSubscribeListener implements ListenerInterface
     public function listen(): array
     {
         return [
-            BeforeSubscribeEvent::class,
+            SubscribeEvent::class,
         ];
     }
 
     /**
-     * @param BeforeSubscribeEvent|object $event
+     * @param SubscribeEvent|object $event
      */
     public function process(object $event)
     {

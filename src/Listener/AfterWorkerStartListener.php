@@ -10,7 +10,7 @@ use Hyperf\Framework\Event\AfterWorkerStart;
 use Hyperf\Utils\ApplicationContext;
 use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Constants\MQTTConstants;
-use Nashgao\MQTT\Event\BeforeSubscribeEvent;
+use Nashgao\MQTT\Event\SubscribeEvent;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -40,7 +40,7 @@ class AfterWorkerStartListener implements ListenerInterface
                 if ($key === MQTTConstants::SUBSCRIBE) {
                     $topics = [];
                     foreach ($value['topics'] ?? [] as $topic) {
-                        if (isset($topic['filter']) and is_callable($topic['filter']) and ! $topic['filter']()) {
+                        if (isset($topic['filter']) and is_callable($topic['filter']) and ! $topic['filter']($topic)) {
                             continue;
                         }
 
@@ -52,7 +52,7 @@ class AfterWorkerStartListener implements ListenerInterface
                     }
 
                     if (! empty($topics)) {
-                        $dispatcher->dispatch(new BeforeSubscribeEvent($poolName, $topics));
+                        $dispatcher->dispatch(new SubscribeEvent($poolName, $topics));
                     }
                 }
             }

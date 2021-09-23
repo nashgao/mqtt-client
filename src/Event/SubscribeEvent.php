@@ -6,18 +6,18 @@ namespace Nashgao\MQTT\Event;
 
 use Nashgao\MQTT\Config\TopicConfig;
 
-class BeforeSubscribeEvent
+class SubscribeEvent
 {
     /**
      * @param TopicConfig[] $topicConfigs
      */
     public function __construct(
         public ?string $poolName = null,
-        public ?array $topicConfigs = null
+        public ?array $topicConfigs = null,
     ) {
     }
 
-    public function setPoolName(string $poolName): BeforeSubscribeEvent
+    public function setPoolName(string $poolName): static
     {
         $this->poolName = $poolName;
         return $this;
