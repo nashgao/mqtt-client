@@ -23,11 +23,11 @@ class TopicConfig
 
     public int $qos;
 
-    public bool $no_local;
+    public bool $no_local = true;
 
-    public bool $retain_as_published;
+    public bool $retain_as_published = true;
 
-    public int $retain_handling;
+    public int $retain_handling = 2;
 
     public function __construct(array $params = [])
     {
