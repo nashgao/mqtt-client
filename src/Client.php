@@ -71,7 +71,7 @@ class Client
 
         $hasContextConnection = Context::has($this->getContextKey());
         if ($name = $name === MQTTConstants::MULTISUB ? MQTTConstants::SUBSCRIBE : $name) {
-            $num = count($arguments) !== 3 ? 2 : last($arguments); // set multi sub default as 2
+            $num = count($arguments) !== 3 ? 1 : last($arguments); // set multi sub default as 2
         }
 
         for ($count = 0; $count < ($num ?? 1); ++$count) {
