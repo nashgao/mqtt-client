@@ -12,7 +12,7 @@ class OnPublishEvent
     public function __construct(
         public string $poolName,
         public string $topic,
-        public string $message,
+        public string|array|null $message,
         public int $qos,
         public mixed $result
     ) {
