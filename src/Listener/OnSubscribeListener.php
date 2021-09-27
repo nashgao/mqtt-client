@@ -68,17 +68,16 @@ class OnSubscribeListener implements ListenerInterface
             }
 
             if (! empty($subscribeConfigs)) {
-                $properties = $value['properties'] ?? [];
                 /** @var Client $client */
                 $client = make(Client::class);
                 $client->setPoolName($event->poolName);
                 foreach ($subscribeConfigs as $subscribeConfig) {
                     if (array_key_exists(key($subscribeConfig), $multiSubscribeConfigs)) {
-                        $client->multiSub($subscribeConfig, $properties, $multiSubscribeConfigs[key($subscribeConfig)]);
+                        $client->multiSub($subscribeConfig, $subscribeConfig['properties'] ?? [], $multiSubscribeConfigs[key($subscribeConfig)]);
                         continue;
                     }
 
-                    $client->subscribe($subscribeConfig, $properties);
+                    $client->subscribe($subscribeConfig, $subscribeConfig['properties'] ?? []);
                 }
             }
         }

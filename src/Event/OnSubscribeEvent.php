@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Event;
 
+/**
+ * after sending subscribe event, dispatch this event to return results of if subscription is successful or not
+ */
 class OnSubscribeEvent
 {
     public function __construct(

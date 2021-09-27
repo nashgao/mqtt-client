@@ -7,6 +7,7 @@ namespace Nashgao\MQTT;
 use Hyperf\Utils\ApplicationContext;
 use Nashgao\MQTT\Config\ClientConfig;
 use Nashgao\MQTT\Event\OnDisconnectEvent;
+use Nashgao\MQTT\Event\OnPublishEvent;
 use Nashgao\MQTT\Event\OnReceiveEvent;
 use Nashgao\MQTT\Event\OnSubscribeEvent;
 use Nashgao\MQTT\Utils\Qos;
@@ -65,18 +66,14 @@ class ClientProxy extends \Simps\MQTT\Client
         array $properties = []
     ) {
         $cont = new Channel();
-        $this->channel->push(fn () => $cont->push(parent::publish($topic, $message, $qos, $dup, $retain, $properties)));
+        $this->channel->push(fn () => $this->dispatcher->dispatch(new OnPublishEvent($this->poolName, $topic, $message, $qos, parent::publish($topic, $message, $qos, $dup, $retain, $properties))));
         return $cont->pop();
     }
 
     public function subscribe(array $topics, array $properties = []): bool | array
     {
         $cont = new Channel();
-        $this->channel->push(
-            function () use ($cont, $topics, $properties) {
-                $this->dispatcher->dispatch(new OnSubscribeEvent($this->poolName, parent::getConfig()->getClientId(), $topics, parent::subscribe($topics, $properties)));
-            }
-        );
+        $this->channel->push(fn () => $this->dispatcher->dispatch(new OnSubscribeEvent($this->poolName, parent::getConfig()->getClientId(), $topics, parent::subscribe($topics, $properties))));
         return $cont->pop();
     }
 
