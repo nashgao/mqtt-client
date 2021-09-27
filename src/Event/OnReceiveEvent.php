@@ -33,4 +33,10 @@ class OnReceiveEvent
         $this->properties = $properties;
         $this->message = $message;
     }
+
+    public function setMessage(array|string|null $message): OnReceiveEvent
+    {
+        $this->message = $message;
+        return $this;
+    }
 }
