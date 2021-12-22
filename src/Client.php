@@ -54,7 +54,7 @@ class Client
                                 }
                             }
 
-                            $connection->close();
+                             $connection->close();
                             $connection->release();
                         }
                     );
