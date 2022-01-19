@@ -118,6 +118,7 @@ class ClientProxy extends \Simps\MQTT\Client
 
                     $this->dispatcher->dispatch(
                         new OnReceiveEvent(
+                            $this->poolName,
                             $message['type'],
                             $message['dup'] ?? null,
                             $message['qos'] ?? null,

@@ -6,6 +6,8 @@ namespace Nashgao\MQTT\Event;
 
 class OnReceiveEvent
 {
+    public string $pool_name;
+
     public int $type;
 
     public ?int $dup;
@@ -22,8 +24,18 @@ class OnReceiveEvent
 
     public string|array|null $message;
 
-    public function __construct(int $type, ?int $dup, ?int $qos, ?int $retain, ?string $topic, ?int $message_id, ?array $properties, string|array|null $message)
-    {
+    public function __construct(
+        string $poolName,
+        int $type,
+        ?int $dup,
+        ?int $qos,
+        ?int $retain,
+        ?string $topic,
+        ?int $message_id,
+        ?array $properties,
+        string|array|null $message
+    ) {
+        $this->pool_name = $poolName;
         $this->type = $type;
         $this->dup = $dup;
         $this->qos = $qos;
