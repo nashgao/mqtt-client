@@ -98,8 +98,14 @@ class ClientProxy extends \Simps\MQTT\Client
                     }
                 }
                 if (! is_bool($message)) {
+                    /* qos 1 puback */
                     if ($message['type'] === Types::PUBLISH and $message['qos'] === Qos::QOS_AT_LEAST_ONCE) {
                         parent::send(['type' => Types::PUBACK, 'message_id' => $message['message_id']], true);
+                    }
+
+                    /* qos 2 pubrel */
+                    if ($message['type'] === Types::PUBLISH and $message['qos'] === Qos::QOS_EXACTLY_ONCE) {
+                        parent::send(['type' => Types::PUBREC, 'message_id' => $message['message_id']], true);
                     }
 
                     if ($message['type'] === Types::DISCONNECT) {
