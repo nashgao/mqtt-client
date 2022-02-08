@@ -108,6 +108,16 @@ class ClientProxy extends \Simps\MQTT\Client
                         parent::send(['type' => Types::PUBREC, 'message_id' => $message['message_id']], true);
                     }
 
+                    /* qos 2 pub comp */
+                    if ($message['type'] === Types::PUBREL) {
+                        parent::send(
+                            [
+                                'type' => Types::PUBCOMP,
+                                'message_id' => $message['message_id']
+                            ]
+                        );
+                    }
+
                     if ($message['type'] === Types::DISCONNECT) {
                         $this->dispatcher->dispatch(
                             new OnDisconnectEvent(
