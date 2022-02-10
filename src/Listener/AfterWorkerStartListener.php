@@ -7,7 +7,6 @@ namespace Nashgao\MQTT\Listener;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Framework\Event\AfterWorkerStart;
-use Hyperf\Utils\ApplicationContext;
 use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Constants\MQTTConstants;
 use Nashgao\MQTT\Event\SubscribeEvent;
@@ -32,7 +31,7 @@ class AfterWorkerStartListener implements ListenerInterface
 
     public function process(object $event)
     {
-        $dispatcher = ApplicationContext::getContainer()->get(EventDispatcherInterface::class);
+        $dispatcher = $this->container->get(EventDispatcherInterface::class);
         $config = $this->container->get(ConfigInterface::class);
         foreach ($config->get('mqtt') ?? [] as $poolName => $poolConfig) {
             /* e.g. host => localhost*/

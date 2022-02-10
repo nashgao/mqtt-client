@@ -73,7 +73,7 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
             ->create(
                 new ClientConfig(
                     $this->config['host'],
-                    (int)$this->config['port'],
+                    (int) $this->config['port'],
                     $this->createSimpsClientConfig(),
                     $this->config['subscribe'],
                     $this->config['publish'],

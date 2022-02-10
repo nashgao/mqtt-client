@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Nashgao\MQTT\Event;
 
 /**
- * dispatch publish event, create client and publish message
+ * dispatch publish event, create client and publish message.
  */
 class PublishEvent
 {
@@ -61,6 +61,4 @@ class PublishEvent
         $this->poolName = $poolName;
         return $this;
     }
-
-
 }

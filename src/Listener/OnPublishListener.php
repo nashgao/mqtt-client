@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Listener;
 
-
 use Hyperf\Event\Contract\ListenerInterface;
 use Nashgao\MQTT\Client;
 use Nashgao\MQTT\Event\PublishEvent;
@@ -14,12 +13,12 @@ class OnPublishListener implements ListenerInterface
     public function listen(): array
     {
         return [
-            PublishEvent::class
+            PublishEvent::class,
         ];
     }
 
     /**
-     * @param PublishEvent|object $event
+     * @param object|PublishEvent $event
      */
     public function process(object $event)
     {

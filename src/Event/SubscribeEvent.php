@@ -7,7 +7,7 @@ namespace Nashgao\MQTT\Event;
 use Nashgao\MQTT\Config\TopicConfig;
 
 /**
- * dispatch subscribe event, create client and subscribe topics
+ * dispatch subscribe event, create client and subscribe topics.
  */
 class SubscribeEvent
 {

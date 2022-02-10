@@ -113,7 +113,7 @@ class ClientProxy extends \Simps\MQTT\Client
                         parent::send(
                             [
                                 'type' => Types::PUBCOMP,
-                                'message_id' => $message['message_id']
+                                'message_id' => $message['message_id'],
                             ]
                         );
                     }

@@ -24,7 +24,7 @@ class OnSubscribeListener implements ListenerInterface
     }
 
     /**
-     * @param SubscribeEvent|object $event
+     * @param object|SubscribeEvent $event
      */
     public function process(object $event)
     {
@@ -47,12 +47,11 @@ class OnSubscribeListener implements ListenerInterface
                     if ($topicConfig->enable_share_topic) {
                         $shareTopics = [];
                         foreach ($topicConfig->share_topic['group_name'] as $groupName) {
-                                $topic = TopicParser::generateShareTopic($topicConfig->topic, $groupName);
-                                if ($topicConfig->enable_multisub) {
-                                    $multiSubscribeConfigs[$topic] = $topicConfig->multisub_num;
-                                }
-                                $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->getTopicProperties());
-
+                            $topic = TopicParser::generateShareTopic($topicConfig->topic, $groupName);
+                            if ($topicConfig->enable_multisub) {
+                                $multiSubscribeConfigs[$topic] = $topicConfig->multisub_num;
+                            }
+                            $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->getTopicProperties());
                         }
 
                         $subscribeConfigs = array_merge($subscribeConfigs, $shareTopics);

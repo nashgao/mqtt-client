@@ -25,17 +25,18 @@ class TopicParser
         return join(static::SEPARATOR, [static::QUEUE, $topic]);
     }
 
+    /**
+     * @throws InvalidConfigException
+     */
     public static function generateTopicArray(string $topic, array $properties = []): array
     {
         if (! array_key_exists('qos', $properties)) {
-            throw new InvalidConfigException(
-                sprintf('invalid config, must have qos')
-            );
+            throw new InvalidConfigException('invalid config, must have qos');
         }
         return [$topic => $properties];
     }
 
-    public static function parseTopic(string $topic, int $qos = 0, array $properties = [])
+    public static function parseTopic(string $topic, int $qos = 0, array $properties = []): TopicConfig
     {
         $topicTemplate = new TopicConfig($properties);
         $topicTemplate->setQos($qos);
@@ -48,7 +49,7 @@ class TopicParser
             $groupTopic = substr($topic, $pos + strlen(static::SHARE) + 1);
             $topicArray = explode(static::SEPARATOR, $groupTopic);
             $group = current($topicArray);
-            $group = ltrim($group, '$');
+            $group = ltrim((string) $group, '$');
             array_shift($topicArray);
             return $topicTemplate->setEnableShareTopic(true)
                 ->setShareTopic(['group_name' => [$group]])
