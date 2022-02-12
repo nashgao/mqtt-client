@@ -75,8 +75,8 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
                     $this->config['host'],
                     (int) $this->config['port'],
                     $this->createSimpsClientConfig(),
-                    $this->config['subscribe'],
-                    $this->config['publish'],
+                    $this->config['subscribe'] ?? [],
+                    $this->config['publish'] ?? [],
                 ),
                 $this->pool->getName()
             );
