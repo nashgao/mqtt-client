@@ -18,7 +18,7 @@ class ServerIdListener implements ListenerInterface
         ];
     }
 
-    public function process(object $event)
+    public function process(object $event): void
     {
         static::$serverId = uniqid();
     }

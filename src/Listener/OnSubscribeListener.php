@@ -26,7 +26,7 @@ class OnSubscribeListener implements ListenerInterface
     /**
      * @param object|SubscribeEvent $event
      */
-    public function process(object $event)
+    public function process(object $event): void
     {
         if (! empty($event->topicConfigs)) {
             $subscribeConfigs = [];

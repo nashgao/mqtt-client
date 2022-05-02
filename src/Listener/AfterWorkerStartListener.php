@@ -29,7 +29,7 @@ class AfterWorkerStartListener implements ListenerInterface
         ];
     }
 
-    public function process(object $event)
+    public function process(object $event): void
     {
         $dispatcher = $this->container->get(EventDispatcherInterface::class);
         $config = $this->container->get(ConfigInterface::class);

@@ -20,7 +20,7 @@ class OnPublishListener implements ListenerInterface
     /**
      * @param object|PublishEvent $event
      */
-    public function process(object $event)
+    public function process(object $event): void
     {
         /** @var Client $client */
         $client = make(Client::class);

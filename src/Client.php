@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT;
 
-use Hyperf\Utils\Context;
+use Hyperf\Context\Context;
 use Nashgao\MQTT\Constants\MQTTConstants;
 use Nashgao\MQTT\Exception\InvalidMethodException;
 use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
