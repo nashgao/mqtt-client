@@ -8,7 +8,7 @@
     ],
     "description": "encapsulation of mqtt client based on simps mqtt",
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "ext-swoole": ">=4.5",
         "hyperf/di": "~3.0",
         "hyperf/framework": "~3.0",
@@ -21,7 +21,7 @@
         "swoole/ide-helper": "^4.6",
         "friendsofphp/php-cs-fixer": "^v2.1.04",
         "mockery/mockery": "^1.0",
-        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan": "~1.0",
         "hyperf/redis": "~3.0"
     },
     "autoload": {
