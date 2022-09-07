@@ -48,7 +48,7 @@ class Client
                 if ($name === MQTTConstants::SUBSCRIBE) {
                     Coroutine::create(
                         function () use ($connection) {
-                            for (;;) {
+                              while (true){
                                 if (! $connection->receive()) {
                                     break;
                                 }

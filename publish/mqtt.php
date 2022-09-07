@@ -7,7 +7,7 @@ return [
         'host' => env('MQTT_HOST', 'localhost'),
         'port' => env('MQTT_PORT', 1883),
         // http port option deprecated
-        'http_port' => env('MQTT_HTTP_PORT',8081),
+        'http_port' => env('MQTT_HTTP_PORT', 8081),
         'time_out' => env('MQTT_TIMEOUT', 10),
         'keepalive' => env('MQTT_KEEPALIVE', 60),
         'protocol_name' => 'MQTT',
@@ -15,7 +15,6 @@ return [
         'username' => env('MQTT_USERNAME', 'admin'),
         'password' => env('MQTT_PASSWORD', 'public'),
         'properties' => [
-
         ],
         'swoole_config' => [
             'package_max_length' => 1024 * 1024,
@@ -30,7 +29,7 @@ return [
             'host' => env('MQTT_HTTP_HOST', 'localhost'),
             'port' => env('MQTT_HTTP_PORT', 8081),
             'app_id' => env('MQTT_HTTP_APP_ID', 'admin'),
-            'app_secret' => env('MQTT_HTTP_APP_SECRET','public')
+            'app_secret' => env('MQTT_HTTP_APP_SECRET', 'public'),
         ],
         'pool' => [
             'min_connections' => 1,

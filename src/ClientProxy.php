@@ -39,7 +39,7 @@ class ClientProxy extends \Simps\MQTT\Client
 
     public function loop()
     {
-        for (;;) {
+          while (true){
             /** @var Closure $closure */
             $closure = $this->channel->pop();
             if (! $closure) {
@@ -70,7 +70,7 @@ class ClientProxy extends \Simps\MQTT\Client
         return $cont->pop();
     }
 
-    public function subscribe(array $topics, array $properties = []): bool | array
+    public function subscribe(array $topics, array $properties = []): bool|array
     {
         $cont = new Channel();
         $this->channel->push(fn () => $this->dispatcher->dispatch(new OnSubscribeEvent($this->poolName, parent::getConfig()->getClientId(), $topics, parent::subscribe($topics, $properties))));

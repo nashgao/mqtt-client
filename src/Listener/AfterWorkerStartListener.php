@@ -34,7 +34,7 @@ class AfterWorkerStartListener implements ListenerInterface
         $dispatcher = $this->container->get(EventDispatcherInterface::class);
         $config = $this->container->get(ConfigInterface::class);
         foreach ($config->get('mqtt') ?? [] as $poolName => $poolConfig) {
-            /* e.g. host => localhost*/
+            /* e.g. host => localhost */
             foreach ($poolConfig as $key => $value) {
                 if ($key === MQTTConstants::SUBSCRIBE) {
                     $topics = [];

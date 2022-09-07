@@ -9,11 +9,11 @@ use Nashgao\MQTT\Exception\InvalidConfigException;
 
 class TopicParser
 {
-    const SHARE = '$share';
+    public const SHARE = '$share';
 
-    const QUEUE = '$queue';
+    public const QUEUE = '$queue';
 
-    const SEPARATOR = '/';
+    public const SEPARATOR = '/';
 
     public static function generateShareTopic(string $topic, string $group = 'default'): string
     {
