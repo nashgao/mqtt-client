@@ -13,6 +13,6 @@ require_once __DIR__ . '/boostrap.php';
     function () {
         /** @var EventDispatcher $dispatcher */
         $dispatcher = ApplicationContext::getContainer()->get(EventDispatcherInterface::class);
-        $dispatcher->dispatch(new PublishEvent('test/topic', 'hi mqtt', 2));
+        $dispatcher->dispatch(new PublishEvent('topic/test', 'hi mqtt', 2));
     }
 );

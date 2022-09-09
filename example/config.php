@@ -9,7 +9,7 @@ return [
         // http port option deprecated
         'http_port' => env('MQTT_HTTP_PORT', 8081),
         'time_out' => env('MQTT_TIMEOUT', 10),
-        'keepalive' => env('MQTT_KEEPALIVE', 5),
+        'keepalive' => env('MQTT_KEEPALIVE', 60),
         'protocol_name' => 'MQTT',
         'protocol_level' => env('MQTT_PROTOCOL_LEVEL', 5),
         'username' => env('MQTT_USERNAME', 'admin'),
@@ -43,15 +43,17 @@ return [
         'subscribe' => [
             'topics' => [
                 [
-                    'topic' => 'test/topic',
+                    'topic' => 'topic/test',
                     'auto_subscribe' => true,
-                    'enable_multisub' => false,
+                    'enable_multisub' => true,
                     'multisub_num' => 2, // let multiple subscribe the same topic, usually works with queue topic and shared topic
-                    'enable_share_topic' => false,
+                    'enable_share_topic' => true,
                     'share_topic' => [
-                        'group_name' => [], // list of group names that
+                        'group_name' => [
+                            'test'
+                        ], // list of group names that
                     ],
-                    'enable_queue_topic' => false, // queue topic has more priority, if queue topic is define then share topic would be useless
+                    'enable_queue_topic' => false, // queue topic has more priority, if queue topic is defined then share topic would be useless
                     'qos' => 2,
                     'filter' => null,
                     'no_local' => true,
@@ -64,9 +66,7 @@ return [
             'topics' => [
                 [
                     'topic' => '',
-                    'shared_topic' => '',
                     'qos' => '',
-                    'filter' => false,
                     'no_local' => true,
                     'retain_as_published' => true,
                     'retain_handling' => 2,

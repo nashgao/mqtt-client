@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Hyperf\Utils\ApplicationContext;
 use Nashgao\MQTT\Listener\AfterWorkerStartListener;
 
-require_once __DIR__ . '/boostrap.php';
+require_once dirname(__DIR__) . '/boostrap.php';
 
 \Swoole\Coroutine\run(
     function () {

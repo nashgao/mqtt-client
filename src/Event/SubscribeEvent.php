@@ -15,7 +15,7 @@ class SubscribeEvent
      * @param TopicConfig[] $topicConfigs
      */
     public function __construct(
-        public ?string $poolName = null,
+        public string $poolName = 'default',
         public ?array $topicConfigs = null,
     ) {
     }
