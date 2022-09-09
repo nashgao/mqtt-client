@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Listener;
 
-use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
 use Nashgao\MQTT\Client;
 use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Event\SubscribeEvent;
 use Nashgao\MQTT\Utils\TopicParser;
 
-/**
- * @Listener
- */
 class OnSubscribeListener implements ListenerInterface
 {
     public function listen(): array

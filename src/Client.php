@@ -33,13 +33,13 @@ class Client
         $this->getConnection = function ($hasContextConnection, $name, $arguments): void {
             // check the available connection num
             $pool = $this->factory->getPool($this->poolName);
-            if (($name === MQTTConstants::SUBSCRIBE or $name === MQTTConstants::MULTISUB) and $pool->getAvailableConnectionNum() < 2) {
+            if (($name === MQTTConstants::SUBSCRIBE || $name === MQTTConstants::MULTISUB) && $pool->getAvailableConnectionNum() < 2) {
                 throw new \RuntimeException('Connection pool exhausted. Cannot establish new connection before wait_timeout.');
             }
             $connection = $this->getConnection($hasContextConnection)->getConnection();
             try {
                 Coroutine::create(
-                    function () use ($connection, $name, $arguments) {
+                    static function () use ($connection, $name, $arguments) {
                         /* @var MQTTConnection $connection */
                         $connection->{$name}(...$arguments);
                     }
@@ -47,8 +47,8 @@ class Client
             } finally {
                 if ($name === MQTTConstants::SUBSCRIBE) {
                     Coroutine::create(
-                        function () use ($connection) {
-                              while (true){
+                        static function () use ($connection) {
+                            while (true) {
                                 if (! $connection->receive()) {
                                     break;
                                 }

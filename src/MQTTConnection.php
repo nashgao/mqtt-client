@@ -109,7 +109,7 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
             ->setClientId($this->container->get(ClientIdProviderInterface::class)->generate($this->config['prefix']) ?? '')
             ->setSwooleConfig($this->config['swoole_config'])
             ->setSockType((function () {
-                return (isset($this->config['swoole_config']['ssl_enabled']) and $this->config['swoole_config']['ssl_enabled'])
+                return (isset($this->config['swoole_config']['ssl_enabled']) && $this->config['swoole_config']['ssl_enabled'])
                     ? SWOOLE_SOCK_TCP | SWOOLE_SSL
                     : SWOOLE_SOCK_TCP;
             })());

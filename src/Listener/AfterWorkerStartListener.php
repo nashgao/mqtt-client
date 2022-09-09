@@ -35,11 +35,11 @@ class AfterWorkerStartListener implements ListenerInterface
         $config = $this->container->get(ConfigInterface::class);
         foreach ($config->get('mqtt') ?? [] as $poolName => $poolConfig) {
             /* e.g. host => localhost */
-            foreach ($poolConfig as $key => $value) {
+            foreach ($poolConfig as $key => $topicsArray) {
                 if ($key === MQTTConstants::SUBSCRIBE) {
                     $topics = [];
-                    foreach ($value['topics'] ?? [] as $topic) {
-                        if (isset($topic['filter']) and is_callable($topic['filter']) and ! $topic['filter']($topic)) {
+                    foreach ($topicsArray['topics'] ?? [] as $topic) {
+                        if (isset($topic['filter']) && is_callable($topic['filter']) && ! $topic['filter']($topic)) {
                             continue;
                         }
 
@@ -47,6 +47,7 @@ class AfterWorkerStartListener implements ListenerInterface
                             continue;
                         }
 
+                        /* @var TopicConfig[] $topics */
                         $topics[] = make(TopicConfig::class, [$topic]);
                     }
 
