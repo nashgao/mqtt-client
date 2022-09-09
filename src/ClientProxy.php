@@ -27,6 +27,8 @@ class ClientProxy extends \Simps\MQTT\Client
 
     protected float $timeSincePing;
 
+    protected int $delayTime = 30;
+
     public function __construct(ClientConfig $config, string $poolName)
     {
         $this->config = $config;
@@ -90,22 +92,23 @@ class ClientProxy extends \Simps\MQTT\Client
         $this->channel->push(
             function () use ($cont) {
                 $message = parent::recv();
-                if ($this->timeSincePing <= (time() - $this->config->clientConfig->getKeepAlive())) {
+                if ($this->timeSincePing <= (time() - ($this->config->clientConfig->getKeepAlive() + $this->delayTime))) {
                     if (parent::ping()) {
                         $this->timeSincePing = time();
                     } else {
                         return $cont->push(false);
                     }
                 }
+
                 if (! is_bool($message)) {
                     /* qos 1 puback */
                     if ($message['type'] === Types::PUBLISH && $message['qos'] === Qos::QOS_AT_LEAST_ONCE) {
-                        parent::send(['type' => Types::PUBACK, 'message_id' => $message['message_id']], true);
+                        parent::send(['type' => Types::PUBACK, 'message_id' => $message['message_id']]);
                     }
 
                     /* qos 2 pubrel */
                     if ($message['type'] === Types::PUBLISH && $message['qos'] === Qos::QOS_EXACTLY_ONCE) {
-                        parent::send(['type' => Types::PUBREC, 'message_id' => $message['message_id']], true);
+                        parent::send(['type' => Types::PUBREC, 'message_id' => $message['message_id']]);
                     }
 
                     /* qos 2 pub comp */
@@ -150,6 +153,6 @@ class ClientProxy extends \Simps\MQTT\Client
             }
         );
 
-        return $cont->pop($this->config->clientConfig->getKeepAlive());
+        return $cont->pop($this->config->clientConfig->getKeepAlive() + $this->delayTime); /* 30 seconds to pop the channel, since subscribe may not be able to receive the disconnect info immediately */
     }
 }

@@ -8,7 +8,9 @@ use Nashgao\MQTT\Listener\AfterWorkerStartListener;
 use Nashgao\MQTT\Listener\OnDisconnectListener;
 use Nashgao\MQTT\Listener\OnPublishListener;
 use Nashgao\MQTT\Listener\OnSubscribeListener;
+use Nashgao\MQTT\Listener\PublishListener;
 use Nashgao\MQTT\Listener\ServerIdListener;
+use Nashgao\MQTT\Listener\SubscribeListener;
 use Nashgao\MQTT\Provider\ClientIdProviderInterface;
 use Nashgao\MQTT\Provider\RandomClientIdProvider;
 
@@ -18,9 +20,11 @@ class ConfigProvider
     {
         return [
             'listeners' => [
-                OnDisconnectListener::class,
                 OnSubscribeListener::class,
                 OnPublishListener::class,
+                OnDisconnectListener::class,
+                SubscribeListener::class,
+                PublishListener::class,
                 AfterWorkerStartListener::class,
                 ServerIdListener::class,
             ],

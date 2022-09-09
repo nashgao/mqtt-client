@@ -9,8 +9,11 @@ use Hyperf\Di\Definition\DefinitionSourceFactory;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Event\ListenerProvider;
 use Hyperf\Utils\ApplicationContext;
+use Nashgao\MQTT\Listener\OnDisconnectListener;
 use Nashgao\MQTT\Listener\OnPublishListener;
 use Nashgao\MQTT\Listener\OnSubscribeListener;
+use Nashgao\MQTT\Listener\PublishListener;
+use Nashgao\MQTT\Listener\SubscribeListener;
 use Nashgao\MQTT\Provider\ClientIdProviderInterface;
 use Nashgao\MQTT\Provider\RandomClientIdProvider;
 use Psr\EventDispatcher\ListenerProviderInterface;
@@ -46,11 +49,18 @@ const SIMPS_MQTT_PORT = 1883;
         /* set up listener */
         /** @var ListenerProvider $provider */
         $provider = $container->get(ListenerProviderInterface::class);
-        $listeners = [OnSubscribeListener::class, OnPublishListener::class, require_once __DIR__ . '/on_receive.php'];
+        $listeners = [
+            SubscribeListener::class,
+            PublishListener::class,
+            OnDisconnectListener::class,
+            OnSubscribeListener::class,
+            OnPublishListener::class,
+            require_once __DIR__ . '/on_receive.php',
+        ];
         foreach ($listeners as $listener) {
             if (is_string($listener)) {
                 /** @var ListenerInterface $listener */
-                $listener = new $listener();
+                $listener = make($listener);
             }
             foreach ($listener->listen() as $event) {
                 $provider->on($event, [$listener, 'process']);

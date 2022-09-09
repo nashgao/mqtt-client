@@ -8,22 +8,12 @@ use Nashgao\MQTT\Config\ClientConfig;
 
 class OnDisconnectEvent
 {
-    public int $type;
-
-    public int $code;
-
-    public ?int $qos;
-
-    public string $poolName;
-
-    public ClientConfig $clientConfig;
-
-    public function __construct(int $type, int $code, string $poolName, ClientConfig $clientConfig, int $qos = null)
-    {
-        $this->type = $type;
-        $this->code = $code;
-        $this->poolName = $poolName;
-        $this->clientConfig = $clientConfig;
-        $this->qos = $qos;
+    public function __construct(
+        public int $type,
+        public int $code,
+        public string $poolName,
+        public ClientConfig $clientConfig,
+        public ?int $qos = null
+    ) {
     }
 }

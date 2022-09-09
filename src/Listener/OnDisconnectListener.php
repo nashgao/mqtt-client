@@ -30,6 +30,6 @@ class OnDisconnectListener implements ListenerInterface
      */
     public function process(object $event): void
     {
-        $this->logger->debug(sprintf("broker is disconnected, the reason is %s [%d]\n", ReasonCode::getReasonPhrase($event->code), $event->code));
+        $this->logger->debug(\sprintf("Broker is disconnected, the reason is %s [%d]\n", ReasonCode::getReasonPhrase($event->code), $event->code));
     }
 }

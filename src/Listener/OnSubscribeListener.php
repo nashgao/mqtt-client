@@ -4,77 +4,42 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Listener;
 
+use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
-use Nashgao\MQTT\Client;
-use Nashgao\MQTT\Config\TopicConfig;
-use Nashgao\MQTT\Event\SubscribeEvent;
-use Nashgao\MQTT\Utils\TopicParser;
+use Nashgao\MQTT\Event\OnSubscribeEvent;
+use Simps\MQTT\Protocol\Types;
 
 class OnSubscribeListener implements ListenerInterface
 {
+    protected StdoutLoggerInterface $logger;
+
+    public function __construct(StdoutLoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     public function listen(): array
     {
         return [
-            SubscribeEvent::class,
+            OnSubscribeEvent::class,
         ];
     }
 
     /**
-     * @param object|SubscribeEvent $event
+     * @param OnSubscribeEvent $event
      */
     public function process(object $event): void
     {
-        if (! empty($event->topicConfigs)) {
-            $subscribeConfigs = [];
-            $multiSubscribeConfigs = [];
-            /** @var TopicConfig $topicConfig */
-            foreach ($event->topicConfigs as $topicConfig) {
-                (function () use ($topicConfig, &$multiSubscribeConfigs, &$subscribeConfigs): void {
-                    /* handle queue topic first, has higher priority */
-                    if ($topicConfig->enable_queue_topic) {
-                        $topic = TopicParser::generateQueueTopic($topicConfig->topic);
-                        if ($topicConfig->enable_multisub) {
-                            $multiSubscribeConfigs[$topic] = $topicConfig->multisub_num;
-                        }
-                        $subscribeConfigs[] = TopicParser::generateTopicArray($topic, $topicConfig->getTopicProperties());
-                        return;
-                    }
-
-                    if ($topicConfig->enable_share_topic) {
-                        $shareTopics = [];
-                        foreach ($topicConfig->share_topic['group_name'] as $groupName) {
-                            $topic = TopicParser::generateShareTopic($topicConfig->topic, $groupName);
-                            if ($topicConfig->enable_multisub) {
-                                $multiSubscribeConfigs[$topic] = $topicConfig->multisub_num;
-                            }
-                            $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->getTopicProperties());
-                        }
-
-                        $subscribeConfigs = array_merge($subscribeConfigs, $shareTopics);
-                        return;
-                    }
-
-                    if ($topicConfig->enable_multisub) {
-                        $multiSubscribeConfigs[$topicConfig->topic] = $topicConfig->multisub_num;
-                    }
-
-                    $subscribeConfigs[] = TopicParser::generateTopicArray($topicConfig->topic, $topicConfig->getTopicProperties());
-                })();
-            }
-
-            if (! empty($subscribeConfigs)) {
-                /** @var Client $client */
-                $client = make(Client::class);
-                $client->setPoolName($event->poolName);
-                foreach ($subscribeConfigs as $subscribeConfig) {
-                    if (array_key_exists(key($subscribeConfig), $multiSubscribeConfigs)) {
-                        $client->multiSub($subscribeConfig, $subscribeConfig['properties'] ?? [], $multiSubscribeConfigs[key($subscribeConfig)]);
-                        continue;
-                    }
-
-                    $client->subscribe($subscribeConfig, $subscribeConfig['properties'] ?? []);
-                }
-            }
+        foreach ($event->topics as $topic => $value) {
+            $this->logger->debug(
+                \sprintf(
+                    'Mqtt client: %s from %s pool subscribe to %s successful, result type as %s',
+                    $event->clientId,
+                    $event->poolName,
+                    $topic,
+                    Types::getType($event->result['type'])
+                )
+            );
         }
     }
 }

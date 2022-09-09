@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 return [
     'default' => [
-        'host' => env('MQTT_HOST', SIMPS_MQTT_REMOTE_HOST),
+        'host' => env('MQTT_HOST', SIMPS_MQTT_LOCAL_HOST),
         'port' => env('MQTT_PORT', 1883),
         // http port option deprecated
         'http_port' => env('MQTT_HTTP_PORT', 8081),
         'time_out' => env('MQTT_TIMEOUT', 10),
-        'keepalive' => env('MQTT_KEEPALIVE', 600),
+        'keepalive' => env('MQTT_KEEPALIVE', 5),
         'protocol_name' => 'MQTT',
         'protocol_level' => env('MQTT_PROTOCOL_LEVEL', 5),
         'username' => env('MQTT_USERNAME', 'admin'),

@@ -4,27 +4,30 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Listener;
 
+use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
-use Nashgao\MQTT\Client;
-use Nashgao\MQTT\Event\PublishEvent;
+use Nashgao\MQTT\Event\OnPublishEvent;
 
 class OnPublishListener implements ListenerInterface
 {
+    protected StdoutLoggerInterface $logger;
+
+    public function __construct(StdoutLoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     public function listen(): array
     {
         return [
-            PublishEvent::class,
+            OnPublishEvent::class,
         ];
     }
 
     /**
-     * @param object|PublishEvent $event
+     * @param OnPublishEvent $event
      */
     public function process(object $event): void
     {
-        /** @var Client $client */
-        $client = make(Client::class);
-        $client->setPoolName($event->poolName ?? 'default');
-        $client->publish($event->topic, $event->message, $event->qos, $event->dup, $event->retain, $event->properties);
     }
 }
