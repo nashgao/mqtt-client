@@ -52,7 +52,7 @@ return [
                     'enable_share_topic' => true,
                     'share_topic' => [
                         'group_name' => [
-                            'test'
+                            'test',
                         ], // list of group names that
                     ],
                     'enable_queue_topic' => false, // queue topic has more priority, if queue topic is defined then share topic would be useless
@@ -90,7 +90,7 @@ return [
         'clean_session' => false,
         'will' => [
             'topic' => 'topic/test',
-            'message' => 'bye'
+            'message' => 'bye',
         ],
         'properties' => [
         ],
@@ -128,7 +128,7 @@ return [
                     'enable_share_topic' => true,
                     'share_topic' => [
                         'group_name' => [
-                            'test'
+                            'test',
                         ], // list of group names that
                     ],
                     'enable_queue_topic' => false, // queue topic has more priority, if queue topic is defined then share topic would be useless

@@ -12,8 +12,8 @@ require_once dirname(__DIR__) . '/boostrap.php';
         $client = make(Client::class);
         $client->subscribe([
             'topic/test' => [
-                'qos' => 2
-            ]
+                'qos' => 2,
+            ],
         ]);
     }
 );

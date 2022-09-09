@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Nashgao\MQTT\Client;
 
 require_once dirname(__DIR__) . '/boostrap.php';

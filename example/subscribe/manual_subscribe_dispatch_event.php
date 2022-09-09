@@ -14,8 +14,8 @@ require_once dirname(__DIR__) . '/boostrap.php';
         $event = new SubscribeEvent(topicConfigs: [
             new TopicConfig([
                 'topic' => 'topic/test',
-                'qos' => 2
-            ])
+                'qos' => 2,
+            ]),
         ]);
         $dispatcher = ApplicationContext::getContainer()->get(EventDispatcherInterface::class);
         $dispatcher->dispatch($event);
