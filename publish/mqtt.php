@@ -14,13 +14,15 @@ return [
         'protocol_level' => env('MQTT_PROTOCOL_LEVEL', 5),
         'username' => env('MQTT_USERNAME', 'admin'),
         'password' => env('MQTT_PASSWORD', 'public'),
+        'clean_session' => false,
+        'will' => [], // template: ['topic' => $topic, 'message' => 'bye']
         'properties' => [
         ],
         'swoole_config' => [
             'package_max_length' => 1024 * 1024,
             'connect_timeout' => 5.0,
             'keepalive' => 0, // default 0 sec which means disabled
-            'ssl_enabled' => '',
+            'ssl_enabled' => false,
             'ssl_cert_file' => '',
             'ssl_key_file' => '',
             'ssl_cafile' => '',

@@ -72,11 +72,13 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
         $this->connection = $this->container->get(ClientFactory::class)
             ->create(
                 new ClientConfig(
-                    $this->config['host'],
-                    (int) $this->config['port'],
-                    $this->createSimpsClientConfig(),
-                    $this->config['subscribe'] ?? [],
-                    $this->config['publish'] ?? [],
+                    host: $this->config['host'],
+                    port: (int) $this->config['port'],
+                    clientConfig: $this->createSimpsClientConfig(),
+                    subscribe: $this->config['subscribe'] ?? [],
+                    publish: $this->config['publish'] ?? [],
+                    cleanSession: $this->config['clean_session'] ?? false,
+                    will: $this->config['will'] ?? []
                 ),
                 $this->pool->getName()
             );

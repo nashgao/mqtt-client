@@ -19,8 +19,8 @@ class ClientFactory
         );
 
         Coroutine::create(
-            function () use ($client) {
-                $client->connect();
+            function () use ($client, $config) {
+                $client->connect($config->cleanSession, $config->will);
             }
         );
 
