@@ -88,7 +88,7 @@ In order to make the subscription easier, this library was designed and integrat
     $dispatcher = ApplicationContext::getContainer()->get(EventDispatcherInterface::class);
     $dispatcher->dispatch(new PublishEvent('topic/test', 'hi mqtt', 2)); 
     ```
-  -  call ```Nashgao\MQTT\Event``` directly
+  -  call ```Nashgao\MQTT\Client``` directly
     ```php
     use Nashgao\MQTT\Client;
     
