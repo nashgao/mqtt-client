@@ -10,6 +10,8 @@ use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Event\SubscribeEvent;
 use Nashgao\MQTT\Utils\TopicParser;
 
+use function Hyperf\Support\make;
+
 class SubscribeListener implements ListenerInterface
 {
     public function listen(): array

@@ -7,11 +7,13 @@ namespace Nashgao\MQTT\Pool;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\ConnectionInterface;
 use Hyperf\Pool\Pool;
-use Hyperf\Utils\Arr;
+use Hyperf\Collection\Arr;
 use Nashgao\MQTT\Exception\InvalidConfigException;
 use Nashgao\MQTT\Frequency;
 use Nashgao\MQTT\MQTTConnection;
 use Psr\Container\ContainerInterface;
+
+use function Hyperf\Support\make;
 
 class MQTTPool extends Pool
 {

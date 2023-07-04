@@ -8,6 +8,8 @@ use Hyperf\Event\Contract\ListenerInterface;
 use Nashgao\MQTT\Client;
 use Nashgao\MQTT\Event\PublishEvent;
 
+use function Hyperf\Support\make;
+
 class PublishListener implements ListenerInterface
 {
     public function listen(): array

@@ -6,7 +6,7 @@ namespace Nashgao\MQTT\Event;
 
 use Nashgao\MQTT\Config\ClientConfig;
 
-class OnDisconnectEvent
+readonly class OnDisconnectEvent
 {
     public function __construct(
         public int $type,

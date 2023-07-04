@@ -9,7 +9,7 @@
     "license": "MIT",
     "description": "encapsulation of mqtt client based on simps mqtt",
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "ext-swoole": ">=4.5",
         "hyperf/di": "~3.0",
         "hyperf/framework": "~3.0",

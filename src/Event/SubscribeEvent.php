@@ -9,7 +9,7 @@ use Nashgao\MQTT\Config\TopicConfig;
 /**
  * dispatch subscribe event, create client and subscribe topics.
  */
-class SubscribeEvent
+readonly class SubscribeEvent
 {
     /**
      * @param TopicConfig[] $topicConfigs
@@ -18,17 +18,5 @@ class SubscribeEvent
         public string $poolName = 'default',
         public ?array $topicConfigs = null,
     ) {
-    }
-
-    public function setPoolName(string $poolName): static
-    {
-        $this->poolName = $poolName;
-        return $this;
-    }
-
-    public function setTopicConfigs(array $topicConfigs): static
-    {
-        $this->topicConfigs = $topicConfigs;
-        return $this;
     }
 }

@@ -18,6 +18,8 @@ use Nashgao\MQTT\Provider\ClientIdProviderInterface;
 use Nashgao\MQTT\Provider\RandomClientIdProvider;
 use Psr\EventDispatcher\ListenerProviderInterface;
 
+use function Hyperf\Support\make;
+
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 const SIMPS_MQTT_LOCAL_HOST = '127.0.0.1';
@@ -59,9 +61,9 @@ const SIMPS_MQTT_PORT = 1883;
         ];
         foreach ($listeners as $listener) {
             if (is_string($listener)) {
-                /** @var ListenerInterface $listener */
                 $listener = make($listener);
-            }
+
+            /** @var ListenerInterface $listener */}
             foreach ($listener->listen() as $event) {
                 $provider->on($event, [$listener, 'process']);
             }

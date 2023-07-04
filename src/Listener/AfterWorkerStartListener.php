@@ -13,6 +13,8 @@ use Nashgao\MQTT\Event\SubscribeEvent;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
+use function Hyperf\Support\make;
+
 class AfterWorkerStartListener implements ListenerInterface
 {
     private ContainerInterface $container;

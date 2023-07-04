@@ -135,19 +135,21 @@ class ClientProxy extends \Simps\MQTT\Client
                         return $cont->push(false);
                     }
 
-                    $this->dispatcher->dispatch(
-                        new OnReceiveEvent(
-                            $this->poolName,
-                            $message['type'],
-                            $message['dup'] ?? null,
-                            $message['qos'] ?? null,
-                            $message['retain'] ?? null,
-                            $message['topic'] ?? null,
-                            $message['message_id'] ?? null,
-                            $message['properties'] ?? null,
-                            $message['message'] ?? null
-                        )
-                    );
+                    if ($message['type'] === Types::PUBLISH) {
+                        $this->dispatcher->dispatch(
+                            new OnReceiveEvent(
+                                $this->poolName,
+                                $message['type'],
+                                $message['dup'] ?? null,
+                                $message['qos'] ?? null,
+                                $message['retain'] ?? null,
+                                $message['topic'] ?? null,
+                                $message['message_id'] ?? null,
+                                $message['properties'] ?? null,
+                                $message['message'] ?? null
+                            )
+                        );
+                    }
                 }
                 return $cont->push($this->timeSincePing);
             }

@@ -7,7 +7,7 @@ namespace Nashgao\MQTT\Event;
 /**
  * after sending subscribe event, dispatch this event to return results of if subscription is successful or not.
  */
-class OnSubscribeEvent
+readonly class OnSubscribeEvent
 {
     public function __construct(
         public string $poolName,

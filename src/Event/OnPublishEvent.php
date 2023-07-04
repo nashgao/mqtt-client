@@ -7,7 +7,7 @@ namespace Nashgao\MQTT\Event;
 /**
  * after sending publish event, dispatch this event to return results of if publish is successful or not.
  */
-class OnPublishEvent
+readonly class OnPublishEvent
 {
     public function __construct(
         public string $poolName,
