@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Test\Cases;
 
-use Hyperf\Utils\ApplicationContext;
+use Hyperf\Context\ApplicationContext;
 use Nashgao\MQTT\Event\SubscribeEvent;
 use Nashgao\MQTT\Test\AbstractTestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;

@@ -50,7 +50,7 @@ In order to make the subscription easier, this library was designed and integrat
   - Manual subscribe (in these cases, the shared subscription needs to be handled manually)
     - dispatch ```Nashgao\MQTT\Event\SubscribeEvent``` event
       ```php
-      use Hyperf\Utils\ApplicationContext;
+      use Hyperf\Context\ApplicationContext;
       use Nashgao\MQTT\Config\TopicConfig;
       use Nashgao\MQTT\Event\SubscribeEvent;
       use Psr\EventDispatcher\EventDispatcherInterface;  
@@ -81,7 +81,7 @@ In order to make the subscription easier, this library was designed and integrat
   - dispatch ```Nashgao\MQTT\Event\PublishEvent```
     ```php 
     use Hyperf\Event\EventDispatcher;
-    use Hyperf\Utils\ApplicationContext;
+    use Hyperf\Context\ApplicationContext;
     use Nashgao\MQTT\Event\PublishEvent;
     use Psr\EventDispatcher\EventDispatcherInterface;
     

@@ -8,7 +8,7 @@ use Hyperf\Di\Container;
 use Hyperf\Di\Definition\DefinitionSourceFactory;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Event\ListenerProvider;
-use Hyperf\Utils\ApplicationContext;
+use Hyperf\Context\ApplicationContext;
 use Nashgao\MQTT\Listener\OnDisconnectListener;
 use Nashgao\MQTT\Listener\OnPublishListener;
 use Nashgao\MQTT\Listener\OnSubscribeListener;

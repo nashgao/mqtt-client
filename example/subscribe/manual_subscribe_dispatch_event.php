@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Hyperf\Utils\ApplicationContext;
+use Hyperf\Context\ApplicationContext;
 use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Event\SubscribeEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Hyperf\Utils\ApplicationContext;
+use Hyperf\Context\ApplicationContext;
 use Nashgao\MQTT\Listener\AfterWorkerStartListener;
 
 require_once dirname(__DIR__) . '/boostrap.php';

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT;
 
-use Hyperf\Utils\ApplicationContext;
+use Hyperf\Context\ApplicationContext;
 use Nashgao\MQTT\Config\ClientConfig;
 use Nashgao\MQTT\Event\OnDisconnectEvent;
 use Nashgao\MQTT\Event\OnPublishEvent;
