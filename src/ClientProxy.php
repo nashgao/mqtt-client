@@ -13,7 +13,7 @@ use Nashgao\MQTT\Event\OnSubscribeEvent;
 use Nashgao\MQTT\Utils\Qos;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Simps\MQTT\Protocol\Types;
-use Swoole\Coroutine\Channel;
+use Hyperf\Engine\Channel;
 
 class ClientProxy extends \Simps\MQTT\Client
 {

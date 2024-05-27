@@ -9,7 +9,7 @@ use Nashgao\MQTT\Constants\MQTTConstants;
 use Nashgao\MQTT\Exception\InvalidMethodException;
 use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
 use Nashgao\MQTT\Pool\PoolFactory;
-use Swoole\Coroutine;
+use Hyperf\Engine\Coroutine;
 
 /**
  * @method subscribe(array $topics, array $properties = [])
