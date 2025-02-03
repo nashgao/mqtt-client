@@ -16,7 +16,7 @@
         "hyperf/pool": "~3.1",
         "hyperf/logger": "~3.1",
         "hyperf/config": "~3.1",
-        "simps/mqtt": "^1.4"
+        "simps/mqtt": "~2.0"
     },
     "require-dev": {
         "swoole/ide-helper": "^5.0",
