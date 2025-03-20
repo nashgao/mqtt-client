@@ -6,5 +6,5 @@ namespace Nashgao\MQTT\Provider;
 
 interface ClientIdProviderInterface
 {
-    public function generate(string $prefix = null): string;
+    public function generate(?string $prefix = null): string;
 }
