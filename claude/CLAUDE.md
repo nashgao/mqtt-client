@@ -115,7 +115,7 @@ Configure topics in `config/autoload/mqtt.php` with `auto_subscribe: true` to au
 
 ## Dependencies
 
-- PHP >= 8.2
+- PHP >= 8.3
 - Hyperf Framework ~3.1
 - simps/mqtt ~2.0
 - Swoole >= 5.0 or Swow >= 1.5 (extensions)
