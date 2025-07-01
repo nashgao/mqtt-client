@@ -12,6 +12,12 @@ use Nashgao\MQTT\MQTTConnection;
 use Nashgao\MQTT\Pool\MQTTPool;
 use Nashgao\MQTT\Pool\PoolFactory;
 use Nashgao\MQTT\Test\AbstractTestCase;
+use Nashgao\MQTT\Utils\ErrorHandler;
+use Nashgao\MQTT\Utils\HealthChecker;
+use Nashgao\MQTT\Metrics\ConnectionMetrics;
+use Nashgao\MQTT\Metrics\HealthMetrics;
+use Nashgao\MQTT\Metrics\PerformanceMetrics;
+use Nashgao\MQTT\Metrics\ErrorMetrics;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
@@ -27,6 +33,17 @@ class ClientTest extends AbstractTestCase
 
         $this->assertInstanceOf(Client::class, $client);
     }
+    
+    public function testClientCanBeInstantiatedWithCustomMetrics()
+    {
+        $poolFactory = $this->createMock(PoolFactory::class);
+        $errorHandler = new ErrorHandler(null, new ErrorMetrics(), new PerformanceMetrics());
+        $healthChecker = new HealthChecker(new ConnectionMetrics(), new HealthMetrics(), new PerformanceMetrics());
+        
+        $client = new Client($poolFactory, $errorHandler, $healthChecker);
+
+        $this->assertInstanceOf(Client::class, $client);
+    }
 
     public function testClientSetPoolName()
     {
@@ -36,6 +53,35 @@ class ClientTest extends AbstractTestCase
         $result = $client->setPoolName('test-pool');
 
         $this->assertInstanceOf(Client::class, $result);
+    }
+    
+    public function testHealthStatusMethods()
+    {
+        $poolFactory = $this->createMock(PoolFactory::class);
+        $client = new Client($poolFactory);
+        
+        // Test health status methods
+        $healthStatus = $client->getHealthStatus();
+        $this->assertIsArray($healthStatus);
+        
+        $isHealthy = $client->isHealthy();
+        $this->assertIsBool($isHealthy);
+        
+        $successRate = $client->getConnectionSuccessRate();
+        $this->assertIsFloat($successRate);
+        $this->assertGreaterThanOrEqual(0.0, $successRate);
+        $this->assertLessThanOrEqual(1.0, $successRate);
+    }
+    
+    public function testRetryPolicyConfiguration()
+    {
+        $poolFactory = $this->createMock(PoolFactory::class);
+        $client = new Client($poolFactory);
+        
+        // Should not throw any exception
+        $client->setRetryPolicy('test_operation', 5, 2000);
+        
+        $this->assertTrue(true); // If we reach here, the method worked
     }
 
     public function testInvalidMethodThrowsException()
@@ -115,6 +161,9 @@ class ClientTest extends AbstractTestCase
         $this->expectException(InvalidMQTTConnectionException::class);
         $this->expectExceptionMessage('invalid mqtt connection');
 
+        // Mock the connection to avoid the recursive call issue
+        $pool->method('getAvailableConnectionNum')->willReturn(5);
+        
         $client->connect(true, []);
     }
 }

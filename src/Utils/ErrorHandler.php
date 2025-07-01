@@ -6,20 +6,27 @@ namespace Nashgao\MQTT\Utils;
 
 use Nashgao\MQTT\Exception\InvalidConfigException;
 use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
+use Nashgao\MQTT\Metrics\ErrorMetrics;
+use Nashgao\MQTT\Metrics\PerformanceMetrics;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 class ErrorHandler
 {
     private LoggerInterface $logger;
-
+    private ErrorMetrics $errorMetrics;
+    private PerformanceMetrics $performanceMetrics;
     private array $circuitBreakers = [];
-
     private array $retryPolicies = [];
 
-    public function __construct(?LoggerInterface $logger = null)
-    {
+    public function __construct(
+        ?LoggerInterface $logger = null,
+        ?ErrorMetrics $errorMetrics = null,
+        ?PerformanceMetrics $performanceMetrics = null
+    ) {
         $this->logger = $logger ?? new NullLogger();
+        $this->errorMetrics = $errorMetrics ?? new ErrorMetrics();
+        $this->performanceMetrics = $performanceMetrics ?? new PerformanceMetrics();
     }
 
     /**
@@ -27,6 +34,9 @@ class ErrorHandler
      */
     public function handleConnectionError(\Exception $e, string $operation, int $attempt = 1): bool
     {
+        // Record error metrics
+        $this->errorMetrics->recordError('connection', $operation, $e->getMessage(), $e);
+        
         $this->logger->error("MQTT connection error in operation '{$operation}'", [
             'exception' => $e->getMessage(),
             'attempt' => $attempt,
@@ -35,6 +45,7 @@ class ErrorHandler
 
         // Check circuit breaker
         if ($this->isCircuitBreakerOpen($operation)) {
+            $this->errorMetrics->recordCircuitBreakerOpen($operation);
             $this->logger->warning("Circuit breaker is open for operation '{$operation}'");
             return false;
         }
@@ -42,6 +53,7 @@ class ErrorHandler
         // Apply retry policy
         $maxRetries = $this->getMaxRetries($operation);
         if ($attempt > $maxRetries) {
+            $this->errorMetrics->recordRetryExhausted($operation, $attempt);
             $this->openCircuitBreaker($operation);
             return false;
         }
@@ -59,6 +71,9 @@ class ErrorHandler
      */
     public function handleConfigError(InvalidConfigException $e, array $config = []): void
     {
+        // Record error metrics
+        $this->errorMetrics->recordError('configuration', 'config_validation', $e->getMessage(), $e);
+        
         $this->logger->error('MQTT configuration error', [
             'exception' => $e->getMessage(),
             'config_keys' => array_keys($config),
@@ -77,6 +92,9 @@ class ErrorHandler
      */
     public function handleProtocolError(\Exception $e, string $operation, array $context = []): void
     {
+        // Record error metrics
+        $this->errorMetrics->recordError('protocol', $operation, $e->getMessage(), $e);
+        
         $this->logger->error("MQTT protocol error in operation '{$operation}'", [
             'exception' => $e->getMessage(),
             'context' => $context,
@@ -92,6 +110,12 @@ class ErrorHandler
      */
     public function handleResourceError(\Exception $e, string $resource): void
     {
+        // Record error metrics
+        $this->errorMetrics->recordError('resource', $resource, $e->getMessage(), $e);
+        
+        // Record memory metrics
+        $this->performanceMetrics->recordMemoryUsage();
+        
         $this->logger->critical("Resource exhaustion: {$resource}", [
             'exception' => $e->getMessage(),
             'memory_usage' => memory_get_usage(true),
@@ -110,12 +134,17 @@ class ErrorHandler
      */
     public function wrapOperation(callable $operation, string $operationName, array $context = [])
     {
+        $startTime = microtime(true);
         $attempt = 1;
         $maxAttempts = $this->getMaxRetries($operationName);
 
         while ($attempt <= $maxAttempts) {
             try {
                 $result = $operation();
+                
+                // Record successful operation metrics
+                $duration = microtime(true) - $startTime;
+                $this->performanceMetrics->recordOperationTime($operationName, $duration);
 
                 // Reset circuit breaker on success
                 $this->closeCircuitBreaker($operationName);
@@ -167,6 +196,22 @@ class ErrorHandler
             'next_attempt' => null,
         ];
     }
+    
+    /**
+     * Get error metrics.
+     */
+    public function getErrorMetrics(): ErrorMetrics
+    {
+        return $this->errorMetrics;
+    }
+    
+    /**
+     * Get performance metrics.
+     */
+    public function getPerformanceMetrics(): PerformanceMetrics
+    {
+        return $this->performanceMetrics;
+    }
 
     private function isCircuitBreakerOpen(string $operation): bool
     {
@@ -197,6 +242,9 @@ class ErrorHandler
             'last_failure' => time(),
             'next_attempt' => time() + 60, // Try again in 60 seconds
         ];
+        
+        // Record circuit breaker opening in metrics
+        $this->errorMetrics->recordCircuitBreakerOpen($operation);
 
         $this->logger->warning("Circuit breaker opened for operation '{$operation}'");
     }

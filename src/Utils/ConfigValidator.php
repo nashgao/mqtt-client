@@ -5,24 +5,30 @@ declare(strict_types=1);
 namespace Nashgao\MQTT\Utils;
 
 use Nashgao\MQTT\Exception\InvalidConfigException;
+use Nashgao\MQTT\Metrics\ValidationMetrics;
 
 class ConfigValidator
 {
     private const array VALID_QOS_LEVELS = [0, 1, 2];
-
     private const array VALID_RETAIN_HANDLING = [0, 1, 2];
-
-    private const MAX_TOPIC_LENGTH = 65535; // MQTT spec limit
-
-    private const MAX_CLIENT_ID_LENGTH = 23; // MQTT 3.1 spec limit
-
-    private const MIN_KEEP_ALIVE = 0;
-
-    private const MAX_KEEP_ALIVE = 65535;
-
-    private const MIN_PORT = 1;
-
-    private const MAX_PORT = 65535;
+    private const int MAX_TOPIC_LENGTH = 65535; // MQTT spec limit
+    private const int MAX_CLIENT_ID_LENGTH = 23; // MQTT 3.1 spec limit
+    private const int MIN_KEEP_ALIVE = 0;
+    private const int MAX_KEEP_ALIVE = 65535;
+    private const int MIN_PORT = 1;
+    private const int MAX_PORT = 65535;
+    
+    private static ?ValidationMetrics $metrics = null;
+    
+    public static function setMetrics(ValidationMetrics $metrics): void
+    {
+        self::$metrics = $metrics;
+    }
+    
+    public static function getMetrics(): ?ValidationMetrics
+    {
+        return self::$metrics;
+    }
 
     /**
      * Validate MQTT connection configuration.
@@ -71,8 +77,14 @@ class ConfigValidator
             }
         }
 
-        if (! empty($errors)) {
-            throw new InvalidConfigException('Configuration validation failed: ' . implode(', ', $errors));
+        $isValid = empty($errors);
+        $errorMessage = $isValid ? '' : 'Configuration validation failed: ' . implode(', ', $errors);
+        
+        // Record validation metrics
+        self::$metrics?->recordValidation('connection_config', $isValid, $errorMessage);
+
+        if (!$isValid) {
+            throw new InvalidConfigException($errorMessage);
         }
 
         return $config;
@@ -113,8 +125,14 @@ class ConfigValidator
             }
         }
 
-        if (! empty($errors)) {
-            throw new InvalidConfigException('Topic configuration validation failed: ' . implode(', ', $errors));
+        $isValid = empty($errors);
+        $errorMessage = $isValid ? '' : 'Topic configuration validation failed: ' . implode(', ', $errors);
+        
+        // Record validation metrics
+        self::$metrics?->recordValidation('topic_config', $isValid, $errorMessage);
+
+        if (!$isValid) {
+            throw new InvalidConfigException($errorMessage);
         }
 
         return $config;
@@ -148,8 +166,14 @@ class ConfigValidator
             }
         }
 
-        if (! empty($errors)) {
-            throw new InvalidConfigException('Pool configuration validation failed: ' . implode(', ', $errors));
+        $isValid = empty($errors);
+        $errorMessage = $isValid ? '' : 'Pool configuration validation failed: ' . implode(', ', $errors);
+        
+        // Record validation metrics
+        self::$metrics?->recordValidation('pool_config', $isValid, $errorMessage);
+
+        if (!$isValid) {
+            throw new InvalidConfigException($errorMessage);
         }
 
         return $config;
@@ -172,31 +196,41 @@ class ConfigValidator
      */
     public static function validateTopicFilter(string $topicFilter): bool
     {
+        $isValid = true;
+        $errorMessage = '';
+        
         // Basic MQTT topic filter validation
         // + wildcard must be complete level
         if (strpos($topicFilter, '+') !== false) {
             $parts = explode('/', $topicFilter);
             foreach ($parts as $part) {
                 if ($part !== '+' && strpos($part, '+') !== false) {
-                    return false; // + must be alone in level
+                    $isValid = false;
+                    $errorMessage = '+ wildcard must be alone in topic level';
+                    break;
                 }
             }
         }
 
         // # wildcard must be at end and alone in level
-        if (strpos($topicFilter, '#') !== false) {
+        if ($isValid && strpos($topicFilter, '#') !== false) {
             $hashPos = strpos($topicFilter, '#');
             if ($hashPos !== strlen($topicFilter) - 1) {
-                return false; // # must be at end
-            }
-
-            $beforeHash = substr($topicFilter, 0, $hashPos);
-            if ($beforeHash !== '' && substr($beforeHash, -1) !== '/') {
-                return false; // # must be alone in level
+                $isValid = false;
+                $errorMessage = '# wildcard must be at the end of topic filter';
+            } else {
+                $beforeHash = substr($topicFilter, 0, $hashPos);
+                if ($beforeHash !== '' && substr($beforeHash, -1) !== '/') {
+                    $isValid = false;
+                    $errorMessage = '# wildcard must be alone in topic level';
+                }
             }
         }
+        
+        // Record validation metrics
+        self::$metrics?->recordValidation('topic_filter', $isValid, $errorMessage);
 
-        return true;
+        return $isValid;
     }
 
     private static function isValidQos($qos): bool

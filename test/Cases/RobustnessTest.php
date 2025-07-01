@@ -8,6 +8,9 @@ use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Exception\InvalidConfigException;
 use Nashgao\MQTT\Test\AbstractTestCase;
 use Nashgao\MQTT\Utils\TopicParser;
+use Nashgao\MQTT\Utils\ConfigValidator;
+use Nashgao\MQTT\Metrics\ValidationMetrics;
+use Nashgao\MQTT\Metrics\PerformanceMetrics;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
@@ -16,6 +19,16 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 #[CoversNothing]
 class RobustnessTest extends AbstractTestCase
 {
+    private ValidationMetrics $validationMetrics;
+    private PerformanceMetrics $performanceMetrics;
+    
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->validationMetrics = new ValidationMetrics();
+        $this->performanceMetrics = new PerformanceMetrics();
+        ConfigValidator::setMetrics($this->validationMetrics);
+    }
     public function testTopicConfigValidation()
     {
         // Test that invalid QoS throws exception now that validation is integrated
@@ -67,19 +80,34 @@ class RobustnessTest extends AbstractTestCase
 
     public function testResourceLimits()
     {
+        $startTime = microtime(true);
+        
         // Test very large property arrays with string keys
         $largeProperties = [];
         for ($i = 0; $i < 100; ++$i) {
             $largeProperties["property_{$i}"] = "value_{$i}";
         }
+        
+        $configStart = microtime(true);
         $config = new TopicConfig($largeProperties);
+        $configTime = microtime(true) - $configStart;
+        
+        $this->performanceMetrics->recordOperationTime('large_property_config_creation', $configTime);
         $this->assertInstanceOf(TopicConfig::class, $config);
 
         // Test deep nesting in share topic groups
         $deepNested = ['group_name' => [str_repeat('nested/', 100) . 'group']];
         $config = new TopicConfig();
+        
+        $nestedStart = microtime(true);
         $config->setShareTopic($deepNested);
+        $nestedTime = microtime(true) - $nestedStart;
+        
+        $this->performanceMetrics->recordOperationTime('deep_nested_topic_setting', $nestedTime);
         $this->assertEquals($deepNested, $config->share_topic);
+        
+        $totalTime = microtime(true) - $startTime;
+        $this->performanceMetrics->recordOperationTime('resource_limits_test', $totalTime);
     }
 
     public function testConcurrentTopicParsing()
@@ -94,36 +122,82 @@ class RobustnessTest extends AbstractTestCase
         ];
 
         $results = [];
+        $startTime = microtime(true);
+        
         foreach ($topics as $topic) {
+            $parseStart = microtime(true);
             $results[] = TopicParser::parseTopic($topic, rand(0, 2));
+            $parseTime = microtime(true) - $parseStart;
+            
+            // Record parsing time for each topic type
+            $topicType = 'regular';
+            if (strpos($topic, '$share') === 0) {
+                $topicType = 'share';
+            } elseif (strpos($topic, '$queue') === 0) {
+                $topicType = 'queue';
+            } elseif (strpos($topic, '#') !== false || strpos($topic, '+') !== false) {
+                $topicType = 'wildcard';
+            }
+            
+            $this->performanceMetrics->recordOperationTime("topic_parsing_{$topicType}", $parseTime);
         }
+        
+        $totalTime = microtime(true) - $startTime;
+        $this->performanceMetrics->recordOperationTime('concurrent_topic_parsing', $totalTime);
 
         $this->assertCount(5, $results);
         foreach ($results as $result) {
             $this->assertInstanceOf(TopicConfig::class, $result);
         }
+        
+        // Verify performance metrics
+        $this->assertGreaterThan(0, $this->performanceMetrics->getTotalOperations());
     }
 
     public function testMemoryUsageWithLargeConfigs()
     {
         $memoryBefore = memory_get_usage();
+        
+        // Record initial memory usage in performance metrics
+        $this->performanceMetrics->recordMemoryUsage();
 
         // Create many topic configurations
         $configs = [];
+        $startTime = microtime(true);
+        
         for ($i = 0; $i < 1000; ++$i) {
+            $iterationStart = microtime(true);
+            
             $configs[] = new TopicConfig([
                 'topic' => "test/topic/{$i}",
                 'qos' => $i % 3,
                 'enable_multisub' => ($i % 2) === 0,
                 'multisub_num' => $i % 10 + 1,
             ]);
+            
+            // Record operation time every 100 iterations
+            if ($i % 100 === 0) {
+                $this->performanceMetrics->recordOperationTime('topic_config_creation', microtime(true) - $iterationStart);
+                $this->performanceMetrics->recordMemoryUsage();
+            }
         }
+        
+        $totalTime = microtime(true) - $startTime;
+        $this->performanceMetrics->recordOperationTime('bulk_config_creation', $totalTime);
 
         $memoryAfter = memory_get_usage();
         $memoryUsed = $memoryAfter - $memoryBefore;
+        
+        // Record final memory usage
+        $this->performanceMetrics->recordMemoryUsage();
 
         // Memory usage should be reasonable (less than 10MB for 1000 configs)
         $this->assertLessThan(10 * 1024 * 1024, $memoryUsed);
+        
+        // Verify performance metrics were recorded
+        $this->assertGreaterThan(0, $this->performanceMetrics->getTotalOperations());
+        $avgCreationTime = $this->performanceMetrics->getAverageOperationTime('topic_config_creation');
+        $this->assertGreaterThan(0, $avgCreationTime);
 
         // Cleanup
         unset($configs);
@@ -148,19 +222,61 @@ class RobustnessTest extends AbstractTestCase
 
     public function testStringHandlingEdgeCases()
     {
-        // Test with special characters
-        $specialTopic = 'test/topic/with/特殊字符/and/émojis/🚀';
-        $result = TopicParser::parseTopic($specialTopic, 1);
-        $this->assertEquals($specialTopic, $result->topic);
-
-        // Test with control characters
-        $controlTopic = "test\ntopic\twith\rcontrol";
-        $result = TopicParser::parseTopic($controlTopic, 1);
-        $this->assertEquals($controlTopic, $result->topic);
-
-        // Test with null bytes - should be sanitized
-        $nullTopic = "test\0topic";
-        $result = TopicParser::parseTopic($nullTopic, 1);
-        $this->assertEquals('testtopic', $result->topic); // Null bytes removed by sanitization
+        $testCases = [
+            'special' => 'test/topic/with/特殊字符/and/émojis/🚀',
+            'control' => "test\ntopic\twith\rcontrol",
+            'null_bytes' => "test\0topic",
+        ];
+        
+        foreach ($testCases as $type => $topic) {
+            $parseStart = microtime(true);
+            $result = TopicParser::parseTopic($topic, 1);
+            $parseTime = microtime(true) - $parseStart;
+            
+            $this->performanceMetrics->recordOperationTime("string_handling_{$type}", $parseTime);
+            
+            if ($type === 'null_bytes') {
+                $this->assertEquals('testtopic', $result->topic); // Null bytes removed by sanitization
+            } else {
+                $this->assertEquals($topic, $result->topic);
+            }
+        }
+        
+        // Verify performance metrics were recorded for all string handling cases
+        $this->assertGreaterThan(0, $this->performanceMetrics->getAverageOperationTime('string_handling_special'));
+        $this->assertGreaterThan(0, $this->performanceMetrics->getAverageOperationTime('string_handling_control'));
+        $this->assertGreaterThan(0, $this->performanceMetrics->getAverageOperationTime('string_handling_null_bytes'));
+    }
+    
+    public function testRobustnessMetricsIntegration()
+    {
+        // Test that robustness operations are properly tracked in metrics
+        $this->validationMetrics->reset();
+        $this->performanceMetrics->reset();
+        
+        // Perform various operations that should be tracked
+        for ($i = 0; $i < 10; ++$i) {
+            try {
+                new TopicConfig(['qos' => $i % 4]); // Some will fail validation
+            } catch (InvalidConfigException $e) {
+                // Expected for invalid QoS values
+            }
+        }
+        
+        // Verify validation metrics were recorded
+        $count = $this->validationMetrics->getValidationCount('topic_config');
+        $this->assertEquals(10, $count['total']);
+        $this->assertGreaterThan(0, $count['failed']); // Some should have failed
+        $this->assertGreaterThan(0, $count['successful']); // Some should have succeeded
+        
+        $successRate = $this->validationMetrics->getValidationSuccessRate('topic_config');
+        $this->assertGreaterThan(0.0, $successRate);
+        $this->assertLessThan(1.0, $successRate);
+        
+        // Test metrics array output
+        $metricsArray = $this->validationMetrics->toArray();
+        $this->assertIsArray($metricsArray);
+        $this->assertArrayHasKey('validation_counts', $metricsArray);
+        $this->assertArrayHasKey('topic_config', $metricsArray['validation_counts']);
     }
 }

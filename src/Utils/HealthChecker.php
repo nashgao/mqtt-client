@@ -6,22 +6,24 @@ namespace Nashgao\MQTT\Utils;
 
 use Nashgao\MQTT\MQTTConnection;
 use Nashgao\MQTT\Pool\MQTTPool;
+use Nashgao\MQTT\Metrics\ConnectionMetrics;
+use Nashgao\MQTT\Metrics\HealthMetrics;
+use Nashgao\MQTT\Metrics\PerformanceMetrics;
 
 class HealthChecker
 {
-    private array $metrics = [];
+    private ConnectionMetrics $connectionMetrics;
+    private HealthMetrics $healthMetrics;
+    private PerformanceMetrics $performanceMetrics;
 
-    public function __construct()
-    {
-        $this->metrics = [
-            'connection_attempts' => 0,
-            'connection_failures' => 0,
-            'active_connections' => 0,
-            'messages_published' => 0,
-            'messages_received' => 0,
-            'last_health_check' => null,
-            'errors' => [],
-        ];
+    public function __construct(
+        ?ConnectionMetrics $connectionMetrics = null,
+        ?HealthMetrics $healthMetrics = null,
+        ?PerformanceMetrics $performanceMetrics = null
+    ) {
+        $this->connectionMetrics = $connectionMetrics ?? new ConnectionMetrics();
+        $this->healthMetrics = $healthMetrics ?? new HealthMetrics();
+        $this->performanceMetrics = $performanceMetrics ?? new PerformanceMetrics();
     }
 
     /**
@@ -29,33 +31,32 @@ class HealthChecker
      */
     public function checkConnection(MQTTConnection $connection): array
     {
-        $health = [
-            'status' => 'unknown',
-            'checks' => [],
-            'timestamp' => time(),
-            'connection_id' => spl_object_hash($connection),
-        ];
-
+        $connectionId = spl_object_hash($connection);
+        
         try {
-            // Check if connection is alive
-            $health['checks']['connection_alive'] = $this->isConnectionAlive($connection);
-
-            // Check connection age
-            $health['checks']['connection_age'] = $this->getConnectionAge($connection);
-
-            // Check if connection is responding
-            $health['checks']['ping_response'] = $this->checkPingResponse($connection);
-
-            // Overall status determination
-            $health['status'] = $this->determineOverallStatus($health['checks']);
+            $isAlive = $this->isConnectionAlive($connection);
+            $age = $this->getConnectionAge($connection);
+            $pingResponse = $this->checkPingResponse($connection);
+            
+            $this->healthMetrics->recordHealthCheck(
+                "connection_{$connectionId}",
+                $isAlive && $pingResponse,
+                $isAlive ? 'Connection healthy' : 'Connection unhealthy',
+                [
+                    'connection_alive' => $isAlive,
+                    'connection_age' => $age,
+                    'ping_response' => $pingResponse,
+                ]
+            );
         } catch (\Exception $e) {
-            $health['status'] = 'error';
-            $health['error'] = $e->getMessage();
-            $this->recordError($e);
+            $this->healthMetrics->recordHealthCheck(
+                "connection_{$connectionId}",
+                false,
+                "Connection check failed: {$e->getMessage()}"
+            );
         }
 
-        $this->metrics['last_health_check'] = time();
-        return $health;
+        return $this->healthMetrics->getComponentHealth("connection_{$connectionId}") ?? [];
     }
 
     /**
@@ -63,38 +64,43 @@ class HealthChecker
      */
     public function checkPool(MQTTPool $pool): array
     {
-        $health = [
-            'status' => 'unknown',
-            'pool_name' => $pool->getName(),
-            'metrics' => [],
-            'timestamp' => time(),
-        ];
-
+        $poolName = $pool->getName();
+        
         try {
-            // Get pool statistics
-            $health['metrics']['available_connections'] = $pool->getAvailableConnectionNum();
-            $health['metrics']['connections_in_use'] = $pool->getCurrentConnections() - $pool->getAvailableConnectionNum();
-            $health['metrics']['total_connections'] = $pool->getCurrentConnections();
-
-            // Check pool limits
-            $health['checks']['pool_not_exhausted'] = $pool->getAvailableConnectionNum() > 0;
-            $health['checks']['within_limits'] = $pool->getCurrentConnections() <= $pool->getMaxConnections();
-
-            // Determine pool health status
-            if ($health['checks']['pool_not_exhausted'] && $health['checks']['within_limits']) {
-                $health['status'] = 'healthy';
-            } elseif (! $health['checks']['pool_not_exhausted']) {
-                $health['status'] = 'exhausted';
-            } else {
-                $health['status'] = 'degraded';
-            }
+            $available = $pool->getAvailableConnectionNum();
+            $total = $pool->getCurrentConnections();
+            $max = $pool->getMaxConnections();
+            $inUse = $total - $available;
+            
+            $isHealthy = $available > 0 && $total <= $max;
+            $message = $isHealthy ? 'Pool healthy' : 'Pool issues detected';
+            
+            // Record resource usage
+            $this->healthMetrics->recordResourceUsage('pool_connections', $total, $max);
+            $this->healthMetrics->recordResourceUsage('pool_usage_percentage', ($total / $max) * 100, 100);
+            
+            $this->healthMetrics->recordHealthCheck(
+                "pool_{$poolName}",
+                $isHealthy,
+                $message,
+                [
+                    'available_connections' => $available,
+                    'connections_in_use' => $inUse,
+                    'total_connections' => $total,
+                    'max_connections' => $max,
+                    'pool_not_exhausted' => $available > 0,
+                    'within_limits' => $total <= $max,
+                ]
+            );
         } catch (\Exception $e) {
-            $health['status'] = 'error';
-            $health['error'] = $e->getMessage();
-            $this->recordError($e);
+            $this->healthMetrics->recordHealthCheck(
+                "pool_{$poolName}",
+                false,
+                "Pool check failed: {$e->getMessage()}"
+            );
         }
 
-        return $health;
+        return $this->healthMetrics->getComponentHealth("pool_{$poolName}") ?? [];
     }
 
     /**
@@ -102,17 +108,22 @@ class HealthChecker
      */
     public function getSystemHealth(): array
     {
+        // Update performance metrics
+        $this->performanceMetrics->recordMemoryUsage();
+        
+        // Record system resource usage in health metrics
+        $memoryUsage = memory_get_usage(true);
+        $memoryLimit = $this->parseMemoryLimit(ini_get('memory_limit'));
+        $this->healthMetrics->recordResourceUsage('memory', $memoryUsage, $memoryLimit);
+        
         return [
             'timestamp' => time(),
-            'metrics' => $this->metrics,
-            'memory' => [
-                'usage' => memory_get_usage(true),
-                'peak' => memory_get_peak_usage(true),
-                'limit' => ini_get('memory_limit'),
-            ],
+            'health' => $this->healthMetrics->toArray(),
+            'connections' => $this->connectionMetrics->toArray(),
+            'performance' => $this->performanceMetrics->toArray(),
             'process' => [
                 'pid' => getmypid(),
-                'uptime' => time() - $_SERVER['REQUEST_TIME_FLOAT'],
+                'uptime' => time() - ($_SERVER['REQUEST_TIME_FLOAT'] ?? time()),
             ],
         ];
     }
@@ -122,7 +133,7 @@ class HealthChecker
      */
     public function recordConnectionAttempt(): void
     {
-        ++$this->metrics['connection_attempts'];
+        $this->connectionMetrics->recordConnectionAttempt();
     }
 
     /**
@@ -130,7 +141,7 @@ class HealthChecker
      */
     public function recordConnectionFailure(): void
     {
-        ++$this->metrics['connection_failures'];
+        $this->connectionMetrics->recordFailedConnection();
     }
 
     /**
@@ -138,7 +149,7 @@ class HealthChecker
      */
     public function recordActiveConnection(): void
     {
-        ++$this->metrics['active_connections'];
+        $this->connectionMetrics->recordSuccessfulConnection();
     }
 
     /**
@@ -146,7 +157,7 @@ class HealthChecker
      */
     public function recordConnectionClose(): void
     {
-        $this->metrics['active_connections'] = max(0, $this->metrics['active_connections'] - 1);
+        $this->connectionMetrics->recordDisconnection();
     }
 
     /**
@@ -154,7 +165,7 @@ class HealthChecker
      */
     public function recordMessagePublished(): void
     {
-        ++$this->metrics['messages_published'];
+        $this->performanceMetrics->recordMessageThroughput(1);
     }
 
     /**
@@ -162,7 +173,7 @@ class HealthChecker
      */
     public function recordMessageReceived(): void
     {
-        ++$this->metrics['messages_received'];
+        $this->performanceMetrics->recordMessageThroughput(1);
     }
 
     /**
@@ -170,12 +181,7 @@ class HealthChecker
      */
     public function getConnectionSuccessRate(): float
     {
-        if ($this->metrics['connection_attempts'] === 0) {
-            return 1.0;
-        }
-
-        $successful = $this->metrics['connection_attempts'] - $this->metrics['connection_failures'];
-        return $successful / $this->metrics['connection_attempts'];
+        return $this->connectionMetrics->getSuccessRate();
     }
 
     /**
@@ -183,21 +189,23 @@ class HealthChecker
      */
     public function isSystemHealthy(): bool
     {
-        // System is healthy if:
-        // - Connection success rate > 90%
-        // - Memory usage < 90% of limit
-        // - No critical errors in last 5 minutes
-
+        // Update system health checks
         $successRate = $this->getConnectionSuccessRate();
         $memoryUsage = memory_get_usage(true);
         $memoryLimit = $this->parseMemoryLimit(ini_get('memory_limit'));
         $memoryUsagePercent = $memoryLimit > 0 ? ($memoryUsage / $memoryLimit) : 0;
-
-        $recentErrors = $this->getRecentErrors(300); // Last 5 minutes
-
-        return $successRate >= 0.9
-               && $memoryUsagePercent < 0.9
-               && count($recentErrors) === 0;
+        
+        $this->healthMetrics->recordHealthCheck(
+            'system',
+            $successRate >= 0.9 && $memoryUsagePercent < 0.9,
+            'System health check',
+            [
+                'connection_success_rate' => $successRate,
+                'memory_usage_percent' => $memoryUsagePercent,
+            ]
+        );
+        
+        return $this->healthMetrics->isHealthy();
     }
 
     private function isConnectionAlive(MQTTConnection $connection): bool
@@ -241,27 +249,6 @@ class HealthChecker
         return $allPassed ? 'healthy' : 'unhealthy';
     }
 
-    private function recordError(\Exception $e): void
-    {
-        $this->metrics['errors'][] = [
-            'message' => $e->getMessage(),
-            'timestamp' => time(),
-            'trace' => $e->getTraceAsString(),
-        ];
-
-        // Keep only last 100 errors to prevent memory buildup
-        if (count($this->metrics['errors']) > 100) {
-            $this->metrics['errors'] = array_slice($this->metrics['errors'], -100);
-        }
-    }
-
-    private function getRecentErrors(int $seconds): array
-    {
-        $cutoff = time() - $seconds;
-        return array_filter($this->metrics['errors'], function ($error) use ($cutoff) {
-            return $error['timestamp'] >= $cutoff;
-        });
-    }
 
     private function parseMemoryLimit(string $limit): int
     {
