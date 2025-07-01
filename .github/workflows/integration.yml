@@ -33,6 +33,11 @@ jobs:
         run: |
           composer install --prefer-dist --no-progress --no-suggest
           composer dump-autoload
+          
+      - name: Setup test config
+        run: |
+          mkdir -p config/autoload
+          cp publish/mqtt.php config/autoload/mqtt.php
         
       - name: Wait for EMQX
         run: |
