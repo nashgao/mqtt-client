@@ -18,7 +18,7 @@ date_default_timezone_set('Australia/Brisbane');
 if (extension_loaded('swoole')) {
     ! defined('SWOOLE_HOOK_FLAGS') && define('SWOOLE_HOOK_FLAGS', SWOOLE_HOOK_ALL);
 
-    Runtime::enableCoroutine(true);
+    Runtime::enableCoroutine(1);
 }
 
 require BASE_PATH . '/vendor/autoload.php';
