@@ -32,12 +32,22 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: swoole-${{ matrix.swoole }}
           
+      - name: Validate composer.json
+        run: composer validate --strict
+        
       - name: Install dependencies
-        run: composer install
+        run: |
+          composer install --prefer-dist --no-progress --no-suggest
+          composer dump-autoload
         
       - name: Wait for EMQX
         run: |
           timeout 30 bash -c 'until printf "" 2>>/dev/null >>/dev/tcp/$0/$1; do sleep 1; done' localhost 1883
+          
+      - name: Debug autoload
+        run: |
+          composer show hyperf/utils || echo "hyperf/utils not found"
+          composer show hyperf/di || echo "hyperf/di not found"
           
       - name: Run tests
         run: composer test

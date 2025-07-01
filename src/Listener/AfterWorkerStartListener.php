@@ -33,6 +33,7 @@ class AfterWorkerStartListener implements ListenerInterface
 
     public function process(object $event): void
     {
+        /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get(EventDispatcherInterface::class);
         $config = $this->container->get(ConfigInterface::class);
         foreach ($config->get('mqtt') ?? [] as $poolName => $poolConfig) {

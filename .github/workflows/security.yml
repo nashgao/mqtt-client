@@ -18,7 +18,9 @@ jobs:
           php-version: '8.3'
           
       - name: Install dependencies
-        run: composer install
+        run: |
+          composer install --prefer-dist --no-progress --no-suggest
+          composer dump-autoload
         
       - name: Security Check
         uses: symfonycorp/security-checker-action@v5

@@ -10,12 +10,13 @@
     "description": "encapsulation of mqtt client based on simps mqtt",
     "require": {
         "php": ">=8.3",
-        "hyperf/di": "~3.0",
+        "hyperf/di": "~3.1",
         "hyperf/framework": "~3.1",
         "hyperf/event": "~3.1",
         "hyperf/pool": "~3.1",
         "hyperf/logger": "~3.1",
         "hyperf/config": "~3.1",
+        "hyperf/utils": "~3.1",
         "simps/mqtt": "~2.0"
     },
     "require-dev": {
