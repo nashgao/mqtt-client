@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
+use Hyperf\Context\ApplicationContext;
+use Hyperf\Contract\ApplicationInterface;
+use Hyperf\Di\ClassLoader;
 use Hyperf\Di\Container;
 use Hyperf\Di\Definition\DefinitionSourceFactory;
-use Hyperf\Context\ApplicationContext;
+use Psr\Container\ContainerInterface;
+use Swoole\Runtime;
 
 error_reporting(E_ALL);
 date_default_timezone_set('Australia/Brisbane');
@@ -14,17 +18,16 @@ date_default_timezone_set('Australia/Brisbane');
 if (extension_loaded('swoole')) {
     ! defined('SWOOLE_HOOK_FLAGS') && define('SWOOLE_HOOK_FLAGS', SWOOLE_HOOK_ALL);
 
-    Swoole\Runtime::enableCoroutine(true);
+    Runtime::enableCoroutine(true);
 }
-
 
 require BASE_PATH . '/vendor/autoload.php';
 
-Hyperf\Di\ClassLoader::init();
+ClassLoader::init();
 
-/** @var Psr\Container\ContainerInterface $container */
+/** @var ContainerInterface $container */
 $container = new Container((new DefinitionSourceFactory())());
 /** @var Container $container */
 $container = ApplicationContext::setContainer($container);
 
-$container->get(Hyperf\Contract\ApplicationInterface::class);
+$container->get(ApplicationInterface::class);

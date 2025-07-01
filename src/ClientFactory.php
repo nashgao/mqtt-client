@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT;
 
+use Hyperf\Coroutine\Coroutine;
 use Nashgao\MQTT\Config\ClientConfig;
-use Hyperf\Engine\Coroutine;
 
 class ClientFactory
 {

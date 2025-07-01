@@ -1,45 +1,6 @@
-# Nashgao/MQTT
+# CLAUDE.md
 
-A PHP MQTT client library for Hyperf framework with MQTT 5 shared subscription support.
-
-[![Latest Stable Version](http://poser.pugx.org/nashgao/mqtt/v)](https://packagist.org/packages/nashgao/mqtt) 
-[![Total Downloads](http://poser.pugx.org/nashgao/mqtt/downloads)](https://packagist.org/packages/nashgao/mqtt) 
-[![Latest Unstable Version](http://poser.pugx.org/nashgao/mqtt/v/unstable)](https://packagist.org/packages/nashgao/mqtt) 
-[![License](http://poser.pugx.org/nashgao/mqtt/license)](https://packagist.org/packages/nashgao/mqtt) 
-[![PHP Version Require](http://poser.pugx.org/nashgao/mqtt/require/php)](https://packagist.org/packages/nashgao/mqtt)
-
-## Installation
-
-```bash
-composer require nashgao/mqtt
-```
-
-Publish the configuration file:
-```bash
-php bin/hyperf.php vendor:publish nashgao/mqtt
-```
-
-## Quick Start
-
-### Publishing Messages
-```php
-use Nashgao\MQTT\Event\PublishEvent;
-use Psr\EventDispatcher\EventDispatcherInterface;
-
-$dispatcher = ApplicationContext::getContainer()->get(EventDispatcherInterface::class);
-$dispatcher->dispatch(new PublishEvent('topic/test', 'Hello MQTT!', 2));
-```
-
-### Subscribing to Topics
-```php
-use Nashgao\MQTT\Event\SubscribeEvent;
-use Nashgao\MQTT\Config\TopicConfig;
-
-$event = new SubscribeEvent(topicConfigs: [
-    new TopicConfig(['topic' => 'topic/test', 'qos' => 2])
-]);
-$dispatcher->dispatch($event);
-```
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 

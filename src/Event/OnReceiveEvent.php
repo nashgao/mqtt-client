@@ -15,7 +15,6 @@ readonly class OnReceiveEvent
         public ?string $topic,
         public ?int $message_id,
         public ?array $properties,
-        public string|array|null $message
-    ) {
-    }
+        public null|array|string $message
+    ) {}
 }

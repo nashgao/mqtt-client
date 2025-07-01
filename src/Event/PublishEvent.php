@@ -17,6 +17,5 @@ readonly class PublishEvent
         public int $retain = 0,
         public array $properties = [],
         public ?string $poolName = null,
-    ) {
-    }
+    ) {}
 }

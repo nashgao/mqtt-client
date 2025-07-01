@@ -14,6 +14,5 @@ readonly class OnDisconnectEvent
         public string $poolName,
         public ClientConfig $clientConfig,
         public ?int $qos = null
-    ) {
-    }
+    ) {}
 }

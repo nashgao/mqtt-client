@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Nashgao\MQTT;
 
 use Hyperf\Context\Context;
+use Hyperf\Coroutine\Coroutine;
 use Nashgao\MQTT\Constants\MQTTConstants;
 use Nashgao\MQTT\Exception\InvalidMethodException;
 use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
 use Nashgao\MQTT\Pool\PoolFactory;
-use Hyperf\Engine\Coroutine;
+use Nashgao\MQTT\Utils\ErrorHandler;
+use Nashgao\MQTT\Utils\HealthChecker;
 
 /**
  * @method subscribe(array $topics, array $properties = [])
@@ -27,23 +29,36 @@ class Client
 
     protected \Closure $getConnection;
 
-    public function __construct(PoolFactory $factory)
+    protected ?ErrorHandler $errorHandler = null;
+
+    protected ?HealthChecker $healthChecker = null;
+
+    public function __construct(PoolFactory $factory, ?ErrorHandler $errorHandler = null, ?HealthChecker $healthChecker = null)
     {
         $this->factory = $factory;
+        $this->errorHandler = $errorHandler ?? new ErrorHandler();
+        $this->healthChecker = $healthChecker ?? new HealthChecker();
         $this->getConnection = function ($hasContextConnection, $name, $arguments): void {
             // check the available connection num
             $pool = $this->factory->getPool($this->poolName);
             if (($name === MQTTConstants::SUBSCRIBE || $name === MQTTConstants::MULTISUB) && $pool->getAvailableConnectionNum() < 2) {
                 throw new \RuntimeException('Connection pool exhausted. Cannot establish new connection before wait_timeout.');
             }
-            $connection = $this->getConnection($hasContextConnection)->getConnection();
+            $connection = $this->getConnection($hasContextConnection);
+
+            // Record the operation attempt for health monitoring
+            $this->healthChecker->recordConnectionAttempt();
+
             try {
-                Coroutine::create(
-                    static function () use ($connection, $name, $arguments) {
-                        /* @var MQTTConnection $connection */
-                        $connection->{$name}(...$arguments);
-                    }
-                );
+                // Wrap the operation with error handling
+                $this->errorHandler->wrapOperation(function () use ($connection, $name, $arguments) {
+                    return Coroutine::create(
+                        static function () use ($connection, $name, $arguments) {
+                            /* @var MQTTConnection $connection */
+                            $connection->{$name}(...$arguments);
+                        }
+                    );
+                }, "mqtt_{$name}");
             } finally {
                 if ($name === MQTTConstants::SUBSCRIBE) {
                     Coroutine::create(
@@ -71,7 +86,7 @@ class Client
 
         $hasContextConnection = Context::has($this->getContextKey());
         if ($name = $name === MQTTConstants::MULTISUB ? MQTTConstants::SUBSCRIBE : $name) {
-            $num = count($arguments) !== 3 ? 1 : last($arguments); // set multi sub default as 2
+            $num = count($arguments) !== 3 ? 1 : end($arguments); // set multi sub default as 2
         }
 
         for ($count = 0; $count < ($num ?? 1); ++$count) {
@@ -83,6 +98,38 @@ class Client
     {
         $this->poolName = $poolName;
         return $this;
+    }
+
+    /**
+     * Get health status of the MQTT client.
+     */
+    public function getHealthStatus(): array
+    {
+        return $this->healthChecker->getSystemHealth();
+    }
+
+    /**
+     * Check if the client is healthy.
+     */
+    public function isHealthy(): bool
+    {
+        return $this->healthChecker->isSystemHealthy();
+    }
+
+    /**
+     * Get connection success rate.
+     */
+    public function getConnectionSuccessRate(): float
+    {
+        return $this->healthChecker->getConnectionSuccessRate();
+    }
+
+    /**
+     * Set custom retry policy for operations.
+     */
+    public function setRetryPolicy(string $operation, int $maxRetries, int $baseDelay = 1000): void
+    {
+        $this->errorHandler->setRetryPolicy($operation, $maxRetries, $baseDelay);
     }
 
     private function methods(): array

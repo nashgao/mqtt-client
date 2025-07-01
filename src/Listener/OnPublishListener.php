@@ -27,7 +27,5 @@ class OnPublishListener implements ListenerInterface
     /**
      * @param OnPublishEvent $event
      */
-    public function process(object $event): void
-    {
-    }
+    public function process(object $event): void {}
 }

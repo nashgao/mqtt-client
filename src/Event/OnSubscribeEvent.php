@@ -14,6 +14,5 @@ readonly class OnSubscribeEvent
         public string $clientId,
         public array $topics,
         public mixed $result
-    ) {
-    }
+    ) {}
 }

@@ -17,6 +17,5 @@ readonly class SubscribeEvent
     public function __construct(
         public string $poolName = 'default',
         public ?array $topicConfigs = null,
-    ) {
-    }
+    ) {}
 }

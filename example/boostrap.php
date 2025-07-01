@@ -3,12 +3,14 @@
 declare(strict_types=1);
 
 use Hyperf\Config\Config;
+use Hyperf\Context\ApplicationContext;
+use Hyperf\Contract\ApplicationInterface;
 use Hyperf\Contract\ConfigInterface;
+use Hyperf\Di\ClassLoader;
 use Hyperf\Di\Container;
 use Hyperf\Di\Definition\DefinitionSourceFactory;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Event\ListenerProvider;
-use Hyperf\Context\ApplicationContext;
 use Nashgao\MQTT\Listener\OnDisconnectListener;
 use Nashgao\MQTT\Listener\OnPublishListener;
 use Nashgao\MQTT\Listener\OnSubscribeListener;
@@ -16,6 +18,7 @@ use Nashgao\MQTT\Listener\PublishListener;
 use Nashgao\MQTT\Listener\SubscribeListener;
 use Nashgao\MQTT\Provider\ClientIdProviderInterface;
 use Nashgao\MQTT\Provider\RandomClientIdProvider;
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 
 use function Hyperf\Support\make;
@@ -31,16 +34,16 @@ const SIMPS_MQTT_PORT = 1883;
     $container = null;
     try {
         $container = ApplicationContext::getContainer();
-    } catch (\Throwable) {
+    } catch (Throwable) {
     }
 
     if (! isset($container)) {
-        Hyperf\Di\ClassLoader::init();
-        /** @var Psr\Container\ContainerInterface $container */
+        ClassLoader::init();
+        /** @var ContainerInterface $container */
         $container = new Container((new DefinitionSourceFactory())());
         /** @var Container $container */
         $container = ApplicationContext::setContainer($container);
-        $container->get(Hyperf\Contract\ApplicationInterface::class);
+        $container->get(ApplicationInterface::class);
         /** @var Config $config */
         $config = $container->get(ConfigInterface::class);
         $config->set('mqtt', require_once __DIR__ . '/config.php');
@@ -63,7 +66,8 @@ const SIMPS_MQTT_PORT = 1883;
             if (is_string($listener)) {
                 $listener = make($listener);
 
-            /** @var ListenerInterface $listener */}
+                /* @var ListenerInterface $listener */
+            }
             foreach ($listener->listen() as $event) {
                 $provider->on($event, [$listener, 'process']);
             }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Config;
 
+use Nashgao\MQTT\Utils\ConfigValidator;
+
 class TopicConfig
 {
     public string $topic;
@@ -15,7 +17,7 @@ class TopicConfig
     public bool $enable_share_topic = false;
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     public array $share_topic;
 
@@ -31,7 +33,10 @@ class TopicConfig
 
     public function __construct(array $params = [])
     {
-        foreach ($params ?? [] as $key => $value) {
+        // Validate configuration before setting properties
+        $validatedParams = ConfigValidator::validateTopicConfig($params);
+
+        foreach ($validatedParams as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }

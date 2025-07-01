@@ -17,6 +17,5 @@ readonly class ClientConfig
         public bool $cleanSession = false,
         public array $will = [],
         public int $clientType = 1 // 1 means coroutine client
-    ) {
-    }
+    ) {}
 }

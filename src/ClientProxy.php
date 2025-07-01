@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nashgao\MQTT;
 
 use Hyperf\Context\ApplicationContext;
+use Hyperf\Engine\Channel;
 use Nashgao\MQTT\Config\ClientConfig;
 use Nashgao\MQTT\Event\OnDisconnectEvent;
 use Nashgao\MQTT\Event\OnPublishEvent;
@@ -12,10 +13,10 @@ use Nashgao\MQTT\Event\OnReceiveEvent;
 use Nashgao\MQTT\Event\OnSubscribeEvent;
 use Nashgao\MQTT\Utils\Qos;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Simps\MQTT\Client;
 use Simps\MQTT\Protocol\Types;
-use Hyperf\Engine\Channel;
 
-class ClientProxy extends \Simps\MQTT\Client
+class ClientProxy extends Client
 {
     public Channel $channel;
 
@@ -72,7 +73,7 @@ class ClientProxy extends \Simps\MQTT\Client
         return $cont->pop();
     }
 
-    public function subscribe(array $topics, array $properties = []): bool|array
+    public function subscribe(array $topics, array $properties = []): array|bool
     {
         $cont = new Channel();
         $this->channel->push(fn () => $this->dispatcher->dispatch(new OnSubscribeEvent($this->poolName, parent::getConfig()->getClientId(), $topics, parent::subscribe($topics, $properties))));

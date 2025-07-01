@@ -10,6 +10,4 @@ use PHPUnit\Framework\TestCase;
  * @internal
  * @coversNothing
  */
-abstract class AbstractTestCase extends TestCase
-{
-}
+abstract class AbstractTestCase extends TestCase {}

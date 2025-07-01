@@ -9,8 +9,8 @@ use Hyperf\Pool\Connection as BaseConnection;
 use Hyperf\Pool\Exception\ConnectionException;
 use Hyperf\Pool\Pool;
 use Nashgao\MQTT\Config\ClientConfig;
-use Nashgao\MQTT\Exception\InvalidConfigException;
 use Nashgao\MQTT\Provider\ClientIdProviderInterface;
+use Nashgao\MQTT\Utils\ConfigValidator;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -34,10 +34,10 @@ class MQTTConnection extends BaseConnection implements ConnectionInterface
     public function __construct(ContainerInterface $container, Pool $pool, array $config)
     {
         parent::__construct($container, $pool);
-        $this->config = $config;
-        if (empty($this->config)) {
-            throw new InvalidConfigException();
-        }
+
+        // Validate configuration using ConfigValidator
+        $this->config = ConfigValidator::validateConnectionConfig($config);
+
         $this->reconnect();
     }
 

@@ -12,9 +12,8 @@ readonly class OnPublishEvent
     public function __construct(
         public string $poolName,
         public string $topic,
-        public string|array|null $message,
+        public null|array|string $message,
         public int $qos,
         public mixed $result
-    ) {
-    }
+    ) {}
 }

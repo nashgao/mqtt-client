@@ -6,6 +6,4 @@ namespace Nashgao\MQTT;
 
 use Hyperf\Pool\Frequency as BaseFrequency;
 
-class Frequency extends BaseFrequency
-{
-}
+class Frequency extends BaseFrequency {}

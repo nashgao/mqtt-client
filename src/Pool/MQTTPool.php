@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Pool;
 
+use Hyperf\Collection\Arr;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\ConnectionInterface;
 use Hyperf\Pool\Pool;
-use Hyperf\Collection\Arr;
 use Nashgao\MQTT\Exception\InvalidConfigException;
 use Nashgao\MQTT\Frequency;
 use Nashgao\MQTT\MQTTConnection;
+use Nashgao\MQTT\Utils\ConfigValidator;
 use Psr\Container\ContainerInterface;
 
 use function Hyperf\Support\make;
@@ -31,9 +32,13 @@ class MQTTPool extends Pool
         }
 
         $this->config = $config->get($key);
+
+        // Validate pool configuration
         $options = Arr::get($this->config, 'pool', []);
+        $validatedOptions = ConfigValidator::validatePoolConfig($options);
+
         $this->frequency = make(Frequency::class, [$this]);
-        parent::__construct($container, $options);
+        parent::__construct($container, $validatedOptions);
     }
 
     public function getName(): string

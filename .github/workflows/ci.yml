@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+        swoole: ['5.0', '5.1']
+    
+    services:
+      emqx:
+        image: emqx/emqx:5.7
+        ports:
+          - 1883:1883
+          - 8083:8083
+        env:
+          EMQX_LOADED_PLUGINS: "emqx_recon,emqx_retainer,emqx_management,emqx_dashboard"
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: swoole-${{ matrix.swoole }}
+          
+      - name: Install dependencies
+        run: composer install
+        
+      - name: Wait for EMQX
+        run: |
+          timeout 30 bash -c 'until printf "" 2>>/dev/null >>/dev/tcp/$0/$1; do sleep 1; done' localhost 1883
+          
+      - name: Run tests
+        run: composer test
+        
+      - name: Static analysis
+        run: composer analyse

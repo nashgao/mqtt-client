@@ -38,15 +38,24 @@ class TopicParser
 
     public static function parseTopic(string $topic, int $qos = 0, array $properties = []): TopicConfig
     {
+        // Sanitize and validate the topic
+        $sanitizedTopic = ConfigValidator::sanitizeTopicName($topic);
+
+        // Validate QoS
+        if (! in_array($qos, [0, 1, 2], true)) {
+            throw new InvalidConfigException("Invalid QoS level: {$qos}. Must be 0, 1, or 2");
+        }
+
         $topicTemplate = new TopicConfig($properties);
         $topicTemplate->setQos($qos);
         // queue topic has higher priority
-        if (($pos = strpos($topic, static::QUEUE)) !== false) {
-            return $topicTemplate->setEnableQueueTopic(true)->setTopic(substr($topic, $pos + strlen(static::QUEUE) + 1));
+        if (($pos = strpos($sanitizedTopic, static::QUEUE)) !== false) {
+            $extractedTopic = substr($sanitizedTopic, $pos + strlen(static::QUEUE) + 1);
+            return $topicTemplate->setEnableQueueTopic(true)->setTopic($extractedTopic);
         }
 
-        if (($pos = strpos($topic, static::SHARE)) !== false) {
-            $groupTopic = substr($topic, $pos + strlen(static::SHARE) + 1);
+        if (($pos = strpos($sanitizedTopic, static::SHARE)) !== false) {
+            $groupTopic = substr($sanitizedTopic, $pos + strlen(static::SHARE) + 1);
             $topicArray = explode(static::SEPARATOR, $groupTopic);
             $group = current($topicArray);
             $group = ltrim((string) $group, '$');
@@ -56,6 +65,6 @@ class TopicParser
                 ->setTopic(join(self::SEPARATOR, $topicArray));
         }
 
-        return $topicTemplate->setTopic($topic);
+        return $topicTemplate->setTopic($sanitizedTopic);
     }
 }

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Hyperf\Event\EventDispatcher;
 use Hyperf\Context\ApplicationContext;
+use Hyperf\Event\EventDispatcher;
 use Nashgao\MQTT\Event\PublishEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
