@@ -151,20 +151,33 @@ class ErrorHandler
 
                 return $result;
             } catch (InvalidConfigException $e) {
+                // Record failed operation time
+                $duration = microtime(true) - $startTime;
+                $this->performanceMetrics->recordOperationTime($operationName . '_failed', $duration);
+                
                 $this->handleConfigError($e, $context);
                 throw $e; // Config errors are not retryable
             } catch (InvalidMQTTConnectionException $e) {
                 if (! $this->handleConnectionError($e, $operationName, $attempt)) {
+                    // Record failed operation time before throwing
+                    $duration = microtime(true) - $startTime;
+                    $this->performanceMetrics->recordOperationTime($operationName . '_failed', $duration);
                     throw $e;
                 }
             } catch (\Exception $e) {
                 $this->handleProtocolError($e, $operationName, $context);
 
                 if ($attempt >= $maxAttempts) {
+                    // Record failed operation time before throwing
+                    $duration = microtime(true) - $startTime;
+                    $this->performanceMetrics->recordOperationTime($operationName . '_failed', $duration);
                     throw $e;
                 }
 
                 if (! $this->handleConnectionError($e, $operationName, $attempt)) {
+                    // Record failed operation time before throwing
+                    $duration = microtime(true) - $startTime;
+                    $this->performanceMetrics->recordOperationTime($operationName . '_failed', $duration);
                     throw $e;
                 }
             }

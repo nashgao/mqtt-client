@@ -9,14 +9,14 @@ use Nashgao\MQTT\Metrics\ValidationMetrics;
 
 class ConfigValidator
 {
-    private const array VALID_QOS_LEVELS = [0, 1, 2];
-    private const array VALID_RETAIN_HANDLING = [0, 1, 2];
-    private const int MAX_TOPIC_LENGTH = 65535; // MQTT spec limit
-    private const int MAX_CLIENT_ID_LENGTH = 23; // MQTT 3.1 spec limit
-    private const int MIN_KEEP_ALIVE = 0;
-    private const int MAX_KEEP_ALIVE = 65535;
-    private const int MIN_PORT = 1;
-    private const int MAX_PORT = 65535;
+    protected const array VALID_QOS_LEVELS = [0, 1, 2];
+    protected const array VALID_RETAIN_HANDLING = [0, 1, 2];
+    protected const int MAX_TOPIC_LENGTH = 65535; // MQTT spec limit
+    protected const int MAX_CLIENT_ID_LENGTH = 23; // MQTT 3.1 spec limit
+    protected const int MIN_KEEP_ALIVE = 0;
+    protected const int MAX_KEEP_ALIVE = 65535;
+    protected const int MIN_PORT = 1;
+    protected const int MAX_PORT = 65535;
     
     private static ?ValidationMetrics $metrics = null;
     
@@ -233,39 +233,39 @@ class ConfigValidator
         return $isValid;
     }
 
-    private static function isValidQos($qos): bool
+    protected static function isValidQos($qos): bool
     {
         return is_int($qos) && in_array($qos, self::VALID_QOS_LEVELS, true);
     }
 
-    private static function isValidRetainHandling($retainHandling): bool
+    protected static function isValidRetainHandling($retainHandling): bool
     {
         return is_int($retainHandling) && in_array($retainHandling, self::VALID_RETAIN_HANDLING, true);
     }
 
-    private static function isValidTopicName(string $topic): bool
+    protected static function isValidTopicName(string $topic): bool
     {
         return strlen($topic) <= self::MAX_TOPIC_LENGTH;
     }
 
-    private static function isValidClientId(string $clientId): bool
+    protected static function isValidClientId(string $clientId): bool
     {
         return strlen($clientId) <= self::MAX_CLIENT_ID_LENGTH;
     }
 
-    private static function isValidKeepAlive($keepAlive): bool
+    protected static function isValidKeepAlive($keepAlive): bool
     {
         return is_int($keepAlive) && $keepAlive >= self::MIN_KEEP_ALIVE && $keepAlive <= self::MAX_KEEP_ALIVE;
     }
 
-    private static function isValidHost(string $host): bool
+    protected static function isValidHost(string $host): bool
     {
         // Check if it's a valid IP address or hostname
         return filter_var($host, FILTER_VALIDATE_IP) !== false
                || (filter_var($host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) !== false);
     }
 
-    private static function isValidPort($port): bool
+    protected static function isValidPort($port): bool
     {
         return is_int($port) && $port >= self::MIN_PORT && $port <= self::MAX_PORT;
     }
