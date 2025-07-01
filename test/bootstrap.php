@@ -22,12 +22,3 @@ if (extension_loaded('swoole')) {
 }
 
 require BASE_PATH . '/vendor/autoload.php';
-
-ClassLoader::init();
-
-/** @var ContainerInterface $container */
-$container = new Container((new DefinitionSourceFactory())());
-/** @var Container $container */
-$container = ApplicationContext::setContainer($container);
-
-$container->get(ApplicationInterface::class);
