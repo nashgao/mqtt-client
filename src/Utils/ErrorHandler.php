@@ -14,9 +14,13 @@ use Psr\Log\NullLogger;
 class ErrorHandler
 {
     private LoggerInterface $logger;
+
     private ErrorMetrics $errorMetrics;
+
     private PerformanceMetrics $performanceMetrics;
+
     private array $circuitBreakers = [];
+
     private array $retryPolicies = [];
 
     public function __construct(
@@ -36,7 +40,7 @@ class ErrorHandler
     {
         // Record error metrics
         $this->errorMetrics->recordError('connection', $operation, $e->getMessage(), $e);
-        
+
         $this->logger->error("MQTT connection error in operation '{$operation}'", [
             'exception' => $e->getMessage(),
             'attempt' => $attempt,
@@ -73,7 +77,7 @@ class ErrorHandler
     {
         // Record error metrics
         $this->errorMetrics->recordError('configuration', 'config_validation', $e->getMessage(), $e);
-        
+
         $this->logger->error('MQTT configuration error', [
             'exception' => $e->getMessage(),
             'config_keys' => array_keys($config),
@@ -94,7 +98,7 @@ class ErrorHandler
     {
         // Record error metrics
         $this->errorMetrics->recordError('protocol', $operation, $e->getMessage(), $e);
-        
+
         $this->logger->error("MQTT protocol error in operation '{$operation}'", [
             'exception' => $e->getMessage(),
             'context' => $context,
@@ -112,10 +116,10 @@ class ErrorHandler
     {
         // Record error metrics
         $this->errorMetrics->recordError('resource', $resource, $e->getMessage(), $e);
-        
+
         // Record memory metrics
         $this->performanceMetrics->recordMemoryUsage();
-        
+
         $this->logger->critical("Resource exhaustion: {$resource}", [
             'exception' => $e->getMessage(),
             'memory_usage' => memory_get_usage(true),
@@ -141,7 +145,7 @@ class ErrorHandler
         while ($attempt <= $maxAttempts) {
             try {
                 $result = $operation();
-                
+
                 // Record successful operation metrics
                 $duration = microtime(true) - $startTime;
                 $this->performanceMetrics->recordOperationTime($operationName, $duration);
@@ -154,7 +158,7 @@ class ErrorHandler
                 // Record failed operation time
                 $duration = microtime(true) - $startTime;
                 $this->performanceMetrics->recordOperationTime($operationName . '_failed', $duration);
-                
+
                 $this->handleConfigError($e, $context);
                 throw $e; // Config errors are not retryable
             } catch (InvalidMQTTConnectionException $e) {
@@ -209,7 +213,7 @@ class ErrorHandler
             'next_attempt' => null,
         ];
     }
-    
+
     /**
      * Get error metrics.
      */
@@ -217,7 +221,7 @@ class ErrorHandler
     {
         return $this->errorMetrics;
     }
-    
+
     /**
      * Get performance metrics.
      */
@@ -255,7 +259,7 @@ class ErrorHandler
             'last_failure' => time(),
             'next_attempt' => time() + 60, // Try again in 60 seconds
         ];
-        
+
         // Record circuit breaker opening in metrics
         $this->errorMetrics->recordCircuitBreakerOpen($operation);
 

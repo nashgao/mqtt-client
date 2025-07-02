@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Test\Cases;
 
-use Nashgao\MQTT\Config\TopicSubscriptionConfig;
-use Nashgao\MQTT\Config\TopicSubscription;
 use Nashgao\MQTT\Config\TopicConfig;
+use Nashgao\MQTT\Config\TopicSubscription;
+use Nashgao\MQTT\Config\TopicSubscriptionConfig;
+use Nashgao\MQTT\Metrics\ValidationMetrics;
 use Nashgao\MQTT\Test\AbstractTestCase;
 use Nashgao\MQTT\Utils\ConfigValidator;
-use Nashgao\MQTT\Metrics\ValidationMetrics;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
@@ -19,7 +19,7 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 class TopicSubscriptionConfigTest extends AbstractTestCase
 {
     private ValidationMetrics $validationMetrics;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -77,10 +77,10 @@ class TopicSubscriptionConfigTest extends AbstractTestCase
         $subscriptionConfig = new TopicSubscriptionConfig($config);
 
         $this->assertTrue($subscriptionConfig->hasAutoSubscriptions());
-        
+
         $autoTopics = $subscriptionConfig->getAutoSubscribeTopics();
         $this->assertCount(2, $autoTopics);
-        
+
         foreach ($autoTopics as $topic) {
             $this->assertTrue($topic->isAutoSubscribe());
             $this->assertStringStartsWith('auto/', $topic->getTopic());
@@ -95,7 +95,7 @@ class TopicSubscriptionConfigTest extends AbstractTestCase
                     'topic' => 'sensors/temp1',
                     'qos' => 1,
                     'auto_subscribe' => true,
-                    'filter' => function($topicData) {
+                    'filter' => function ($topicData) {
                         return $topicData['qos'] >= 1;
                     },
                 ],
@@ -103,7 +103,7 @@ class TopicSubscriptionConfigTest extends AbstractTestCase
                     'topic' => 'sensors/temp2',
                     'qos' => 0,
                     'auto_subscribe' => true,
-                    'filter' => function($topicData) {
+                    'filter' => function ($topicData) {
                         return $topicData['qos'] >= 1;
                     },
                 ],
@@ -224,7 +224,7 @@ class TopicSubscriptionConfigTest extends AbstractTestCase
         // Manually set invalid QoS to bypass constructor validation
         $invalidTopic->qos = 5;
         $invalidSubscriptionConfig->addTopic($invalidTopic);
-        
+
         $this->assertFalse($invalidSubscriptionConfig->validate());
     }
 
@@ -253,6 +253,10 @@ class TopicSubscriptionConfigTest extends AbstractTestCase
     }
 }
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class TopicSubscriptionTest extends AbstractTestCase
 {
     public function testTopicSubscriptionCreation()
@@ -312,7 +316,7 @@ class TopicSubscriptionTest extends AbstractTestCase
         $subscription = new TopicSubscription([
             'topic' => 'test/topic',
             'qos' => 1,
-            'filter' => function($data) {
+            'filter' => function ($data) {
                 return $data['qos'] >= 1;
             },
         ]);

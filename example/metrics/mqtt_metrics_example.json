@@ -1,0 +1,2484 @@
+{
+    "timestamp": "2025-07-02T00:49:26+00:00",
+    "connection": {
+        "total_attempts": 50,
+        "successful_connections": 45,
+        "failed_connections": 5,
+        "timeouts": 0,
+        "reconnections": 0,
+        "active_connections": 45,
+        "success_rate": 0.9,
+        "average_connection_time": 0.11248888888888883,
+        "last_connection_time": 1751417366.134107
+    },
+    "performance": {
+        "operations": [],
+        "total_operations": 0,
+        "total_messages": 0,
+        "messages_per_second": 0,
+        "memory": {
+            "current": 0,
+            "peak": 0
+        },
+        "latency": {
+            "average": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0
+        }
+    },
+    "publish": {
+        "total_attempts": 50,
+        "successful": 98,
+        "failed": 1,
+        "success_rate": 196,
+        "failure_rate": 2,
+        "qos_distribution": [
+            31,
+            32,
+            35
+        ],
+        "qos_0_count": 31,
+        "qos_1_count": 32,
+        "qos_2_count": 35,
+        "topic_stats": {
+            "sensor\/temperature\/0": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/0": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/1": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/1": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/2": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/2": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/3": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/3": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/4": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/4": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/5": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/5": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/6": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/6": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/7": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/7": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/8": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/8": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/9": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/9": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/10": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/10": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/11": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/11": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/12": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/12": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/13": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/13": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/14": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/14": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/15": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/15": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/16": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/16": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/17": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/17": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/18": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/18": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/19": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/19": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/20": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/20": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/21": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/21": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/22": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/22": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/23": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/23": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/24": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/24": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/25": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/25": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/26": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/26": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/27": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/27": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/28": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/28": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/29": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/29": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/30": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/30": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/31": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/31": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/32": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/32": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/33": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/33": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/34": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/34": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/35": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/35": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/36": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/36": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/37": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/37": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/38": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/38": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/40": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/40": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/41": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/41": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/42": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/42": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/43": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/43": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/44": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/44": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/45": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/45": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "sensor\/temperature\/46": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/46": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "sensor\/temperature\/47": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "device\/status\/47": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/48": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "device\/status\/48": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "sensor\/temperature\/49": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "device\/status\/49": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            }
+        },
+        "unique_topics_count": 98,
+        "message_sizes": [
+            427,
+            174,
+            459,
+            178,
+            279,
+            111,
+            211,
+            137,
+            346,
+            147,
+            246,
+            118,
+            489,
+            137,
+            126,
+            160,
+            291,
+            200,
+            306,
+            192,
+            175,
+            172,
+            62,
+            189,
+            204,
+            170,
+            407,
+            123,
+            213,
+            179,
+            100,
+            156,
+            462,
+            174,
+            250,
+            189,
+            376,
+            181,
+            297,
+            146,
+            409,
+            117,
+            399,
+            164,
+            492,
+            146,
+            234,
+            187,
+            273,
+            104,
+            377,
+            132,
+            253,
+            147,
+            494,
+            193,
+            241,
+            198,
+            138,
+            104,
+            98,
+            137,
+            431,
+            164,
+            187,
+            118,
+            103,
+            180,
+            113,
+            197,
+            256,
+            135,
+            339,
+            171,
+            162,
+            127,
+            184,
+            167,
+            342,
+            120,
+            339,
+            198,
+            367,
+            123,
+            364,
+            200,
+            345,
+            187,
+            466,
+            179,
+            133,
+            127,
+            165,
+            148,
+            404,
+            125,
+            222,
+            160
+        ],
+        "publish_times": [
+            1751417366.071107,
+            1751417366.071109,
+            1751417366.083666,
+            1751417366.083672,
+            1751417366.083701,
+            1751417366.083706,
+            1751417366.083718,
+            1751417366.083719,
+            1751417366.083723,
+            1751417366.083724,
+            1751417366.083727,
+            1751417366.083728,
+            1751417366.083732,
+            1751417366.083733,
+            1751417366.083736,
+            1751417366.083737,
+            1751417366.083741,
+            1751417366.083742,
+            1751417366.083746,
+            1751417366.083747,
+            1751417366.08375,
+            1751417366.083751,
+            1751417366.096267,
+            1751417366.096268,
+            1751417366.096282,
+            1751417366.096287,
+            1751417366.096305,
+            1751417366.09631,
+            1751417366.096328,
+            1751417366.096333,
+            1751417366.096351,
+            1751417366.096355,
+            1751417366.096374,
+            1751417366.096379,
+            1751417366.096383,
+            1751417366.096384,
+            1751417366.096389,
+            1751417366.09639,
+            1751417366.096394,
+            1751417366.096395,
+            1751417366.096399,
+            1751417366.0964,
+            1751417366.108922,
+            1751417366.108923,
+            1751417366.108929,
+            1751417366.10893,
+            1751417366.108934,
+            1751417366.108935,
+            1751417366.108939,
+            1751417366.10894,
+            1751417366.108944,
+            1751417366.108945,
+            1751417366.108949,
+            1751417366.10895,
+            1751417366.108955,
+            1751417366.108956,
+            1751417366.10896,
+            1751417366.108961,
+            1751417366.108965,
+            1751417366.108966,
+            1751417366.10897,
+            1751417366.108971,
+            1751417366.121491,
+            1751417366.121492,
+            1751417366.121497,
+            1751417366.121498,
+            1751417366.121503,
+            1751417366.121504,
+            1751417366.121512,
+            1751417366.121513,
+            1751417366.121518,
+            1751417366.121519,
+            1751417366.121523,
+            1751417366.121524,
+            1751417366.121528,
+            1751417366.121529,
+            1751417366.121533,
+            1751417366.121534,
+            1751417366.121541,
+            1751417366.121543,
+            1751417366.134063,
+            1751417366.134064,
+            1751417366.134069,
+            1751417366.13407,
+            1751417366.134075,
+            1751417366.134076,
+            1751417366.13408,
+            1751417366.134081,
+            1751417366.134086,
+            1751417366.134087,
+            1751417366.134092,
+            1751417366.134093,
+            1751417366.134097,
+            1751417366.134098,
+            1751417366.134103,
+            1751417366.134104,
+            1751417366.134108,
+            1751417366.134109
+        ],
+        "publish_rate": 1555.5034701986756,
+        "message_size_stats": {
+            "min": 62,
+            "max": 494,
+            "avg": 221.88,
+            "count": 98,
+            "median": 184,
+            "p95": 462,
+            "p99": 494
+        }
+    },
+    "subscription": {
+        "total_attempts": 50,
+        "successful": 49,
+        "failed": 1,
+        "success_rate": 98,
+        "failure_rate": 2,
+        "qos_distribution": [
+            19,
+            11,
+            19
+        ],
+        "qos_0_count": 19,
+        "qos_1_count": 11,
+        "qos_2_count": 19,
+        "topic_stats": {
+            "alerts\/critical\/0": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/1": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/2": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/3": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/4": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/5": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/6": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/7": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/8": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/9": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/10": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/11": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/12": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/13": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/14": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/15": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/16": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/17": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/18": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/19": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/20": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/21": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/22": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/23": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/24": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/25": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/26": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/27": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/28": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/29": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/30": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/31": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/32": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/33": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/34": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/35": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/36": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/37": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/38": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/39": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/40": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/41": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/42": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/43": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/44": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    0,
+                    1
+                ]
+            },
+            "alerts\/critical\/45": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/46": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "alerts\/critical\/47": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/48": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "alerts\/critical\/49": {
+                "count": 1,
+                "last_activity": "2025-07-02 00:49:26",
+                "qos_levels": [
+                    0,
+                    1,
+                    0
+                ]
+            }
+        },
+        "unique_topics_count": 50,
+        "pool_subscriptions": {
+            "pool_0": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_1": {
+                "total_attempts": 1,
+                "successful": 0,
+                "failed": 1,
+                "topics_subscribed": 0,
+                "last_subscription": null,
+                "failure_reasons": {
+                    "Connection failed": 1
+                }
+            },
+            "pool_2": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_3": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_4": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_5": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_6": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_7": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_8": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_9": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_10": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_11": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_12": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_13": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_14": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_15": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_16": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_17": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_18": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_19": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_20": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_21": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_22": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_23": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_24": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_25": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_26": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_27": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_28": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_29": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_30": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_31": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_32": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_33": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_34": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_35": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_36": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_37": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_38": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_39": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_40": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_41": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_42": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_43": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_44": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_45": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_46": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_47": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_48": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "pool_49": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            }
+        },
+        "client_subscriptions": {
+            "client_0": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_1": {
+                "total_attempts": 1,
+                "successful": 0,
+                "failed": 1,
+                "topics_subscribed": 0,
+                "last_subscription": null,
+                "failure_reasons": {
+                    "Connection failed": 1
+                }
+            },
+            "client_2": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_3": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_4": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_5": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_6": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_7": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_8": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_9": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_10": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_11": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_12": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_13": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_14": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_15": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_16": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_17": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_18": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_19": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_20": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_21": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_22": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_23": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_24": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_25": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_26": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_27": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_28": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_29": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_30": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_31": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_32": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_33": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_34": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_35": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_36": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_37": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_38": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_39": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_40": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_41": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_42": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_43": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_44": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_45": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_46": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_47": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_48": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            },
+            "client_49": {
+                "total_attempts": 1,
+                "successful": 1,
+                "failed": 0,
+                "topics_subscribed": 1,
+                "last_subscription": "2025-07-02 00:49:26",
+                "failure_reasons": []
+            }
+        },
+        "subscription_times": [
+            1751417366.07111,
+            1751417366.083709,
+            1751417366.083719,
+            1751417366.083724,
+            1751417366.083729,
+            1751417366.083733,
+            1751417366.083737,
+            1751417366.083742,
+            1751417366.083747,
+            1751417366.083752,
+            1751417366.096269,
+            1751417366.096289,
+            1751417366.096312,
+            1751417366.096334,
+            1751417366.096357,
+            1751417366.096379,
+            1751417366.096385,
+            1751417366.09639,
+            1751417366.096395,
+            1751417366.0964,
+            1751417366.108924,
+            1751417366.108931,
+            1751417366.108936,
+            1751417366.108941,
+            1751417366.108946,
+            1751417366.108951,
+            1751417366.108956,
+            1751417366.108961,
+            1751417366.108966,
+            1751417366.108971,
+            1751417366.121492,
+            1751417366.121499,
+            1751417366.121509,
+            1751417366.121514,
+            1751417366.121519,
+            1751417366.121524,
+            1751417366.121529,
+            1751417366.121534,
+            1751417366.121538,
+            1751417366.121543,
+            1751417366.134065,
+            1751417366.134071,
+            1751417366.134076,
+            1751417366.134082,
+            1751417366.134087,
+            1751417366.134093,
+            1751417366.134099,
+            1751417366.134104,
+            1751417366.13411
+        ],
+        "subscription_rate": 777.7782251808009
+    },
+    "validation": {
+        "total_validations": 50,
+        "total_errors": 0,
+        "overall_success_rate": 1,
+        "validation_counts": {
+            "config_validation": {
+                "total": 50,
+                "successful": 50,
+                "failed": 0
+            }
+        },
+        "most_failed_type": null,
+        "validation_success_rates": [
+            1
+        ]
+    }
+}

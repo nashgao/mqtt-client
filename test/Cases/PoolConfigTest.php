@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Nashgao\MQTT\Test\Cases;
 
 use Nashgao\MQTT\Config\PoolConfig;
-use Nashgao\MQTT\Config\TopicSubscription;
 use Nashgao\MQTT\Config\TopicPublish;
+use Nashgao\MQTT\Config\TopicSubscription;
 use Nashgao\MQTT\Exception\InvalidConfigException;
+use Nashgao\MQTT\Metrics\ValidationMetrics;
 use Nashgao\MQTT\Test\AbstractTestCase;
 use Nashgao\MQTT\Utils\ConfigValidator;
-use Nashgao\MQTT\Metrics\ValidationMetrics;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
@@ -20,14 +20,14 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 class PoolConfigTest extends AbstractTestCase
 {
     private ValidationMetrics $validationMetrics;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->validationMetrics = new ValidationMetrics();
         ConfigValidator::setMetrics($this->validationMetrics);
     }
-    
+
     protected function tearDown(): void
     {
         try {
@@ -75,7 +75,7 @@ class PoolConfigTest extends AbstractTestCase
         $this->assertEquals(20, $poolConfig->maxConnections);
         $this->assertEquals(15, $poolConfig->connectTimeout);
         $this->assertEquals(5, $poolConfig->waitTimeout);
-        
+
         $poolSettings = $poolConfig->getPoolSettings();
         $this->assertEquals(2, $poolSettings['min_connections']);
         $this->assertEquals(20, $poolSettings['max_connections']);
@@ -106,7 +106,7 @@ class PoolConfigTest extends AbstractTestCase
 
         $this->assertTrue($poolConfig->hasSubscriptions());
         $this->assertEquals(2, $poolConfig->getSubscriptionConfig()->count());
-        
+
         $autoSubscribeTopics = $poolConfig->getAutoSubscribeTopics();
         $this->assertCount(1, $autoSubscribeTopics);
         $this->assertEquals('test/topic1', $autoSubscribeTopics[0]->getTopic());
@@ -278,7 +278,7 @@ class PoolConfigTest extends AbstractTestCase
                         'topic' => 'alerts/#',
                         'qos' => 2,
                         'auto_subscribe' => true,
-                        'filter' => function($topic) { return $topic['qos'] >= 1; },
+                        'filter' => function ($topic) { return $topic['qos'] >= 1; },
                     ],
                 ],
             ],
@@ -289,10 +289,10 @@ class PoolConfigTest extends AbstractTestCase
 
         $this->assertEquals(2, $subscriptionConfig->count());
         $this->assertEquals(['global_option' => 'value'], $subscriptionConfig->getGlobalOptions());
-        
+
         $autoTopics = $poolConfig->getAutoSubscribeTopics();
         $this->assertCount(2, $autoTopics);
-        
+
         // Test that handler and metadata are preserved
         $tempTopic = $autoTopics[0];
         $this->assertEquals('TemperatureHandler', $tempTopic->getHandler());

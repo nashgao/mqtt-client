@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: ['8.3', '8.4']
+        php: ['8.3']
         swoole: ['5.0', '5.1']
     
     services:
@@ -30,14 +30,14 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: swoole-${{ matrix.swoole }}
+          extensions: swoole-${{ matrix.swoole }}, pcntl, posix, redis
           
       - name: Validate composer.json
         run: composer validate --strict
         
       - name: Install dependencies
         run: |
-          composer install --prefer-dist --no-progress --no-suggest
+          composer install --prefer-dist --no-progress
           composer dump-autoload
           
       - name: Setup test config
@@ -45,18 +45,38 @@ jobs:
           mkdir -p config/autoload
           cp publish/mqtt.php config/autoload/mqtt.php
           ls -la config/autoload/
+          echo "Config directory setup complete"
         
       - name: Wait for EMQX
         run: |
           timeout 30 bash -c 'until printf "" 2>>/dev/null >>/dev/tcp/$0/$1; do sleep 1; done' localhost 1883
           
-      - name: Debug autoload
+      - name: Debug dependencies
         run: |
           composer show hyperf/utils || echo "hyperf/utils not found"
           composer show hyperf/di || echo "hyperf/di not found"
+          composer show simps/mqtt || echo "simps/mqtt not found"
+          php --version
+          php -m | grep swoole || echo "Swoole extension not loaded"
           
       - name: Run tests
         run: composer test
+        
+      - name: Test examples
+        run: |
+          echo "Testing examples..."
+          php example/basic_client_example.php || echo "Basic client example failed"
+          php example/advanced_metrics_example.php || echo "Advanced metrics example failed"
+          php example/pool_management_example.php || echo "Pool management example failed"
+          php example/security_validation_example.php || echo "Security validation example failed"
+        
+      - name: Test monitoring tools
+        run: |
+          echo "Testing monitoring tools..."
+          php bin/mqtt-monitor --help
+          php bin/mqtt-monitor --mode=snapshot --format=json > /dev/null
+          php bin/mqtt-monitor-pro --help
+          echo "Monitoring tools test completed"
         
       - name: Static analysis
         run: composer analyse

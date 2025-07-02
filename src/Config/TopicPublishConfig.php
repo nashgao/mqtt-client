@@ -9,6 +9,7 @@ use Nashgao\MQTT\Utils\ConfigValidator;
 class TopicPublishConfig
 {
     private array $topics = [];
+
     private array $globalOptions = [];
 
     public function __construct(array $config = [])
@@ -18,7 +19,7 @@ class TopicPublishConfig
                 $this->addTopic(new TopicPublish($topicData));
             }
         }
-        
+
         // Store global publish options
         $this->globalOptions = array_diff_key($config, ['topics' => null]);
     }
@@ -68,14 +69,14 @@ class TopicPublishConfig
     public function toArray(): array
     {
         return array_merge($this->globalOptions, [
-            'topics' => array_map(fn(TopicPublish $topic) => $topic->toArray(), $this->topics)
+            'topics' => array_map(fn (TopicPublish $topic) => $topic->toArray(), $this->topics),
         ]);
     }
 
     public function validate(): bool
     {
         foreach ($this->topics as $topic) {
-            if (!$topic->validate()) {
+            if (! $topic->validate()) {
                 return false;
             }
         }
@@ -86,42 +87,49 @@ class TopicPublishConfig
 class TopicPublish
 {
     public string $topic;
+
     public int $qos = 0;
+
     public bool $retain = false;
+
     public bool $dup = false;
+
     public array $properties = [];
+
     public ?string $messageClass = null;
+
     public array $defaultPayload = [];
+
     public array $metadata = [];
 
     public function __construct(array $config = [])
     {
         // Validate topic configuration
         $validatedConfig = ConfigValidator::validateTopicConfig($config);
-        
+
         foreach ($validatedConfig as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }
         }
-        
+
         // Handle publish-specific options
         if (isset($config['retain'])) {
             $this->retain = (bool) $config['retain'];
         }
-        
+
         if (isset($config['dup'])) {
             $this->dup = (bool) $config['dup'];
         }
-        
+
         if (isset($config['message_class'])) {
             $this->messageClass = $config['message_class'];
         }
-        
+
         if (isset($config['default_payload'])) {
             $this->defaultPayload = $config['default_payload'];
         }
-        
+
         if (isset($config['metadata'])) {
             $this->metadata = $config['metadata'];
         }
@@ -170,7 +178,7 @@ class TopicPublish
 
     public function setQos(int $qos): self
     {
-        if (!in_array($qos, [0, 1, 2], true)) {
+        if (! in_array($qos, [0, 1, 2], true)) {
             throw new \InvalidArgumentException("Invalid QoS level: {$qos}. Must be 0, 1, or 2");
         }
         $this->qos = $qos;
@@ -228,19 +236,19 @@ class TopicPublish
             'dup' => $this->dup,
             'properties' => $this->properties,
         ];
-        
+
         if ($this->messageClass !== null) {
             $array['message_class'] = $this->messageClass;
         }
-        
-        if (!empty($this->defaultPayload)) {
+
+        if (! empty($this->defaultPayload)) {
             $array['default_payload'] = $this->defaultPayload;
         }
-        
-        if (!empty($this->metadata)) {
+
+        if (! empty($this->metadata)) {
             $array['metadata'] = $this->metadata;
         }
-        
+
         return $array;
     }
 

@@ -7,18 +7,24 @@ namespace Nashgao\MQTT\Metrics;
 class HealthMetrics
 {
     private string $status = 'healthy';
+
     private array $healthChecks = [];
+
     private float $lastHealthCheck = 0.0;
+
     private array $healthHistory = [];
+
     private int $consecutiveFailures = 0;
+
     private int $consecutiveSuccesses = 0;
+
     private array $resourceUsage = [];
 
     public function recordHealthCheck(string $component, bool $isHealthy, string $message = '', array $details = []): void
     {
         $timestamp = microtime(true);
         $this->lastHealthCheck = $timestamp;
-        
+
         $this->healthChecks[$component] = [
             'healthy' => $isHealthy,
             'message' => $message,
@@ -30,7 +36,7 @@ class HealthMetrics
         $this->updateOverallStatus();
     }
 
-    public function recordResourceUsage(string $resource, float $value, float $limit = null): void
+    public function recordResourceUsage(string $resource, float $value, ?float $limit = null): void
     {
         $this->resourceUsage[$resource] = [
             'value' => $value,
@@ -38,54 +44,6 @@ class HealthMetrics
             'usage_percentage' => $limit ? ($value / $limit) * 100 : 0,
             'timestamp' => microtime(true),
         ];
-    }
-
-    private function updateHealthHistory(string $component, bool $isHealthy, float $timestamp): void
-    {
-        if (!isset($this->healthHistory[$component])) {
-            $this->healthHistory[$component] = [];
-        }
-
-        $this->healthHistory[$component][] = [
-            'healthy' => $isHealthy,
-            'timestamp' => $timestamp,
-        ];
-
-        if (count($this->healthHistory[$component]) > 100) {
-            array_shift($this->healthHistory[$component]);
-        }
-    }
-
-    private function updateOverallStatus(): void
-    {
-        $allHealthy = true;
-        $hasComponents = false;
-
-        foreach ($this->healthChecks as $component => $check) {
-            $hasComponents = true;
-            if (!$check['healthy']) {
-                $allHealthy = false;
-                break;
-            }
-        }
-
-        $previousStatus = $this->status;
-        
-        if (!$hasComponents) {
-            $this->status = 'unknown';
-        } elseif ($allHealthy) {
-            $this->status = 'healthy';
-            if ($previousStatus !== 'healthy') {
-                $this->consecutiveFailures = 0;
-                $this->consecutiveSuccesses++;
-            }
-        } else {
-            $this->status = 'unhealthy';
-            if ($previousStatus !== 'unhealthy') {
-                $this->consecutiveSuccesses = 0;
-                $this->consecutiveFailures++;
-            }
-        }
     }
 
     public function getOverallStatus(): string
@@ -110,12 +68,12 @@ class HealthMetrics
 
     public function getUnhealthyComponents(): array
     {
-        return array_filter($this->healthChecks, fn($check) => !$check['healthy']);
+        return array_filter($this->healthChecks, fn ($check) => ! $check['healthy']);
     }
 
     public function getHealthUptime(string $component): float
     {
-        if (!isset($this->healthHistory[$component])) {
+        if (! isset($this->healthHistory[$component])) {
             return 0.0;
         }
 
@@ -124,11 +82,11 @@ class HealthMetrics
             return 0.0;
         }
 
-        $healthyCount = count(array_filter($history, fn($entry) => $entry['healthy']));
+        $healthyCount = count(array_filter($history, fn ($entry) => $entry['healthy']));
         return $healthyCount / count($history);
     }
 
-    public function getResourceUsage(string $resource = null): array
+    public function getResourceUsage(?string $resource = null): array
     {
         if ($resource !== null) {
             return $this->resourceUsage[$resource] ?? [];
@@ -138,8 +96,9 @@ class HealthMetrics
 
     public function getCriticalResources(): array
     {
-        return array_filter($this->resourceUsage, fn($resource) => 
-            isset($resource['usage_percentage']) && $resource['usage_percentage'] > 80
+        return array_filter(
+            $this->resourceUsage,
+            fn ($resource) => isset($resource['usage_percentage']) && $resource['usage_percentage'] > 80
         );
     }
 
@@ -165,10 +124,10 @@ class HealthMetrics
         }
 
         $totalComponents = count($this->healthChecks);
-        $healthyComponents = count(array_filter($this->healthChecks, fn($check) => $check['healthy']));
-        
+        $healthyComponents = count(array_filter($this->healthChecks, fn ($check) => $check['healthy']));
+
         $baseScore = $healthyComponents / $totalComponents;
-        
+
         $resourcePenalty = 0.0;
         foreach ($this->resourceUsage as $resource) {
             if (isset($resource['usage_percentage']) && $resource['usage_percentage'] > 90) {
@@ -177,7 +136,7 @@ class HealthMetrics
                 $resourcePenalty += 0.05;
             }
         }
-        
+
         return max(0.0, $baseScore - $resourcePenalty);
     }
 
@@ -195,7 +154,7 @@ class HealthMetrics
             'resource_usage' => $this->resourceUsage,
             'critical_resources' => array_keys($this->getCriticalResources()),
             'component_uptimes' => array_map(
-                fn($component) => $this->getHealthUptime($component),
+                fn ($component) => $this->getHealthUptime($component),
                 array_keys($this->healthChecks)
             ),
         ];
@@ -210,5 +169,53 @@ class HealthMetrics
         $this->consecutiveFailures = 0;
         $this->consecutiveSuccesses = 0;
         $this->resourceUsage = [];
+    }
+
+    private function updateHealthHistory(string $component, bool $isHealthy, float $timestamp): void
+    {
+        if (! isset($this->healthHistory[$component])) {
+            $this->healthHistory[$component] = [];
+        }
+
+        $this->healthHistory[$component][] = [
+            'healthy' => $isHealthy,
+            'timestamp' => $timestamp,
+        ];
+
+        if (count($this->healthHistory[$component]) > 100) {
+            array_shift($this->healthHistory[$component]);
+        }
+    }
+
+    private function updateOverallStatus(): void
+    {
+        $allHealthy = true;
+        $hasComponents = false;
+
+        foreach ($this->healthChecks as $component => $check) {
+            $hasComponents = true;
+            if (! $check['healthy']) {
+                $allHealthy = false;
+                break;
+            }
+        }
+
+        $previousStatus = $this->status;
+
+        if (! $hasComponents) {
+            $this->status = 'unknown';
+        } elseif ($allHealthy) {
+            $this->status = 'healthy';
+            if ($previousStatus !== 'healthy') {
+                $this->consecutiveFailures = 0;
+                ++$this->consecutiveSuccesses;
+            }
+        } else {
+            $this->status = 'unhealthy';
+            if ($previousStatus !== 'unhealthy') {
+                $this->consecutiveSuccesses = 0;
+                ++$this->consecutiveFailures;
+            }
+        }
     }
 }

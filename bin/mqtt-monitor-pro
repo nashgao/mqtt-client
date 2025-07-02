@@ -1,0 +1,294 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Nashgao\MQTT\Utils\ModernMqttMonitor;
+use Nashgao\MQTT\Metrics\ConnectionMetrics;
+use Nashgao\MQTT\Metrics\PerformanceMetrics;
+use Nashgao\MQTT\Metrics\PublishMetrics;
+use Nashgao\MQTT\Metrics\SubscriptionMetrics;
+use Nashgao\MQTT\Metrics\ValidationMetrics;
+
+// Autoload
+require_once __DIR__ . '/../vendor/autoload.php';
+
+/**
+ * MQTT Monitor Pro - Advanced Terminal UI
+ * 
+ * A beautiful, modern monitoring interface inspired by btop, lazydocker, and k9s
+ * 
+ * Usage:
+ *   ./bin/mqtt-monitor-pro [options]
+ * 
+ * Options:
+ *   --theme=THEME        UI theme: dark, light, cyberpunk (default: dark)
+ *   --interval=SECONDS   Refresh interval (1-10, default: 1)
+ *   --demo               Run with demo data
+ *   --help               Show this help message
+ */
+
+function showHelp(): void
+{
+    echo <<<HELP
+\033[38;5;39m
+██████╗ ████████╗ ██████╗ ██████╗     ███╗   ███╗ ██████╗ ███╗   ██╗██╗████████╗ ██████╗ ██████╗     ██████╗ ██████╗  ██████╗ 
+██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗    ████╗ ████║██╔═══██╗████╗  ██║██║╚══██╔══╝██╔═══██╗██╔══██╗    ██╔══██╗██╔══██╗██╔═══██╗
+██████╔╝   ██║   ██║   ██║██████╔╝    ██╔████╔██║██║   ██║██╔██╗ ██║██║   ██║   ██║   ██║██████╔╝    ██████╔╝██████╔╝██║   ██║
+██╔══██╗   ██║   ██║   ██║██╔═══╝     ██║╚██╔╝██║██║   ██║██║╚██╗██║██║   ██║   ██║   ██║██╔══██╗    ██╔═══╝ ██╔══██╗██║   ██║
+██████╔╝   ██║   ╚██████╔╝██║         ██║ ╚═╝ ██║╚██████╔╝██║ ╚████║██║   ██║   ╚██████╔╝██║  ██║    ██║     ██║  ██║╚██████╔╝
+╚═════╝    ╚═╝    ╚═════╝ ╚═╝         ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝    ╚═╝     ╚═╝  ╚═╝ ╚═════╝ 
+\033[0m
+
+\033[1;37mAdvanced MQTT Monitoring Dashboard\033[0m
+
+\033[1;36mUSAGE:\033[0m
+    ./bin/mqtt-monitor-pro [OPTIONS]
+
+\033[1;36mOPTIONS:\033[0m
+    \033[1;32m--theme=THEME\033[0m        UI theme (dark, light, cyberpunk)
+                         \033[2mdark:\033[0m      Professional dark theme (default)
+                         \033[2mlight:\033[0m     Clean light theme  
+                         \033[2mcyberpunk:\033[0m Neon cyberpunk theme
+
+    \033[1;32m--interval=SECONDS\033[0m   Refresh interval (1-10 seconds, default: 1)
+
+    \033[1;32m--demo\033[0m               Run with simulated demo data
+
+    \033[1;32m--help, -h\033[0m           Show this help message
+
+\033[1;36mINTERACTIVE CONTROLS:\033[0m
+    \033[1;33mNavigation:\033[0m
+    ↑↓           Navigate between views
+    
+    \033[1;33mThemes:\033[0m
+    1            Dark theme
+    2            Light theme  
+    3            Cyberpunk theme
+    
+    \033[1;33mControls:\033[0m
+    +/=          Increase refresh rate
+    -/_          Decrease refresh rate
+    R            Reset all metrics
+    E            Export metrics to JSON
+    Q/Ctrl+C     Quit
+    
+    \033[1;33mFunction Keys:\033[0m
+    F1           Help (this screen)
+    F2           Theme selector
+    F3           Export options
+    F4           Settings
+
+\033[1;36mVIEWS:\033[0m
+    📊 \033[1;37mOverview\033[0m      Real-time dashboard with all metrics
+    🔗 \033[1;37mConnections\033[0m   Connection status and history
+    📤 \033[1;37mPublishing\033[0m    Message publishing statistics  
+    📥 \033[1;37mSubscriptions\033[0m Topic subscriptions and patterns
+    ⚡ \033[1;37mPerformance\033[0m   Response times and throughput
+    📈 \033[1;37mAnalytics\033[0m     Advanced metrics and trends
+
+\033[1;36mFEATURES:\033[0m
+    • \033[1;32mReal-time monitoring\033[0m with live charts and sparklines
+    • \033[1;32mInteractive navigation\033[0m with keyboard shortcuts
+    • \033[1;32mMultiple themes\033[0m for different environments
+    • \033[1;32mActivity feed\033[0m showing live MQTT events
+    • \033[1;32mAdvanced charts\033[0m with historical data
+    • \033[1;32mExport functionality\033[0m for metrics analysis
+
+\033[1;36mEXAMPLES:\033[0m
+    # Start with default dark theme
+    ./bin/mqtt-monitor-pro
+    
+    # Use cyberpunk theme with 2-second refresh
+    ./bin/mqtt-monitor-pro --theme=cyberpunk --interval=2
+    
+    # Run demo mode to see the interface
+    ./bin/mqtt-monitor-pro --demo
+
+\033[1;36mREQUIREMENTS:\033[0m
+    • Terminal with 256-color support
+    • Minimum 120x30 terminal size recommended
+    • UTF-8 character encoding
+
+\033[2mPowered by Advanced Terminal UI Framework\033[0m
+
+HELP;
+}
+
+function parseArguments(array $args): array
+{
+    $options = [
+        'theme' => 'dark',
+        'interval' => 1,
+        'demo' => false,
+        'help' => false,
+    ];
+
+    for ($i = 1; $i < count($args); $i++) {
+        $arg = $args[$i];
+
+        if (in_array($arg, ['--help', '-h'])) {
+            $options['help'] = true;
+            continue;
+        }
+
+        if ($arg === '--demo') {
+            $options['demo'] = true;
+            continue;
+        }
+
+        if (strpos($arg, '--') === 0) {
+            $parts = explode('=', substr($arg, 2), 2);
+            $key = $parts[0];
+            $value = $parts[1] ?? true;
+
+            if ($key === 'interval') {
+                $value = max(1, min(10, (int) $value));
+            }
+
+            if ($key === 'theme') {
+                $validThemes = ['dark', 'light', 'cyberpunk'];
+                if (!in_array($value, $validThemes)) {
+                    echo "\033[1;31mError:\033[0m Invalid theme '$value'. Valid themes: " . implode(', ', $validThemes) . "\n";
+                    exit(1);
+                }
+            }
+
+            $options[$key] = $value;
+        }
+    }
+
+    return $options;
+}
+
+function createSampleMetrics(): array
+{
+    // Create sample metrics with realistic data
+    $connection = (new ConnectionMetrics())
+        ->recordConnectionAttempt()
+        ->recordSuccessfulConnection(0.15)
+        ->recordConnectionAttempt()
+        ->recordSuccessfulConnection(0.12)
+        ->recordConnectionAttempt()
+        ->recordSuccessfulConnection(0.18);
+
+    $publish = (new PublishMetrics())
+        ->recordPublishAttempt()
+        ->recordSuccessfulPublish('sensor/temperature', 1, 250)
+        ->recordPublishAttempt()
+        ->recordSuccessfulPublish('device/status', 0, 180)
+        ->recordPublishAttempt()
+        ->recordSuccessfulPublish('alerts/warning', 2, 320);
+
+    $subscription = (new SubscriptionMetrics())
+        ->recordSubscriptionAttempt()
+        ->recordSuccessfulSubscription('pool1', 'client1', ['sensor/+' => 1])
+        ->recordSubscriptionAttempt()
+        ->recordSuccessfulSubscription('pool2', 'client2', ['alerts/#' => 2]);
+
+    $validation = (new ValidationMetrics())
+        ->recordValidation('connection_config', true)
+        ->recordValidation('topic_config', true)
+        ->recordValidation('pool_config', true);
+
+    $performance = new PerformanceMetrics();
+
+    return [
+        'connection' => $connection,
+        'publish' => $publish,
+        'subscription' => $subscription,
+        'validation' => $validation,
+        'performance' => $performance,
+    ];
+}
+
+function showWelcomeMessage(array $options): void
+{
+    echo "\033[2J\033[H"; // Clear screen
+    
+    echo "\033[38;5;39m🚀 Starting MQTT Monitor Pro...\033[0m\n\n";
+    echo "Theme: \033[1;33m" . ucfirst($options['theme']) . "\033[0m\n";
+    echo "Refresh: \033[1;33m{$options['interval']}s\033[0m\n";
+    echo "Mode: \033[1;33m" . ($options['demo'] ? 'Demo' : 'Live') . "\033[0m\n\n";
+    
+    echo "\033[38;5;245mTip: Use ↑↓ to navigate, 1-3 for themes, Q to quit\033[0m\n";
+    echo "\033[38;5;245mPress any key to start...\033[0m";
+    
+    // Wait for key press
+    if (posix_isatty(STDIN)) {
+        $stdin = fopen('php://stdin', 'r');
+        fread($stdin, 1);
+        fclose($stdin);
+    } else {
+        // Non-interactive environment, wait 2 seconds then continue
+        sleep(2);
+    }
+}
+
+function checkTerminalRequirements(): bool
+{
+    // Check if terminal supports colors
+    $colorterm = getenv('COLORTERM');
+    $term = getenv('TERM');
+    
+    if (!$colorterm && !str_contains($term, '256')) {
+        echo "\033[1;33mWarning:\033[0m Your terminal may not support 256 colors.\n";
+        echo "For the best experience, use a modern terminal like iTerm2, Terminal.app, or gnome-terminal.\n\n";
+    }
+    
+    // Check terminal size
+    $output = [];
+    exec('stty size 2>/dev/null', $output);
+    if (!empty($output[0])) {
+        [$height, $width] = explode(' ', trim($output[0]));
+        if ((int) $width < 120 || (int) $height < 30) {
+            echo "\033[1;33mWarning:\033[0m Terminal size is {$width}x{$height}.\n";
+            echo "Recommended minimum size is 120x30 for optimal display.\n\n";
+        }
+    }
+    
+    return true;
+}
+
+// Main execution
+try {
+    $options = parseArguments($argv);
+
+    if ($options['help']) {
+        showHelp();
+        exit(0);
+    }
+
+    // Check terminal capabilities
+    checkTerminalRequirements();
+
+    // Show welcome message
+    showWelcomeMessage($options);
+
+    // Create monitor instance
+    $monitor = (new ModernMqttMonitor())
+        ->setTheme($options['theme'])
+        ->setRefreshInterval($options['interval']);
+
+    // Add sample metrics if in demo mode
+    if ($options['demo']) {
+        $metrics = createSampleMetrics();
+        $monitor->addMetrics(
+            $metrics['connection'],
+            $metrics['performance'],
+            $metrics['publish'],
+            $metrics['subscription'],
+            $metrics['validation']
+        );
+    }
+
+    // Start monitoring
+    $monitor->start();
+
+} catch (Exception $e) {
+    echo "\033[1;31mError:\033[0m {$e->getMessage()}\n";
+    exit(1);
+} catch (Throwable $e) {
+    echo "\033[1;31mFatal error:\033[0m {$e->getMessage()}\n";
+    exit(1);
+}

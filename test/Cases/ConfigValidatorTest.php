@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Nashgao\MQTT\Test\Cases;
 
 use Nashgao\MQTT\Exception\InvalidConfigException;
+use Nashgao\MQTT\Metrics\ValidationMetrics;
 use Nashgao\MQTT\Test\AbstractTestCase;
 use Nashgao\MQTT\Utils\ConfigValidator;
-use Nashgao\MQTT\Metrics\ValidationMetrics;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 class ConfigValidatorTest extends AbstractTestCase
 {
     private ValidationMetrics $validationMetrics;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -36,7 +36,7 @@ class ConfigValidatorTest extends AbstractTestCase
 
         $result = ConfigValidator::validateConnectionConfig($validConfig);
         $this->assertEquals($validConfig, $result);
-        
+
         // Verify metrics were recorded
         $count = $this->validationMetrics->getValidationCount('connection_config');
         $this->assertEquals(1, $count['total']);
@@ -59,7 +59,7 @@ class ConfigValidatorTest extends AbstractTestCase
             $this->assertEquals(1, $count['total']);
             $this->assertEquals(0, $count['successful']);
             $this->assertEquals(1, $count['failed']);
-            
+
             throw $e;
         }
     }
@@ -97,7 +97,7 @@ class ConfigValidatorTest extends AbstractTestCase
 
         $result = ConfigValidator::validateTopicConfig($validConfig);
         $this->assertEquals($validConfig, $result);
-        
+
         // Verify metrics were recorded
         $count = $this->validationMetrics->getValidationCount('topic_config');
         $this->assertEquals(1, $count['total']);
@@ -193,7 +193,7 @@ class ConfigValidatorTest extends AbstractTestCase
         foreach ($validFilters as $filter) {
             $this->assertTrue(ConfigValidator::validateTopicFilter($filter), "Filter '{$filter}' should be valid");
         }
-        
+
         // Verify metrics were recorded for all valid filters
         $count = $this->validationMetrics->getValidationCount('topic_filter');
         $this->assertEquals(count($validFilters), $count['total']);
@@ -205,7 +205,7 @@ class ConfigValidatorTest extends AbstractTestCase
     {
         // Reset metrics to get clean count
         $this->validationMetrics->reset();
-        
+
         // Invalid topic filters
         $invalidFilters = [
             'sensors/temp+/data',     // + not alone in level
@@ -217,7 +217,7 @@ class ConfigValidatorTest extends AbstractTestCase
         foreach ($invalidFilters as $filter) {
             $this->assertFalse(ConfigValidator::validateTopicFilter($filter), "Filter '{$filter}' should be invalid");
         }
-        
+
         // Verify metrics were recorded for all invalid filters
         $count = $this->validationMetrics->getValidationCount('topic_filter');
         $this->assertEquals(count($invalidFilters), $count['total']);
@@ -288,7 +288,7 @@ class ConfigValidatorTest extends AbstractTestCase
     {
         // Reset metrics to get clean count
         $this->validationMetrics->reset();
-        
+
         // Valid keep alive values
         $validKeepAlives = [0, 60, 300, 65535];
 
@@ -297,7 +297,7 @@ class ConfigValidatorTest extends AbstractTestCase
             $result = ConfigValidator::validateConnectionConfig($config);
             $this->assertEquals($config, $result);
         }
-        
+
         // Verify metrics for valid configs
         $count = $this->validationMetrics->getValidationCount('connection_config');
         $this->assertEquals(count($validKeepAlives), $count['successful']);
@@ -310,22 +310,22 @@ class ConfigValidatorTest extends AbstractTestCase
             'keep_alive' => 65536,
         ]);
     }
-    
+
     public function testValidationMetricsIntegration()
     {
         // Reset metrics
         $this->validationMetrics->reset();
-        
+
         // Perform some validations
         ConfigValidator::validateConnectionConfig(['host' => 'localhost', 'port' => 1883]);
         ConfigValidator::validateTopicConfig(['qos' => 1]);
         ConfigValidator::validatePoolConfig(['min_connections' => 1, 'max_connections' => 5]);
-        
+
         // Test that metrics were recorded
         $this->assertEquals(3, $this->validationMetrics->getTotalValidations());
         $this->assertEquals(0, $this->validationMetrics->getTotalErrors());
         $this->assertEquals(1.0, $this->validationMetrics->getOverallSuccessRate());
-        
+
         // Test metrics output
         $metricsArray = $this->validationMetrics->toArray();
         $this->assertIsArray($metricsArray);
