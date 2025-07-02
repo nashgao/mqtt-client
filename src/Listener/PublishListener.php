@@ -11,6 +11,7 @@ use Nashgao\MQTT\Metrics\ValidationMetrics;
 use Nashgao\MQTT\Utils\ConfigValidator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Simps\MQTT\Listener\Traits\ValidationTrait;
 
 use function Hyperf\Support\make;
 
@@ -19,6 +20,8 @@ use function Hyperf\Support\make;
  */
 class PublishListener implements ListenerInterface
 {
+    use ValidationTrait;
+
     private LoggerInterface $logger;
 
     private ValidationMetrics $validationMetrics;
@@ -86,22 +89,7 @@ class PublishListener implements ListenerInterface
                 'qos' => $event->qos,
             ]);
         } catch (\Exception $e) {
-            // Record failed publish
-            $this->validationMetrics->recordValidation(
-                'publish_operation',
-                false,
-                "Failed to publish to topic '{$event->topic}': {$e->getMessage()}"
-            );
-
-            $this->logger->error('Failed to publish MQTT message', [
-                'topic' => $event->topic ?? 'unknown',
-                'pool' => $event->poolName ?? 'default',
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            // Re-throw the exception to maintain error behavior
-            throw $e;
+            $this->handleValidationError('publish_operation', $e);
         }
     }
 
@@ -173,22 +161,5 @@ class PublishListener implements ListenerInterface
         if (strlen($event->message) > 268435455) { // MQTT maximum message size
             throw new \InvalidArgumentException('Message size exceeds MQTT maximum limit');
         }
-    }
-
-    /**
-     * Get and validate the pool name.
-     */
-    private function getValidatedPoolName(PublishEvent $event): string
-    {
-        $poolName = $event->poolName ?? 'default';
-
-        if (! is_string($poolName) || empty($poolName)) {
-            $this->logger->warning('Invalid pool name, using default', [
-                'provided_pool' => $poolName,
-            ]);
-            return 'default';
-        }
-
-        return $poolName;
     }
 }

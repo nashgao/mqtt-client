@@ -140,7 +140,7 @@ class ModernMqttMonitor
 
         echo "\033[38;5;39m"; // Blue color
         foreach ($logo as $line) {
-            echo str_repeat(' ', max(0, (int)((120 - strlen($line)) / 2))) . $line . "\n";
+            echo str_repeat(' ', max(0, (int) ((120 - strlen($line)) / 2))) . $line . "\n";
             usleep(100000); // Animation delay
         }
         echo "\033[0m";
@@ -463,7 +463,7 @@ class ModernMqttMonitor
                 ['info', 'QoS 2 message delivered'],
                 ['success', 'Heartbeat received from gateway_' . rand(1, 50)],
             ];
-            
+
             $event = $events[array_rand($events)];
             $this->addEvent($event[0], $event[1]);
         }

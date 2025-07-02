@@ -2,29 +2,16 @@
 
 declare(strict_types=1);
 
-/**
- * Security & Validation Example
- * 
- * This example demonstrates:
- * - Configuration validation
- * - Security best practices
- * - Input sanitization
- * - SSL/TLS connections
- * - Authentication methods
- * - Topic access control
- */
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Nashgao\MQTT\Config\ClientConfig;
 use Nashgao\MQTT\Config\TopicPublishConfig;
-use Nashgao\MQTT\Config\TopicSubscriptionConfig;
-use Nashgao\MQTT\Utils\ConfigValidator;
-use Nashgao\MQTT\Metrics\ValidationMetrics;
 use Nashgao\MQTT\Exception\InvalidConfigException;
+use Nashgao\MQTT\Metrics\ValidationMetrics;
+use Nashgao\MQTT\Utils\ConfigValidator;
 
 echo "🔒 Security & Validation Example\n";
-echo str_repeat("=", 50) . "\n\n";
+echo str_repeat('=', 50) . "\n\n";
 
 try {
     // 1. Initialize validation components
@@ -35,16 +22,16 @@ try {
 
     // 2. Demonstrate client configuration validation
     echo "🔍 Testing client configuration validation...\n";
-    
+
     // Valid configuration
-    $simpsConfig = new \Simps\MQTT\Config\ClientConfig();
+    $simpsConfig = new Simps\MQTT\Config\ClientConfig();
     $simpsConfig->setHost('secure.mqtt.broker.com')
-               ->setPort(8883)  // Secure port
-               ->setClientId('secure_client_' . uniqid())
-               ->setUserName('valid_user')
-               ->setPassword('SecureP@ssw0rd123!')
-               ->setTimeout(30);
-    
+        ->setPort(8883)  // Secure port
+        ->setClientId('secure_client_' . uniqid())
+        ->setUserName('valid_user')
+        ->setPassword('SecureP@ssw0rd123!')
+        ->setTimeout(30);
+
     $validConfig = new ClientConfig(
         'secure.mqtt.broker.com',
         8883,
@@ -53,10 +40,10 @@ try {
 
     $validationResult = $validator->validateClientConfig($validConfig);
     $validationMetrics->recordValidation('client_config', $validationResult['valid']);
-    
+
     echo "   📋 Valid Configuration Test:\n";
-    echo "      Result: " . ($validationResult['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
-    if (!empty($validationResult['errors'])) {
+    echo '      Result: ' . ($validationResult['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
+    if (! empty($validationResult['errors'])) {
         foreach ($validationResult['errors'] as $error) {
             echo "      Error: {$error}\n";
         }
@@ -71,17 +58,17 @@ try {
         'empty_client_id' => ['host' => 'test.com', 'port' => 1883, 'client_id' => ''],
         'weak_password' => ['host' => 'test.com', 'port' => 1883, 'client_id' => 'test'],
     ];
-    
+
     foreach ($testCases as $name => $testCase) {
-        $testSimpsConfig = new \Simps\MQTT\Config\ClientConfig();
+        $testSimpsConfig = new Simps\MQTT\Config\ClientConfig();
         $testSimpsConfig->setHost($testCase['host'])
-                       ->setPort($testCase['port'])
-                       ->setClientId($testCase['client_id']);
-        
+            ->setPort($testCase['port'])
+            ->setClientId($testCase['client_id']);
+
         if ($name === 'weak_password') {
             $testSimpsConfig->setUserName('user')->setPassword('123');
         }
-        
+
         $invalidConfigs[$name] = new ClientConfig(
             $testCase['host'],
             $testCase['port'],
@@ -92,10 +79,10 @@ try {
     foreach ($invalidConfigs as $testName => $config) {
         $result = $validator->validateClientConfig($config);
         $validationMetrics->recordValidation('client_config', $result['valid']);
-        
+
         echo "   📋 {$testName} Test:\n";
-        echo "      Result: " . ($result['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
-        if (!empty($result['errors'])) {
+        echo '      Result: ' . ($result['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
+        if (! empty($result['errors'])) {
             foreach ($result['errors'] as $error) {
                 echo "      Error: {$error}\n";
             }
@@ -105,7 +92,7 @@ try {
 
     // 3. Topic validation and security
     echo "🏷️  Testing topic validation and security...\n";
-    
+
     $topicTests = [
         'valid_sensor_topic' => 'sensors/temperature/room1',
         'valid_wildcard_subscription' => 'sensors/+/room1',
@@ -122,18 +109,18 @@ try {
         $publishConfig->topic = $topic;
         $publishConfig->payload = 'test';
         $publishConfig->qos = 0;
-        
+
         $result = $validator->validateTopicConfig($publishConfig);
         $validationMetrics->recordValidation('topic_config', $result['valid']);
-        
+
         echo "   📋 {$testName}: '{$topic}'\n";
-        echo "      Result: " . ($result['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
-        if (!empty($result['errors'])) {
+        echo '      Result: ' . ($result['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
+        if (! empty($result['errors'])) {
             foreach ($result['errors'] as $error) {
                 echo "      Error: {$error}\n";
             }
         }
-        if (!empty($result['warnings'])) {
+        if (! empty($result['warnings'])) {
             foreach ($result['warnings'] as $warning) {
                 echo "      Warning: {$warning}\n";
             }
@@ -143,7 +130,7 @@ try {
 
     // 4. Payload validation and sanitization
     echo "📦 Testing payload validation and sanitization...\n";
-    
+
     $payloadTests = [
         'valid_json' => json_encode(['temperature' => 23.5, 'unit' => 'C']),
         'valid_plain_text' => 'Temperature: 23.5°C',
@@ -160,19 +147,19 @@ try {
         $publishConfig->topic = 'test/payload';
         $publishConfig->payload = $payload;
         $publishConfig->qos = 0;
-        
+
         $result = $validator->validatePayload($publishConfig);
         $validationMetrics->recordValidation('payload_validation', $result['valid']);
-        
+
         echo "   📋 {$testName}:\n";
-        echo "      Size: " . strlen($payload) . " bytes\n";
-        echo "      Result: " . ($result['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
-        if (!empty($result['errors'])) {
+        echo '      Size: ' . strlen($payload) . " bytes\n";
+        echo '      Result: ' . ($result['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
+        if (! empty($result['errors'])) {
             foreach ($result['errors'] as $error) {
                 echo "      Error: {$error}\n";
             }
         }
-        if (!empty($result['warnings'])) {
+        if (! empty($result['warnings'])) {
             foreach ($result['warnings'] as $warning) {
                 echo "      Warning: {$warning}\n";
             }
@@ -185,7 +172,7 @@ try {
 
     // 5. SSL/TLS Configuration validation
     echo "🔐 Testing SSL/TLS configuration validation...\n";
-    
+
     $sslConfigs = [
         'valid_ssl_config' => [
             'host' => 'secure.mqtt.broker.com',
@@ -214,15 +201,15 @@ try {
     foreach ($sslConfigs as $testName => $sslConfig) {
         $result = $validator->validateSSLConfig($sslConfig);
         $validationMetrics->recordValidation('ssl_config', $result['valid']);
-        
+
         echo "   📋 {$testName}:\n";
-        echo "      Result: " . ($result['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
-        if (!empty($result['errors'])) {
+        echo '      Result: ' . ($result['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
+        if (! empty($result['errors'])) {
             foreach ($result['errors'] as $error) {
                 echo "      Error: {$error}\n";
             }
         }
-        if (!empty($result['warnings'])) {
+        if (! empty($result['warnings'])) {
             foreach ($result['warnings'] as $warning) {
                 echo "      Warning: {$warning}\n";
             }
@@ -232,7 +219,7 @@ try {
 
     // 6. Authentication validation
     echo "🔑 Testing authentication validation...\n";
-    
+
     $authTests = [
         'strong_credentials' => ['username' => 'admin_user', 'password' => 'StrongP@ssw0rd123!'],
         'weak_password' => ['username' => 'user', 'password' => '123'],
@@ -244,12 +231,12 @@ try {
     foreach ($authTests as $testName => $credentials) {
         $result = $validator->validateCredentials($credentials['username'], $credentials['password']);
         $validationMetrics->recordValidation('auth_validation', $result['valid']);
-        
+
         echo "   📋 {$testName}:\n";
         echo "      Username: '{$credentials['username']}'\n";
-        echo "      Password: " . (empty($credentials['password']) ? 'empty' : str_repeat('*', strlen($credentials['password']))) . "\n";
-        echo "      Result: " . ($result['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
-        if (!empty($result['errors'])) {
+        echo '      Password: ' . (empty($credentials['password']) ? 'empty' : str_repeat('*', strlen($credentials['password']))) . "\n";
+        echo '      Result: ' . ($result['valid'] ? '✅ Valid' : '❌ Invalid') . "\n";
+        if (! empty($result['errors'])) {
             foreach ($result['errors'] as $error) {
                 echo "      Error: {$error}\n";
             }
@@ -259,7 +246,7 @@ try {
 
     // 7. Security recommendations
     echo "🛡️  Security Recommendations:\n";
-    echo str_repeat("-", 40) . "\n";
+    echo str_repeat('-', 40) . "\n";
     echo "1. ✅ Always use SSL/TLS for production (port 8883)\n";
     echo "2. ✅ Implement strong authentication (username/password or certificates)\n";
     echo "3. ✅ Validate all input data (topics, payloads, configuration)\n";
@@ -273,8 +260,8 @@ try {
 
     // 8. Validation metrics summary
     echo "📊 Validation Metrics Summary:\n";
-    echo str_repeat("-", 40) . "\n";
-    
+    echo str_repeat('-', 40) . "\n";
+
     $validationTypes = ['client_config', 'topic_config', 'payload_validation', 'ssl_config', 'auth_validation'];
     foreach ($validationTypes as $type) {
         $stats = $validationMetrics->getValidationCount($type);
@@ -287,7 +274,6 @@ try {
     }
 
     echo "🔒 Security & Validation Example completed successfully!\n";
-
 } catch (InvalidConfigException $e) {
     echo "❌ Configuration Error: {$e->getMessage()}\n";
 } catch (Exception $e) {
@@ -295,5 +281,5 @@ try {
     echo "📋 Stack trace:\n{$e->getTraceAsString()}\n";
 }
 
-echo "\n" . str_repeat("=", 50) . "\n";
+echo "\n" . str_repeat('=', 50) . "\n";
 echo "📚 Example: Security & Validation - Complete\n";

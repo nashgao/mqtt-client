@@ -2,16 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * Basic MQTT Client Example
- * 
- * This example demonstrates:
- * - Basic client configuration
- * - Publishing messages
- * - Subscribing to topics
- * - Error handling
- */
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Nashgao\MQTT\Client;
@@ -21,19 +11,19 @@ use Nashgao\MQTT\Config\TopicSubscriptionConfig;
 use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
 
 echo "🚀 Basic MQTT Client Example\n";
-echo str_repeat("=", 50) . "\n\n";
+echo str_repeat('=', 50) . "\n\n";
 
 try {
     // 1. Create client configuration
     echo "📝 Creating client configuration...\n";
-    $simpsConfig = new \Simps\MQTT\Config\ClientConfig();
+    $simpsConfig = new Simps\MQTT\Config\ClientConfig();
     $simpsConfig->setHost('test.mosquitto.org')  // Public MQTT broker
-                ->setPort(1883)
-                ->setClientId('php_basic_example_' . uniqid())
-                ->setUserName('')  // No auth required for test broker
-                ->setPassword('')
-                ->setTimeout(60);
-    
+        ->setPort(1883)
+        ->setClientId('php_basic_example_' . uniqid())
+        ->setUserName('')  // No auth required for test broker
+        ->setPassword('')
+        ->setTimeout(60);
+
     $clientConfig = new ClientConfig(
         'test.mosquitto.org',
         1883,
@@ -47,7 +37,7 @@ try {
     // 2. Create MQTT client
     echo "🔌 Creating MQTT client...\n";
     $client = new Client();
-    
+
     // 3. Connect to broker
     echo "🌐 Connecting to MQTT broker...\n";
     $client->connect($clientConfig);
@@ -58,7 +48,7 @@ try {
     $subscriptionConfig = new TopicSubscriptionConfig();
     $subscriptionConfig->topic = 'test/php/basic/+';
     $subscriptionConfig->qos = 1;
-    
+
     $client->subscribe($subscriptionConfig);
     echo "   ✅ Subscribed to: {$subscriptionConfig->topic}\n\n";
 
@@ -76,7 +66,7 @@ try {
         $publishConfig->payload = $payload;
         $publishConfig->qos = 1;
         $publishConfig->retain = false;
-        
+
         $client->publish($publishConfig);
         echo "   ✅ Published to {$topic}: " . substr($payload, 0, 50) . "...\n";
         usleep(500000); // Wait 0.5 seconds between messages
@@ -89,7 +79,6 @@ try {
     echo "\n🔌 Disconnecting...\n";
     $client->disconnect();
     echo "   ✅ Disconnected successfully!\n";
-
 } catch (InvalidMQTTConnectionException $e) {
     echo "❌ Connection Error: {$e->getMessage()}\n";
     echo "💡 Tip: Make sure you have internet connection and the broker is accessible.\n";
@@ -98,5 +87,5 @@ try {
     echo "📋 Stack trace:\n{$e->getTraceAsString()}\n";
 }
 
-echo "\n" . str_repeat("=", 50) . "\n";
+echo "\n" . str_repeat('=', 50) . "\n";
 echo "📚 Example: Basic MQTT Client - Complete\n";

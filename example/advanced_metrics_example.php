@@ -2,30 +2,18 @@
 
 declare(strict_types=1);
 
-/**
- * Advanced Metrics Example
- * 
- * This example demonstrates:
- * - Comprehensive metrics collection
- * - Performance monitoring
- * - Health checking
- * - Metrics visualization
- * - Export functionality
- */
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Nashgao\MQTT\Metrics\ConnectionMetrics;
+use Nashgao\MQTT\Metrics\ErrorMetrics;
+use Nashgao\MQTT\Metrics\HealthMetrics;
 use Nashgao\MQTT\Metrics\PerformanceMetrics;
 use Nashgao\MQTT\Metrics\PublishMetrics;
 use Nashgao\MQTT\Metrics\SubscriptionMetrics;
 use Nashgao\MQTT\Metrics\ValidationMetrics;
-use Nashgao\MQTT\Metrics\ErrorMetrics;
-use Nashgao\MQTT\Metrics\HealthMetrics;
-use Nashgao\MQTT\Utils\MetricsVisualizer;
 
 echo "📊 Advanced MQTT Metrics Example\n";
-echo str_repeat("=", 60) . "\n\n";
+echo str_repeat('=', 60) . "\n\n";
 
 try {
     // 1. Initialize all metrics
@@ -37,14 +25,14 @@ try {
     $validationMetrics = new ValidationMetrics();
     $errorMetrics = new ErrorMetrics();
     $healthMetrics = new HealthMetrics();
-    
+
     echo "   ✅ All metrics collectors initialized\n\n";
 
     // 2. Simulate connection activities
     echo "🔌 Simulating connection activities...\n";
-    for ($i = 1; $i <= 10; $i++) {
+    for ($i = 1; $i <= 10; ++$i) {
         $connectionMetrics->recordConnectionAttempt();
-        
+
         if ($i <= 8) {
             // Successful connections
             $connectionTime = round(rand(100, 300) / 1000, 3);
@@ -56,7 +44,7 @@ try {
             $errorMetrics->recordError('connection', 'Connection timeout', 'high');
             echo "   ❌ Connection #{$i} failed\n";
         }
-        
+
         usleep(100000); // 0.1 second delay
     }
     echo "\n";
@@ -68,16 +56,16 @@ try {
         'sensors/humidity',
         'devices/status',
         'alerts/warning',
-        'system/heartbeat'
+        'system/heartbeat',
     ];
 
-    for ($i = 1; $i <= 20; $i++) {
+    for ($i = 1; $i <= 20; ++$i) {
         $topic = $topics[array_rand($topics)];
         $qos = rand(0, 2);
         $payloadSize = rand(50, 500);
-        
+
         $publishMetrics->recordPublishAttempt();
-        
+
         if ($i <= 17) {
             // Successful publishes
             $publishTime = round(rand(10, 100) / 1000, 3);
@@ -90,7 +78,7 @@ try {
             $errorMetrics->recordError('publish', 'Network error', 'medium');
             echo "   ❌ Failed to publish to {$topic}\n";
         }
-        
+
         usleep(50000); // 0.05 second delay
     }
     echo "\n";
@@ -98,20 +86,20 @@ try {
     // 4. Simulate subscription activities
     echo "📥 Simulating subscription activities...\n";
     $subscriptionPatterns = [
-        'sensors/+'           => 1,
-        'devices/#'          => 2,
-        'alerts/+'           => 2,
-        'system/heartbeat'   => 0,
-        'logs/+/error'       => 1
+        'sensors/+' => 1,
+        'devices/#' => 2,
+        'alerts/+' => 2,
+        'system/heartbeat' => 0,
+        'logs/+/error' => 1,
     ];
 
     foreach ($subscriptionPatterns as $pattern => $qos) {
         $poolId = 'pool_' . rand(1, 3);
         $clientId = 'client_' . rand(100, 999);
-        
+
         $subscriptionMetrics->recordSubscriptionAttempt();
         $subscriptionMetrics->recordSuccessfulSubscription($poolId, $clientId, [$pattern => $qos]);
-        
+
         echo "   ✅ Subscribed to {$pattern} (QoS {$qos}) - {$clientId} in {$poolId}\n";
         usleep(100000);
     }
@@ -121,19 +109,19 @@ try {
     echo "✅ Simulating validation activities...\n";
     $validationTypes = [
         'connection_config' => [true, true, true, false, true],
-        'topic_config'      => [true, true, true, true, true],
-        'pool_config'       => [true, false, true, true, true],
-        'security_config'   => [true, true, true, true, false]
+        'topic_config' => [true, true, true, true, true],
+        'pool_config' => [true, false, true, true, true],
+        'security_config' => [true, true, true, true, false],
     ];
 
     foreach ($validationTypes as $type => $results) {
         foreach ($results as $result) {
             $validationMetrics->recordValidation($type, $result);
-            if (!$result) {
+            if (! $result) {
                 $errorMetrics->recordError('validation', "Failed {$type} validation", 'low');
             }
         }
-        
+
         $stats = $validationMetrics->getValidationCount($type);
         echo "   📋 {$type}: {$stats['success_count']}/{$stats['total_count']} passed\n";
     }
@@ -145,23 +133,23 @@ try {
     $healthMetrics->recordHealthCheck('message_broker', true, 0.023);
     $healthMetrics->recordHealthCheck('validation_service', false, 0.156);
     $healthMetrics->recordHealthCheck('metrics_collector', true, 0.012);
-    
+
     $healthStatus = $healthMetrics->getOverallHealth();
     echo "   📊 Overall health: {$healthStatus['status']} ({$healthStatus['score']}%)\n";
-    echo "   🔍 Unhealthy services: " . implode(', ', $healthStatus['unhealthy_services']) . "\n\n";
+    echo '   🔍 Unhealthy services: ' . implode(', ', $healthStatus['unhealthy_services']) . "\n\n";
 
     // 7. Display comprehensive metrics
     echo "📈 Metrics Summary:\n";
-    echo str_repeat("-", 40) . "\n";
-    
+    echo str_repeat('-', 40) . "\n";
+
     // Connection metrics
     $connStats = $connectionMetrics->getConnectionStats();
     echo "🔌 Connections:\n";
     echo "   Total attempts: {$connStats['total_attempts']}\n";
     echo "   Successful: {$connStats['successful_connections']}\n";
     echo "   Failed: {$connStats['failed_connections']}\n";
-    echo "   Success rate: " . round($connStats['success_rate'] * 100, 1) . "%\n";
-    echo "   Avg connection time: " . round($connStats['average_connection_time'], 3) . "s\n\n";
+    echo '   Success rate: ' . round($connStats['success_rate'] * 100, 1) . "%\n";
+    echo '   Avg connection time: ' . round($connStats['average_connection_time'], 3) . "s\n\n";
 
     // Publishing metrics
     $pubStats = $publishMetrics->getPublishingStats();
@@ -169,16 +157,16 @@ try {
     echo "   Total attempts: {$pubStats['total_attempts']}\n";
     echo "   Successful: {$pubStats['successful_publishes']}\n";
     echo "   Failed: {$pubStats['failed_publishes']}\n";
-    echo "   Success rate: " . round($pubStats['success_rate'] * 100, 1) . "%\n";
+    echo '   Success rate: ' . round($pubStats['success_rate'] * 100, 1) . "%\n";
     echo "   Total payload: {$pubStats['total_payload_size']} bytes\n\n";
 
     // Performance metrics
     $perfStats = $performanceMetrics->getPerformanceStats();
     echo "⚡ Performance:\n";
-    echo "   Avg latency: " . round($perfStats['average_latency'], 3) . "s\n";
-    echo "   Min latency: " . round($perfStats['min_latency'], 3) . "s\n";
-    echo "   Max latency: " . round($perfStats['max_latency'], 3) . "s\n";
-    echo "   95th percentile: " . round($perfStats['p95_latency'], 3) . "s\n\n";
+    echo '   Avg latency: ' . round($perfStats['average_latency'], 3) . "s\n";
+    echo '   Min latency: ' . round($perfStats['min_latency'], 3) . "s\n";
+    echo '   Max latency: ' . round($perfStats['max_latency'], 3) . "s\n";
+    echo '   95th percentile: ' . round($perfStats['p95_latency'], 3) . "s\n\n";
 
     // Error metrics
     $errorStats = $errorMetrics->getErrorStats();
@@ -200,10 +188,10 @@ try {
             'connection_config' => $validationMetrics->getValidationCount('connection_config'),
             'topic_config' => $validationMetrics->getValidationCount('topic_config'),
             'pool_config' => $validationMetrics->getValidationCount('pool_config'),
-            'security_config' => $validationMetrics->getValidationCount('security_config')
+            'security_config' => $validationMetrics->getValidationCount('security_config'),
         ],
         'error_metrics' => $errorMetrics->getErrorStats(),
-        'health_metrics' => $healthMetrics->getOverallHealth()
+        'health_metrics' => $healthMetrics->getOverallHealth(),
     ];
 
     $exportFile = __DIR__ . '/metrics/advanced_metrics_export_' . date('Y-m-d_H-i-s') . '.json';
@@ -211,11 +199,10 @@ try {
     echo "   ✅ Metrics exported to: {$exportFile}\n";
 
     echo "\n📊 Advanced Metrics Example completed successfully!\n";
-
 } catch (Exception $e) {
     echo "❌ Error: {$e->getMessage()}\n";
     echo "📋 Stack trace:\n{$e->getTraceAsString()}\n";
 }
 
-echo "\n" . str_repeat("=", 60) . "\n";
+echo "\n" . str_repeat('=', 60) . "\n";
 echo "📚 Example: Advanced Metrics - Complete\n";

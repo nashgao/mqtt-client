@@ -7,7 +7,7 @@ use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Event\SubscribeEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-require_once dirname(__DIR__) . '/boostrap.php';
+require_once dirname(__DIR__) . '/bootstrap.php';
 
 \Swoole\Coroutine\run(
     function () {

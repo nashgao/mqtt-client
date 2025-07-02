@@ -6,7 +6,7 @@ use Nashgao\MQTT\Client;
 
 use function Hyperf\Support\make;
 
-require_once dirname(__DIR__) . '/boostrap.php';
+require_once dirname(__DIR__) . '/bootstrap.php';
 
 \Swoole\Coroutine\run(
     function () {

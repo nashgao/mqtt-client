@@ -7,7 +7,7 @@ use Hyperf\Event\EventDispatcher;
 use Nashgao\MQTT\Event\PublishEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-require_once __DIR__ . '/boostrap.php';
+require_once dirname(__DIR__) . '/bootstrap.php';
 
 \Swoole\Coroutine\run(
     function () {
