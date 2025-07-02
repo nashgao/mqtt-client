@@ -7,28 +7,34 @@ namespace Nashgao\MQTT\Metrics;
 class ErrorMetrics
 {
     private array $errorCounts = [];
+
     private array $errorsByType = [];
+
     private array $errorsByOperation = [];
+
     private array $recentErrors = [];
+
     private int $totalErrors = 0;
+
     private float $lastErrorTime = 0.0;
+
     private array $errorRates = [];
 
-    public function recordError(string $type, string $operation, string $message, \Throwable $exception = null): void
+    public function recordError(string $type, string $operation, string $message, ?\Throwable $exception = null): void
     {
         $timestamp = microtime(true);
-        $this->totalErrors++;
+        ++$this->totalErrors;
         $this->lastErrorTime = $timestamp;
 
-        if (!isset($this->errorsByType[$type])) {
+        if (! isset($this->errorsByType[$type])) {
             $this->errorsByType[$type] = 0;
         }
-        $this->errorsByType[$type]++;
+        ++$this->errorsByType[$type];
 
-        if (!isset($this->errorsByOperation[$operation])) {
+        if (! isset($this->errorsByOperation[$operation])) {
             $this->errorsByOperation[$operation] = 0;
         }
-        $this->errorsByOperation[$operation]++;
+        ++$this->errorsByOperation[$operation];
 
         $errorData = [
             'type' => $type,
@@ -62,22 +68,6 @@ class ErrorMetrics
         $this->recordError('retry_exhausted', $operation, "Max retry attempts ({$attempts}) exhausted for operation: {$operation}");
     }
 
-    private function updateErrorRate(float $timestamp): void
-    {
-        $minute = (int) ($timestamp / 60);
-        if (!isset($this->errorRates[$minute])) {
-            $this->errorRates[$minute] = 0;
-        }
-        $this->errorRates[$minute]++;
-
-        $cutoff = $minute - 60;
-        foreach ($this->errorRates as $min => $count) {
-            if ($min < $cutoff) {
-                unset($this->errorRates[$min]);
-            }
-        }
-    }
-
     public function getErrorRate(): float
     {
         if (empty($this->errorRates)) {
@@ -86,7 +76,7 @@ class ErrorMetrics
 
         $totalMinutes = count($this->errorRates);
         $totalErrors = array_sum($this->errorRates);
-        
+
         return $totalMinutes > 0 ? $totalErrors / $totalMinutes : 0.0;
     }
 
@@ -179,5 +169,21 @@ class ErrorMetrics
         $this->totalErrors = 0;
         $this->lastErrorTime = 0.0;
         $this->errorRates = [];
+    }
+
+    private function updateErrorRate(float $timestamp): void
+    {
+        $minute = (int) ($timestamp / 60);
+        if (! isset($this->errorRates[$minute])) {
+            $this->errorRates[$minute] = 0;
+        }
+        ++$this->errorRates[$minute];
+
+        $cutoff = $minute - 60;
+        foreach ($this->errorRates as $min => $count) {
+            if ($min < $cutoff) {
+                unset($this->errorRates[$min]);
+            }
+        }
     }
 }

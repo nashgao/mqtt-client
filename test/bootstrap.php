@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-use Hyperf\Context\ApplicationContext;
-use Hyperf\Contract\ApplicationInterface;
-use Hyperf\Di\ClassLoader;
-use Hyperf\Di\Container;
-use Hyperf\Di\Definition\DefinitionSourceFactory;
-use Psr\Container\ContainerInterface;
 use Swoole\Runtime;
 
 error_reporting(E_ALL);

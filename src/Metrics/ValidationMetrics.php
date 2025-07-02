@@ -7,13 +7,16 @@ namespace Nashgao\MQTT\Metrics;
 class ValidationMetrics
 {
     private array $validationCounts = [];
+
     private array $validationErrors = [];
+
     private int $totalValidations = 0;
+
     private int $totalErrors = 0;
 
-    public function recordValidation(string $type, bool $isValid, string $errorMessage = ''): void
+    public function recordValidation(string $type, bool $isValid, string $errorMessage = ''): self
     {
-        if (!isset($this->validationCounts[$type])) {
+        if (! isset($this->validationCounts[$type])) {
             $this->validationCounts[$type] = [
                 'total' => 0,
                 'successful' => 0,
@@ -21,28 +24,29 @@ class ValidationMetrics
             ];
         }
 
-        $this->validationCounts[$type]['total']++;
-        $this->totalValidations++;
+        ++$this->validationCounts[$type]['total'];
+        ++$this->totalValidations;
 
         if ($isValid) {
-            $this->validationCounts[$type]['successful']++;
+            ++$this->validationCounts[$type]['successful'];
         } else {
-            $this->validationCounts[$type]['failed']++;
-            $this->totalErrors++;
-            
-            if (!isset($this->validationErrors[$type])) {
+            ++$this->validationCounts[$type]['failed'];
+            ++$this->totalErrors;
+
+            if (! isset($this->validationErrors[$type])) {
                 $this->validationErrors[$type] = [];
             }
-            
+
             $this->validationErrors[$type][] = [
                 'message' => $errorMessage,
                 'timestamp' => microtime(true),
             ];
-            
+
             if (count($this->validationErrors[$type]) > 50) {
                 array_shift($this->validationErrors[$type]);
             }
         }
+        return $this;
     }
 
     public function getValidationCount(string $type): array
@@ -73,10 +77,10 @@ class ValidationMetrics
 
     public function getRecentErrors(string $type, int $limit = 10): array
     {
-        if (!isset($this->validationErrors[$type])) {
+        if (! isset($this->validationErrors[$type])) {
             return [];
         }
-        
+
         return array_slice($this->validationErrors[$type], -$limit);
     }
 
@@ -118,17 +122,18 @@ class ValidationMetrics
             'validation_counts' => $this->validationCounts,
             'most_failed_type' => $this->getMostFailedValidationType(),
             'validation_success_rates' => array_map(
-                fn($type) => $this->getValidationSuccessRate($type),
+                fn ($type) => $this->getValidationSuccessRate($type),
                 array_keys($this->validationCounts)
             ),
         ];
     }
 
-    public function reset(): void
+    public function reset(): self
     {
         $this->validationCounts = [];
         $this->validationErrors = [];
         $this->totalValidations = 0;
         $this->totalErrors = 0;
+        return $this;
     }
 }

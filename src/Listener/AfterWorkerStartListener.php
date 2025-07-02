@@ -8,10 +8,9 @@ use Hyperf\Contract\ConfigInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Framework\Event\AfterWorkerStart;
 use Nashgao\MQTT\Config\PoolConfig;
-use Nashgao\MQTT\Config\TopicSubscription;
 use Nashgao\MQTT\Event\SubscribeEvent;
-use Nashgao\MQTT\Utils\ConfigValidator;
 use Nashgao\MQTT\Metrics\ValidationMetrics;
+use Nashgao\MQTT\Utils\ConfigValidator;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -24,8 +23,11 @@ use Psr\Log\NullLogger;
 class AfterWorkerStartListener implements ListenerInterface
 {
     private ContainerInterface $container;
+
     private LoggerInterface $logger;
+
     private ValidationMetrics $validationMetrics;
+
     private array $poolConfigs = [];
 
     public function __construct(
@@ -36,7 +38,7 @@ class AfterWorkerStartListener implements ListenerInterface
         $this->container = $container;
         $this->logger = $logger ?? new NullLogger();
         $this->validationMetrics = $validationMetrics ?? new ValidationMetrics();
-        
+
         // Set validation metrics for configuration validation
         ConfigValidator::setMetrics($this->validationMetrics);
     }
@@ -51,11 +53,11 @@ class AfterWorkerStartListener implements ListenerInterface
     public function process(object $event): void
     {
         $this->logger->info('Enhanced MQTT worker starting, processing pool configurations...');
-        
+
         try {
             $this->loadPoolConfigurations();
             $this->processSubscriptions();
-            
+
             $this->logger->info('Enhanced MQTT worker started successfully', [
                 'pools_loaded' => count($this->poolConfigs),
                 'validation_stats' => $this->validationMetrics->toArray(),
@@ -66,144 +68,6 @@ class AfterWorkerStartListener implements ListenerInterface
                 'trace' => $e->getTraceAsString(),
             ]);
             throw $e;
-        }
-    }
-
-    /**
-     * Load and validate all pool configurations.
-     */
-    private function loadPoolConfigurations(): void
-    {
-        $config = $this->container->get(ConfigInterface::class);
-        $mqttConfigs = $config->get('mqtt', []);
-        
-        foreach ($mqttConfigs as $poolName => $poolConfigData) {
-            try {
-                $poolConfig = new PoolConfig($poolName, $poolConfigData);
-                
-                if (!$poolConfig->isValid()) {
-                    $this->logger->warning("Invalid pool configuration for '{$poolName}', skipping...");
-                    continue;
-                }
-                
-                $this->poolConfigs[$poolName] = $poolConfig;
-                
-                $this->logger->debug("Loaded pool configuration", [
-                    'pool_name' => $poolName,
-                    'host' => $poolConfig->host,
-                    'port' => $poolConfig->port,
-                    'subscriptions' => $poolConfig->getSubscriptionConfig()->count(),
-                    'publish_topics' => $poolConfig->getPublishConfig()->count(),
-                ]);
-                
-            } catch (\Exception $e) {
-                $this->logger->error("Failed to load pool configuration for '{$poolName}'", [
-                    'error' => $e->getMessage(),
-                    'config_data' => $poolConfigData,
-                ]);
-                
-                // Record validation failure
-                $this->validationMetrics->recordValidation(
-                    'pool_config_load',
-                    false,
-                    "Failed to load pool '{$poolName}': {$e->getMessage()}"
-                );
-            }
-        }
-    }
-
-    /**
-     * Process subscriptions for all loaded pools.
-     */
-    private function processSubscriptions(): void
-    {
-        /** @var EventDispatcherInterface $dispatcher */
-        $dispatcher = $this->container->get(EventDispatcherInterface::class);
-        
-        foreach ($this->poolConfigs as $poolName => $poolConfig) {
-            if (!$poolConfig->hasSubscriptions()) {
-                $this->logger->debug("No auto-subscriptions configured for pool '{$poolName}'");
-                continue;
-            }
-            
-            $this->processPoolSubscriptions($dispatcher, $poolName, $poolConfig);
-        }
-    }
-
-    /**
-     * Process subscriptions for a specific pool.
-     */
-    private function processPoolSubscriptions(
-        EventDispatcherInterface $dispatcher,
-        string $poolName,
-        PoolConfig $poolConfig
-    ): void {
-        $subscriptionConfig = $poolConfig->getSubscriptionConfig();
-        $autoSubscribeTopics = $subscriptionConfig->getAutoSubscribeTopics();
-        
-        if (empty($autoSubscribeTopics)) {
-            return;
-        }
-        
-        $validTopics = [];
-        $skippedTopics = [];
-        
-        foreach ($autoSubscribeTopics as $topicSubscription) {
-            try {
-                // Validate the topic subscription
-                if (!$topicSubscription->validate()) {
-                    $skippedTopics[] = $topicSubscription->getTopic();
-                    $this->logger->warning("Invalid topic subscription, skipping", [
-                        'pool' => $poolName,
-                        'topic' => $topicSubscription->getTopic(),
-                    ]);
-                    continue;
-                }
-                
-                // Apply filter if configured
-                if (!$topicSubscription->passesFilter()) {
-                    $skippedTopics[] = $topicSubscription->getTopic();
-                    $this->logger->debug("Topic filtered out", [
-                        'pool' => $poolName,
-                        'topic' => $topicSubscription->getTopic(),
-                    ]);
-                    continue;
-                }
-                
-                // Convert to TopicConfig for event
-                $validTopics[] = $topicSubscription->toTopicConfig();
-                
-                $this->logger->debug("Added topic for subscription", [
-                    'pool' => $poolName,
-                    'topic' => $topicSubscription->getTopic(),
-                    'qos' => $topicSubscription->getQos(),
-                    'handler' => $topicSubscription->getHandler(),
-                ]);
-                
-            } catch (\Exception $e) {
-                $skippedTopics[] = $topicSubscription->getTopic();
-                $this->logger->error("Failed to process topic subscription", [
-                    'pool' => $poolName,
-                    'topic' => $topicSubscription->getTopic(),
-                    'error' => $e->getMessage(),
-                ]);
-            }
-        }
-        
-        // Dispatch subscription event if we have valid topics
-        if (!empty($validTopics)) {
-            $dispatcher->dispatch(new SubscribeEvent($poolName, $validTopics));
-            
-            $this->logger->info("Dispatched subscription event", [
-                'pool' => $poolName,
-                'topics_count' => count($validTopics),
-                'skipped_count' => count($skippedTopics),
-                'topics' => array_map(fn($topic) => $topic->topic, $validTopics),
-            ]);
-        } else {
-            $this->logger->warning("No valid topics to subscribe for pool '{$poolName}'", [
-                'skipped_topics' => $skippedTopics,
-            ]);
         }
     }
 
@@ -243,18 +107,18 @@ class AfterWorkerStartListener implements ListenerInterface
             'total_publish_topics' => 0,
             'pools' => [],
         ];
-        
+
         foreach ($this->poolConfigs as $poolName => $poolConfig) {
             $subscriptionCount = $poolConfig->getSubscriptionConfig()->count();
             $publishCount = $poolConfig->getPublishConfig()->count();
-            
+
             if ($subscriptionCount > 0) {
-                $stats['pools_with_subscriptions']++;
+                ++$stats['pools_with_subscriptions'];
             }
-            
+
             $stats['total_subscriptions'] += $subscriptionCount;
             $stats['total_publish_topics'] += $publishCount;
-            
+
             $stats['pools'][$poolName] = [
                 'host' => $poolConfig->host,
                 'port' => $poolConfig->port,
@@ -264,7 +128,7 @@ class AfterWorkerStartListener implements ListenerInterface
                 'is_valid' => $poolConfig->isValid(),
             ];
         }
-        
+
         return array_merge($stats, [
             'validation_metrics' => $this->validationMetrics->toArray(),
         ]);
@@ -287,7 +151,7 @@ class AfterWorkerStartListener implements ListenerInterface
     public function validateAllConfigurations(): array
     {
         $results = [];
-        
+
         foreach ($this->poolConfigs as $poolName => $poolConfig) {
             $results[$poolName] = [
                 'valid' => $poolConfig->validate(),
@@ -296,7 +160,7 @@ class AfterWorkerStartListener implements ListenerInterface
                 'publish_valid' => $poolConfig->getPublishConfig()->validate(),
             ];
         }
-        
+
         return $results;
     }
 
@@ -306,7 +170,7 @@ class AfterWorkerStartListener implements ListenerInterface
     public function getAutoSubscribeTopicsPreview(): array
     {
         $preview = [];
-        
+
         foreach ($this->poolConfigs as $poolName => $poolConfig) {
             $topics = [];
             foreach ($poolConfig->getAutoSubscribeTopics() as $subscription) {
@@ -319,12 +183,148 @@ class AfterWorkerStartListener implements ListenerInterface
                     ];
                 }
             }
-            
-            if (!empty($topics)) {
+
+            if (! empty($topics)) {
                 $preview[$poolName] = $topics;
             }
         }
-        
+
         return $preview;
+    }
+
+    /**
+     * Load and validate all pool configurations.
+     */
+    private function loadPoolConfigurations(): void
+    {
+        $config = $this->container->get(ConfigInterface::class);
+        $mqttConfigs = $config->get('mqtt', []);
+
+        foreach ($mqttConfigs as $poolName => $poolConfigData) {
+            try {
+                $poolConfig = new PoolConfig($poolName, $poolConfigData);
+
+                if (! $poolConfig->isValid()) {
+                    $this->logger->warning("Invalid pool configuration for '{$poolName}', skipping...");
+                    continue;
+                }
+
+                $this->poolConfigs[$poolName] = $poolConfig;
+
+                $this->logger->debug('Loaded pool configuration', [
+                    'pool_name' => $poolName,
+                    'host' => $poolConfig->host,
+                    'port' => $poolConfig->port,
+                    'subscriptions' => $poolConfig->getSubscriptionConfig()->count(),
+                    'publish_topics' => $poolConfig->getPublishConfig()->count(),
+                ]);
+            } catch (\Exception $e) {
+                $this->logger->error("Failed to load pool configuration for '{$poolName}'", [
+                    'error' => $e->getMessage(),
+                    'config_data' => $poolConfigData,
+                ]);
+
+                // Record validation failure
+                $this->validationMetrics->recordValidation(
+                    'pool_config_load',
+                    false,
+                    "Failed to load pool '{$poolName}': {$e->getMessage()}"
+                );
+            }
+        }
+    }
+
+    /**
+     * Process subscriptions for all loaded pools.
+     */
+    private function processSubscriptions(): void
+    {
+        /** @var EventDispatcherInterface $dispatcher */
+        $dispatcher = $this->container->get(EventDispatcherInterface::class);
+
+        foreach ($this->poolConfigs as $poolName => $poolConfig) {
+            if (! $poolConfig->hasSubscriptions()) {
+                $this->logger->debug("No auto-subscriptions configured for pool '{$poolName}'");
+                continue;
+            }
+
+            $this->processPoolSubscriptions($dispatcher, $poolName, $poolConfig);
+        }
+    }
+
+    /**
+     * Process subscriptions for a specific pool.
+     */
+    private function processPoolSubscriptions(
+        EventDispatcherInterface $dispatcher,
+        string $poolName,
+        PoolConfig $poolConfig
+    ): void {
+        $subscriptionConfig = $poolConfig->getSubscriptionConfig();
+        $autoSubscribeTopics = $subscriptionConfig->getAutoSubscribeTopics();
+
+        if (empty($autoSubscribeTopics)) {
+            return;
+        }
+
+        $validTopics = [];
+        $skippedTopics = [];
+
+        foreach ($autoSubscribeTopics as $topicSubscription) {
+            try {
+                // Validate the topic subscription
+                if (! $topicSubscription->validate()) {
+                    $skippedTopics[] = $topicSubscription->getTopic();
+                    $this->logger->warning('Invalid topic subscription, skipping', [
+                        'pool' => $poolName,
+                        'topic' => $topicSubscription->getTopic(),
+                    ]);
+                    continue;
+                }
+
+                // Apply filter if configured
+                if (! $topicSubscription->passesFilter()) {
+                    $skippedTopics[] = $topicSubscription->getTopic();
+                    $this->logger->debug('Topic filtered out', [
+                        'pool' => $poolName,
+                        'topic' => $topicSubscription->getTopic(),
+                    ]);
+                    continue;
+                }
+
+                // Convert to TopicConfig for event
+                $validTopics[] = $topicSubscription->toTopicConfig();
+
+                $this->logger->debug('Added topic for subscription', [
+                    'pool' => $poolName,
+                    'topic' => $topicSubscription->getTopic(),
+                    'qos' => $topicSubscription->getQos(),
+                    'handler' => $topicSubscription->getHandler(),
+                ]);
+            } catch (\Exception $e) {
+                $skippedTopics[] = $topicSubscription->getTopic();
+                $this->logger->error('Failed to process topic subscription', [
+                    'pool' => $poolName,
+                    'topic' => $topicSubscription->getTopic(),
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        // Dispatch subscription event if we have valid topics
+        if (! empty($validTopics)) {
+            $dispatcher->dispatch(new SubscribeEvent($poolName, $validTopics));
+
+            $this->logger->info('Dispatched subscription event', [
+                'pool' => $poolName,
+                'topics_count' => count($validTopics),
+                'skipped_count' => count($skippedTopics),
+                'topics' => array_map(fn ($topic) => $topic->topic, $validTopics),
+            ]);
+        } else {
+            $this->logger->warning("No valid topics to subscribe for pool '{$poolName}'", [
+                'skipped_topics' => $skippedTopics,
+            ]);
+        }
     }
 }

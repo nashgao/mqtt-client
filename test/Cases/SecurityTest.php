@@ -7,16 +7,16 @@ namespace Nashgao\MQTT\Test\Cases;
 use Nashgao\MQTT\Client;
 use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Exception\InvalidMethodException;
+use Nashgao\MQTT\Metrics\ConnectionMetrics;
+use Nashgao\MQTT\Metrics\ErrorMetrics;
+use Nashgao\MQTT\Metrics\HealthMetrics;
+use Nashgao\MQTT\Metrics\PerformanceMetrics;
 use Nashgao\MQTT\Pool\PoolFactory;
 use Nashgao\MQTT\Provider\RandomClientIdProvider;
 use Nashgao\MQTT\Test\AbstractTestCase;
-use Nashgao\MQTT\Utils\TopicParser;
 use Nashgao\MQTT\Utils\ErrorHandler;
 use Nashgao\MQTT\Utils\HealthChecker;
-use Nashgao\MQTT\Metrics\ErrorMetrics;
-use Nashgao\MQTT\Metrics\PerformanceMetrics;
-use Nashgao\MQTT\Metrics\ConnectionMetrics;
-use Nashgao\MQTT\Metrics\HealthMetrics;
+use Nashgao\MQTT\Utils\TopicParser;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
@@ -26,10 +26,13 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 class SecurityTest extends AbstractTestCase
 {
     private ErrorMetrics $errorMetrics;
+
     private PerformanceMetrics $performanceMetrics;
+
     private ConnectionMetrics $connectionMetrics;
+
     private HealthMetrics $healthMetrics;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -38,6 +41,7 @@ class SecurityTest extends AbstractTestCase
         $this->connectionMetrics = new ConnectionMetrics();
         $this->healthMetrics = new HealthMetrics();
     }
+
     public function testClientIdUniqueness()
     {
         $provider = new RandomClientIdProvider();
@@ -148,7 +152,7 @@ class SecurityTest extends AbstractTestCase
 
         // Should complete reasonably quickly (less than 1 second)
         $this->assertLessThan(1.0, $endTime - $startTime);
-        
+
         // Verify error metrics were recorded
         $this->assertEquals(100, $this->errorMetrics->getTotalErrors());
         $this->assertEquals('method_validation', $this->errorMetrics->getMostFrequentErrorType());
@@ -213,7 +217,7 @@ class SecurityTest extends AbstractTestCase
         // Test creation of many objects to detect potential DoS vectors
         $configs = [];
         $memoryBefore = memory_get_usage();
-        
+
         // Record initial memory usage
         $this->performanceMetrics->recordMemoryUsage();
 
@@ -222,7 +226,7 @@ class SecurityTest extends AbstractTestCase
                 'topic' => "test/topic/{$i}",
                 'qos' => $i % 3,
             ]);
-            
+
             // Record memory usage periodically
             if ($i % 1000 === 0) {
                 $this->performanceMetrics->recordMemoryUsage();
@@ -231,13 +235,13 @@ class SecurityTest extends AbstractTestCase
 
         $memoryAfter = memory_get_usage();
         $memoryUsed = $memoryAfter - $memoryBefore;
-        
+
         // Record final memory usage
         $this->performanceMetrics->recordMemoryUsage();
 
         // Memory usage should be linear and reasonable (less than 50MB for 10k objects)
         $this->assertLessThan(50 * 1024 * 1024, $memoryUsed);
-        
+
         // Verify performance metrics were recorded
         $this->assertGreaterThan(0, $this->performanceMetrics->getCurrentMemoryUsage());
         $this->assertGreaterThan(0, $this->performanceMetrics->getPeakMemoryUsage());
@@ -250,7 +254,7 @@ class SecurityTest extends AbstractTestCase
         // Simulate concurrent access patterns that might cause race conditions
         $poolFactory = $this->createMock(PoolFactory::class);
         $clients = [];
-        
+
         $startTime = microtime(true);
 
         // Create multiple clients rapidly
@@ -258,11 +262,11 @@ class SecurityTest extends AbstractTestCase
             $errorHandler = new ErrorHandler(null, new ErrorMetrics(), new PerformanceMetrics());
             $healthChecker = new HealthChecker(new ConnectionMetrics(), new HealthMetrics(), new PerformanceMetrics());
             $clients[] = new Client($poolFactory, $errorHandler, $healthChecker);
-            
+
             // Record operation time for client creation
             $this->performanceMetrics->recordOperationTime('client_creation', microtime(true) - $startTime);
         }
-        
+
         $endTime = microtime(true);
         $this->performanceMetrics->recordOperationTime('total_client_creation', $endTime - $startTime);
 
@@ -273,18 +277,18 @@ class SecurityTest extends AbstractTestCase
             // Test pool name setting
             $result = $client->setPoolName("pool_{$i}");
             $this->assertSame($client, $result);
-            
+
             // Test health status methods work
             $healthStatus = $client->getHealthStatus();
             $this->assertIsArray($healthStatus);
         }
-        
+
         // Verify performance metrics were recorded
         $this->assertGreaterThan(0, $this->performanceMetrics->getTotalOperations());
         $avgCreationTime = $this->performanceMetrics->getAverageOperationTime('client_creation');
         $this->assertGreaterThan(0, $avgCreationTime);
     }
-    
+
     public function testSecurityMetricsIntegration()
     {
         // Test that security-related operations are properly tracked in metrics
@@ -292,7 +296,7 @@ class SecurityTest extends AbstractTestCase
         $errorHandler = new ErrorHandler(null, $this->errorMetrics, $this->performanceMetrics);
         $healthChecker = new HealthChecker($this->connectionMetrics, $this->healthMetrics, $this->performanceMetrics);
         $client = new Client($poolFactory, $errorHandler, $healthChecker);
-        
+
         // Attempt invalid operations and verify they're tracked
         for ($i = 0; $i < 5; ++$i) {
             try {
@@ -301,14 +305,14 @@ class SecurityTest extends AbstractTestCase
                 $this->errorMetrics->recordError('security', 'invalid_method_access', $e->getMessage(), $e);
             }
         }
-        
+
         // Verify security metrics
         $this->assertEquals(5, $this->errorMetrics->getErrorCountByType('security'));
         $this->assertEquals(5, $this->errorMetrics->getErrorCountByOperation('invalid_method_access'));
-        
+
         $recentErrors = $this->errorMetrics->getRecentErrors();
         $this->assertCount(5, $recentErrors);
-        
+
         $metricsArray = $this->errorMetrics->toArray();
         $this->assertArrayHasKey('errors_by_type', $metricsArray);
         $this->assertArrayHasKey('security', $metricsArray['errors_by_type']);

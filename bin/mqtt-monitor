@@ -1,0 +1,304 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Nashgao\MQTT\Utils\MqttMonitor;
+use Nashgao\MQTT\Utils\MetricsVisualizer;
+use Nashgao\MQTT\Metrics\ConnectionMetrics;
+use Nashgao\MQTT\Metrics\PerformanceMetrics;
+use Nashgao\MQTT\Metrics\PublishMetrics;
+use Nashgao\MQTT\Metrics\SubscriptionMetrics;
+use Nashgao\MQTT\Metrics\ValidationMetrics;
+
+// Autoload
+require_once __DIR__ . '/../vendor/autoload.php';
+
+/**
+ * MQTT Metrics Monitor CLI Tool
+ * 
+ * Usage:
+ *   ./bin/mqtt-monitor [options]
+ * 
+ * Options:
+ *   --mode=MODE          Mode: monitor, snapshot, export (default: monitor)
+ *   --format=FORMAT      Output format: dashboard, json, csv, realtime (default: dashboard)
+ *   --interval=SECONDS   Refresh interval for monitor mode (default: 1)
+ *   --output=FILE        Output file for export mode
+ *   --help               Show this help message
+ */
+
+function showHelp(): void
+{
+    echo <<<HELP
+MQTT Metrics Monitor - Real-time monitoring and visualization
+
+USAGE:
+    ./bin/mqtt-monitor [OPTIONS]
+
+OPTIONS:
+    --mode=MODE          Operation mode:
+                         - monitor:  Real-time htop-style display (default)
+                         - snapshot: One-time metrics snapshot
+                         - export:   Export metrics to file
+
+    --format=FORMAT      Output format:
+                         - dashboard: Formatted text dashboard (default)
+                         - realtime:  Real-time colored display
+                         - json:      JSON format
+                         - csv:       CSV format
+
+    --interval=SECONDS   Refresh interval for monitor mode (1-10, default: 1)
+
+    --output=FILE        Output filename for export mode
+                         (auto-generated if not specified)
+
+    --help, -h           Show this help message
+
+EXAMPLES:
+    # Start real-time monitor (htop-style)
+    ./bin/mqtt-monitor
+
+    # Start monitor with 2-second refresh
+    ./bin/mqtt-monitor --mode=monitor --interval=2
+
+    # Generate a snapshot in JSON format
+    ./bin/mqtt-monitor --mode=snapshot --format=json
+
+    # Export metrics to CSV file
+    ./bin/mqtt-monitor --mode=export --format=csv --output=metrics.csv
+
+    # Show formatted dashboard once
+    ./bin/mqtt-monitor --mode=snapshot --format=dashboard
+
+KEYBOARD CONTROLS (Monitor Mode):
+    q, Q, Ctrl+C    Quit
+    h, H, ?         Toggle help
+    r, R            Reset metrics
+    e, E            Export to file
+    +               Faster refresh
+    -               Slower refresh
+    Space           Force refresh
+
+HELP;
+}
+
+function parseArguments(array $args): array
+{
+    $options = [
+        'mode' => 'monitor',
+        'format' => 'dashboard',
+        'interval' => 1,
+        'output' => null,
+        'help' => false,
+    ];
+
+    for ($i = 1; $i < count($args); $i++) {
+        $arg = $args[$i];
+
+        if (in_array($arg, ['--help', '-h'])) {
+            $options['help'] = true;
+            continue;
+        }
+
+        if (strpos($arg, '--') === 0) {
+            $parts = explode('=', substr($arg, 2), 2);
+            $key = $parts[0];
+            $value = $parts[1] ?? true;
+
+            if ($key === 'interval') {
+                $value = max(1, min(10, (int) $value));
+            }
+
+            $options[$key] = $value;
+        }
+    }
+
+    return $options;
+}
+
+function validateOptions(array $options): array
+{
+    $errors = [];
+
+    // Validate mode
+    $validModes = ['monitor', 'snapshot', 'export'];
+    if (!in_array($options['mode'], $validModes)) {
+        $errors[] = "Invalid mode '{$options['mode']}'. Valid modes: " . implode(', ', $validModes);
+    }
+
+    // Validate format
+    $validFormats = ['dashboard', 'realtime', 'json', 'csv'];
+    if (!in_array($options['format'], $validFormats)) {
+        $errors[] = "Invalid format '{$options['format']}'. Valid formats: " . implode(', ', $validFormats);
+    }
+
+    // Validate interval
+    if (!is_int($options['interval']) || $options['interval'] < 1 || $options['interval'] > 10) {
+        $errors[] = "Invalid interval '{$options['interval']}'. Must be between 1 and 10 seconds.";
+    }
+
+    return $errors;
+}
+
+function createSampleMetrics(): array
+{
+    // Create sample metrics instances with some demo data
+    $connection = new ConnectionMetrics();
+    $performance = new PerformanceMetrics();
+    $publish = new PublishMetrics();
+    $subscription = new SubscriptionMetrics();
+    $validation = new ValidationMetrics();
+
+    // Simulate some activity for demonstration using method chaining
+    for ($i = 0; $i < 10; $i++) {
+        // Connection simulation with method chaining
+        if (rand(1, 10) > 2) { // 80% success rate
+            $connection
+                ->recordConnectionAttempt()
+                ->recordSuccessfulConnection(rand(50, 200) / 1000);
+        } else {
+            $connection
+                ->recordConnectionAttempt()
+                ->recordFailedConnection();
+        }
+        
+        // Publish simulation with method chaining
+        if (rand(1, 10) > 1) {
+            $publish
+                ->recordPublishAttempt()
+                ->recordSuccessfulPublish("demo/topic/{$i}", rand(0, 2), rand(100, 1000));
+        } else {
+            $publish
+                ->recordPublishAttempt()
+                ->recordFailedPublish();
+        }
+        
+        // Subscription simulation with method chaining
+        if (rand(1, 10) > 1) { // 90% success
+            $subscription
+                ->recordSubscriptionAttempt()
+                ->recordSuccessfulSubscription("demo_pool", "demo_client_{$i}", ["demo/topic/{$i}" => rand(0, 2)]);
+        } else {
+            $subscription
+                ->recordSubscriptionAttempt()
+                ->recordFailedSubscription("demo_pool", "demo_client_{$i}", ["demo/topic/{$i}" => rand(0, 2)]);
+        }
+        
+        // Validation with method chaining
+        $validation->recordValidation('demo_validation', rand(1, 10) > 1, '');
+    }
+
+    return [
+        'connection' => $connection,
+        'performance' => $performance,
+        'publish' => $publish,
+        'subscription' => $subscription,
+        'validation' => $validation,
+    ];
+}
+
+function runMonitorMode(int $interval): void
+{
+    echo "Starting MQTT Monitor (interval: {$interval}s)...\n";
+    echo "Press 'h' for help, 'q' to quit.\n";
+    sleep(1);
+
+    $monitor = new MqttMonitor();
+    $metrics = createSampleMetrics();
+
+    $monitor->addMetrics(
+        $metrics['connection'],
+        $metrics['performance'],
+        $metrics['publish'],
+        $metrics['subscription'],
+        $metrics['validation']
+    );
+
+    $monitor->setRefreshInterval($interval);
+    $monitor->start();
+}
+
+function runSnapshotMode(string $format): void
+{
+    $visualizer = new MetricsVisualizer();
+    $metrics = createSampleMetrics();
+
+    $visualizer
+        ->setConnectionMetrics($metrics['connection'])
+        ->setPerformanceMetrics($metrics['performance'])
+        ->setPublishMetrics($metrics['publish'])
+        ->setSubscriptionMetrics($metrics['subscription'])
+        ->setValidationMetrics($metrics['validation']);
+
+    $output = match ($format) {
+        'dashboard' => $visualizer->generateDashboard(),
+        'realtime' => $visualizer->generateRealTimeDisplay(),
+        'json' => $visualizer->generateJson(),
+        'csv' => $visualizer->generateCsv(),
+        default => throw new InvalidArgumentException("Unsupported format: {$format}"),
+    };
+
+    echo $output . "\n";
+}
+
+function runExportMode(string $format, ?string $filename): void
+{
+    $monitor = new MqttMonitor();
+    $metrics = createSampleMetrics();
+
+    $monitor->addMetrics(
+        $metrics['connection'],
+        $metrics['performance'],
+        $metrics['publish'],
+        $metrics['subscription'],
+        $metrics['validation']
+    );
+
+    $exportedFile = $monitor->exportMetrics($format, $filename);
+    echo "Metrics exported to: {$exportedFile}\n";
+}
+
+// Main execution
+try {
+    $options = parseArguments($argv);
+
+    if ($options['help']) {
+        showHelp();
+        exit(0);
+    }
+
+    $errors = validateOptions($options);
+    if (!empty($errors)) {
+        echo "Error(s):\n";
+        foreach ($errors as $error) {
+            echo "  - {$error}\n";
+        }
+        echo "\nUse --help for usage information.\n";
+        exit(1);
+    }
+
+    switch ($options['mode']) {
+        case 'monitor':
+            runMonitorMode($options['interval']);
+            break;
+
+        case 'snapshot':
+            runSnapshotMode($options['format']);
+            break;
+
+        case 'export':
+            runExportMode($options['format'], $options['output']);
+            break;
+
+        default:
+            throw new InvalidArgumentException("Unknown mode: {$options['mode']}");
+    }
+
+} catch (Exception $e) {
+    echo "Error: {$e->getMessage()}\n";
+    exit(1);
+} catch (Throwable $e) {
+    echo "Fatal error: {$e->getMessage()}\n";
+    exit(1);
+}

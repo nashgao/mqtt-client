@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT\Utils;
 
-use Nashgao\MQTT\MQTTConnection;
-use Nashgao\MQTT\Pool\MQTTPool;
 use Nashgao\MQTT\Metrics\ConnectionMetrics;
 use Nashgao\MQTT\Metrics\HealthMetrics;
 use Nashgao\MQTT\Metrics\PerformanceMetrics;
+use Nashgao\MQTT\MQTTConnection;
+use Nashgao\MQTT\Pool\MQTTPool;
 
 class HealthChecker
 {
     private ConnectionMetrics $connectionMetrics;
+
     private HealthMetrics $healthMetrics;
+
     private PerformanceMetrics $performanceMetrics;
 
     public function __construct(
@@ -32,12 +34,12 @@ class HealthChecker
     public function checkConnection(MQTTConnection $connection): array
     {
         $connectionId = spl_object_hash($connection);
-        
+
         try {
             $isAlive = $this->isConnectionAlive($connection);
             $age = $this->getConnectionAge($connection);
             $pingResponse = $this->checkPingResponse($connection);
-            
+
             $this->healthMetrics->recordHealthCheck(
                 "connection_{$connectionId}",
                 $isAlive && $pingResponse,
@@ -65,20 +67,20 @@ class HealthChecker
     public function checkPool(MQTTPool $pool): array
     {
         $poolName = $pool->getName();
-        
+
         try {
             $available = $pool->getAvailableConnectionNum();
             $total = $pool->getCurrentConnections();
             $max = $pool->getMaxConnections();
             $inUse = $total - $available;
-            
+
             $isHealthy = $available > 0 && $total <= $max;
             $message = $isHealthy ? 'Pool healthy' : 'Pool issues detected';
-            
+
             // Record resource usage
             $this->healthMetrics->recordResourceUsage('pool_connections', $total, $max);
             $this->healthMetrics->recordResourceUsage('pool_usage_percentage', ($total / $max) * 100, 100);
-            
+
             $this->healthMetrics->recordHealthCheck(
                 "pool_{$poolName}",
                 $isHealthy,
@@ -110,12 +112,12 @@ class HealthChecker
     {
         // Update performance metrics
         $this->performanceMetrics->recordMemoryUsage();
-        
+
         // Record system resource usage in health metrics
         $memoryUsage = memory_get_usage(true);
         $memoryLimit = $this->parseMemoryLimit(ini_get('memory_limit'));
         $this->healthMetrics->recordResourceUsage('memory', $memoryUsage, $memoryLimit);
-        
+
         return [
             'timestamp' => time(),
             'health' => $this->healthMetrics->toArray(),
@@ -194,7 +196,7 @@ class HealthChecker
         $memoryUsage = memory_get_usage(true);
         $memoryLimit = $this->parseMemoryLimit(ini_get('memory_limit'));
         $memoryUsagePercent = $memoryLimit > 0 ? ($memoryUsage / $memoryLimit) : 0;
-        
+
         $this->healthMetrics->recordHealthCheck(
             'system',
             $successRate >= 0.9 && $memoryUsagePercent < 0.9,
@@ -204,7 +206,7 @@ class HealthChecker
                 'memory_usage_percent' => $memoryUsagePercent,
             ]
         );
-        
+
         return $this->healthMetrics->isHealthy();
     }
 
@@ -248,7 +250,6 @@ class HealthChecker
 
         return $allPassed ? 'healthy' : 'unhealthy';
     }
-
 
     private function parseMemoryLimit(string $limit): int
     {

@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Nashgao\MQTT\Test\Cases;
 
 use Nashgao\MQTT\Exception\InvalidConfigException;
+use Nashgao\MQTT\Metrics\ConnectionMetrics;
+use Nashgao\MQTT\Metrics\ErrorMetrics;
+use Nashgao\MQTT\Metrics\HealthMetrics;
+use Nashgao\MQTT\Metrics\PerformanceMetrics;
+use Nashgao\MQTT\Metrics\ValidationMetrics;
 use Nashgao\MQTT\Test\AbstractTestCase;
 use Nashgao\MQTT\Utils\ConfigValidator;
 use Nashgao\MQTT\Utils\ErrorHandler;
 use Nashgao\MQTT\Utils\HealthChecker;
-use Nashgao\MQTT\Metrics\ErrorMetrics;
-use Nashgao\MQTT\Metrics\PerformanceMetrics;
-use Nashgao\MQTT\Metrics\ConnectionMetrics;
-use Nashgao\MQTT\Metrics\HealthMetrics;
-use Nashgao\MQTT\Metrics\ValidationMetrics;
 use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
@@ -23,11 +23,17 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 class ResilienceTest extends AbstractTestCase
 {
     private ErrorHandler $errorHandler;
+
     private HealthChecker $healthChecker;
+
     private ErrorMetrics $errorMetrics;
+
     private PerformanceMetrics $performanceMetrics;
+
     private ConnectionMetrics $connectionMetrics;
+
     private HealthMetrics $healthMetrics;
+
     private ValidationMetrics $validationMetrics;
 
     protected function setUp(): void
@@ -38,10 +44,10 @@ class ResilienceTest extends AbstractTestCase
         $this->connectionMetrics = new ConnectionMetrics();
         $this->healthMetrics = new HealthMetrics();
         $this->validationMetrics = new ValidationMetrics();
-        
+
         $this->errorHandler = new ErrorHandler(null, $this->errorMetrics, $this->performanceMetrics);
         $this->healthChecker = new HealthChecker($this->connectionMetrics, $this->healthMetrics, $this->performanceMetrics);
-        
+
         ConfigValidator::setMetrics($this->validationMetrics);
     }
 
@@ -65,11 +71,11 @@ class ResilienceTest extends AbstractTestCase
         // Check circuit breaker status
         $status = $this->errorHandler->getCircuitBreakerStatus('test_operation');
         $this->assertGreaterThan(0, $status['failure_count']);
-        
+
         // Verify error metrics were recorded
         $this->assertGreaterThan(0, $this->errorMetrics->getTotalErrors());
         $this->assertGreaterThan(0, $this->errorMetrics->getErrorCountByOperation('test_operation'));
-        
+
         // The wrapOperation method records operation time even on failure
         // so we should have at least 1 operation recorded
         $perfMetrics = $this->performanceMetrics->toArray();
@@ -80,7 +86,7 @@ class ResilienceTest extends AbstractTestCase
     {
         // Reset validation metrics
         $this->validationMetrics->reset();
-        
+
         // Test various invalid configurations
         $invalidConfigs = [
             ['host' => '', 'port' => 1883],                    // Empty host
@@ -99,13 +105,13 @@ class ResilienceTest extends AbstractTestCase
                 $this->assertInstanceOf(InvalidConfigException::class, $e);
             }
         }
-        
+
         // Verify validation metrics were recorded
         $count = $this->validationMetrics->getValidationCount('connection_config');
         $this->assertEquals(count($invalidConfigs), $count['total']);
         $this->assertEquals(0, $count['successful']);
         $this->assertEquals(count($invalidConfigs), $count['failed']);
-        
+
         $this->assertEquals(0.0, $this->validationMetrics->getValidationSuccessRate('connection_config'));
     }
 
@@ -131,7 +137,7 @@ class ResilienceTest extends AbstractTestCase
         $this->assertArrayHasKey('connections', $systemHealth);
         $this->assertArrayHasKey('performance', $systemHealth);
         $this->assertArrayHasKey('process', $systemHealth);
-        
+
         // Verify connection metrics
         $connectionMetrics = $this->connectionMetrics->toArray();
         $this->assertEquals(10, $connectionMetrics['total_attempts']);
@@ -144,7 +150,7 @@ class ResilienceTest extends AbstractTestCase
     {
         // Reset validation metrics for clean test
         $this->validationMetrics->reset();
-        
+
         // Stress test with many rapid validations
         $startTime = microtime(true);
         $validationCount = 1000;
@@ -164,7 +170,7 @@ class ResilienceTest extends AbstractTestCase
 
         $endTime = microtime(true);
         $duration = $endTime - $startTime;
-        
+
         // Record performance metrics
         $this->performanceMetrics->recordOperationTime('stress_validation', $duration);
 
@@ -174,7 +180,7 @@ class ResilienceTest extends AbstractTestCase
         // Performance should be reasonable (more than 500 validations per second)
         $validationsPerSecond = $validationCount / $duration;
         $this->assertGreaterThan(500, $validationsPerSecond);
-        
+
         // Verify validation metrics were recorded
         $this->assertEquals($validationCount, $this->validationMetrics->getTotalValidations());
         $this->assertGreaterThan(0.0, $this->validationMetrics->getOverallSuccessRate());
@@ -191,14 +197,14 @@ class ResilienceTest extends AbstractTestCase
             $perfMetrics = new PerformanceMetrics();
             $connMetrics = new ConnectionMetrics();
             $healthMetrics = new HealthMetrics();
-            
+
             $healthChecker = new HealthChecker($connMetrics, $healthMetrics, $perfMetrics);
             $healthChecker->recordConnectionAttempt();
             $healthChecker->recordMessagePublished();
 
             $errorHandler = new ErrorHandler(null, $errorMetrics, $perfMetrics);
             $errorHandler->setRetryPolicy("op_{$i}", 3, 100);
-            
+
             // Record memory usage periodically
             if ($i % 1000 === 0) {
                 $this->performanceMetrics->recordMemoryUsage();
@@ -215,13 +221,13 @@ class ResilienceTest extends AbstractTestCase
 
         gc_collect_cycles(); // Final cleanup
         $this->performanceMetrics->recordMemoryUsage();
-        
+
         $memoryAfter = memory_get_usage();
         $memoryIncrease = $memoryAfter - $memoryBefore;
 
         // Memory increase should be minimal (less than 5MB)
         $this->assertLessThan(5 * 1024 * 1024, $memoryIncrease);
-        
+
         // Verify performance metrics tracked memory usage
         $this->assertGreaterThan(0, $this->performanceMetrics->getPeakMemoryUsage());
     }
@@ -264,7 +270,7 @@ class ResilienceTest extends AbstractTestCase
         $this->assertIsArray($systemHealth);
         $this->assertArrayHasKey('health', $systemHealth);
         $this->assertArrayHasKey('connections', $systemHealth);
-        
+
         // Check that the health checker is at least recording connection attempts
         $this->assertGreaterThan(0, $healthChecker->getConnectionSuccessRate() >= 0.0);
         $this->assertTrue(true); // Test completed successfully
@@ -338,7 +344,7 @@ class ResilienceTest extends AbstractTestCase
         $this->assertEquals(1000, $connectionMetricsArray['total_attempts']);
         $this->assertEquals(1000, $connectionMetricsArray['failed_connections']);
         $this->assertEquals(0, $connectionMetricsArray['successful_connections']);
-        
+
         // Verify health metrics show system as unhealthy
         $systemHealth = $healthChecker->getSystemHealth();
         $this->assertArrayHasKey('connections', $systemHealth);
@@ -348,7 +354,7 @@ class ResilienceTest extends AbstractTestCase
     {
         // Reset validation metrics for clean test
         $this->validationMetrics->reset();
-        
+
         // Test various valid and invalid topic filters
         $testCases = [
             // Valid cases
@@ -372,7 +378,7 @@ class ResilienceTest extends AbstractTestCase
                 "Topic filter '{$testCase['topic']}' validation failed"
             );
         }
-        
+
         // Verify validation metrics were recorded
         $count = $this->validationMetrics->getValidationCount('topic_filter');
         $this->assertEquals(count($testCases), $count['total']);
@@ -395,35 +401,35 @@ class ResilienceTest extends AbstractTestCase
         // Verify process tracking is working
         $this->assertGreaterThan(0, $initialHealth['process']['pid']);
     }
-    
+
     public function testResilienceMetricsIntegration()
     {
         // Test comprehensive metrics integration across all robustness components
-        
+
         // Test error metrics
         $this->errorMetrics->recordError('test_type', 'test_operation', 'Test error message');
         $this->assertEquals(1, $this->errorMetrics->getTotalErrors());
-        
+
         // Test performance metrics
         $this->performanceMetrics->recordOperationTime('test_op', 0.1);
         $this->performanceMetrics->recordMemoryUsage();
         $this->assertEquals(1, $this->performanceMetrics->getTotalOperations());
-        
+
         // Test connection metrics
         $this->connectionMetrics->recordConnectionAttempt();
         $this->connectionMetrics->recordSuccessfulConnection();
         $this->assertEquals(1, $this->connectionMetrics->getTotalAttempts());
         $this->assertEquals(1.0, $this->connectionMetrics->getSuccessRate());
-        
+
         // Test health metrics
         $this->healthMetrics->recordHealthCheck('test_component', true, 'All good');
         $this->assertTrue($this->healthMetrics->isHealthy());
-        
+
         // Test validation metrics
         $this->validationMetrics->recordValidation('test_validation', true);
         $this->assertEquals(1, $this->validationMetrics->getTotalValidations());
         $this->assertEquals(1.0, $this->validationMetrics->getOverallSuccessRate());
-        
+
         // Verify all metrics can be serialized to arrays
         $this->assertIsArray($this->errorMetrics->toArray());
         $this->assertIsArray($this->performanceMetrics->toArray());
