@@ -7,6 +7,11 @@ namespace Nashgao\MQTT\Listener;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Nashgao\MQTT\Event\OnDisconnectEvent;
+use Nashgao\MQTT\Metrics\ConnectionMetrics;
+use Nashgao\MQTT\Metrics\ErrorMetrics;
+use Nashgao\MQTT\Metrics\ValidationMetrics;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Simps\MQTT\Hex\ReasonCode;
 
 /**

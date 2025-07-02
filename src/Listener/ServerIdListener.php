@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace Nashgao\MQTT\Listener;
 
 use Hyperf\Event\Contract\ListenerInterface;
-use Hyperf\Framework\Event\AfterMainServerStart;
-use Hyperf\Framework\Event\BeforeMainServerStart;
-use Hyperf\Framework\Event\BeforeMainServerStop;
-use Hyperf\Process\Event\BeforeProcessHandle;
 use Nashgao\MQTT\Metrics\PerformanceMetrics;
 use Nashgao\MQTT\Metrics\ServerMetrics;
 use Psr\Log\LoggerInterface;
@@ -40,10 +36,10 @@ class ServerIdListener implements ListenerInterface
     public function listen(): array
     {
         return [
-            BeforeMainServerStart::class,
-            AfterMainServerStart::class,
-            BeforeMainServerStop::class,
-            BeforeProcessHandle::class,
+            'Hyperf\Framework\Event\BeforeMainServerStart',
+            'Hyperf\Framework\Event\AfterMainServerStart',
+            'Hyperf\Framework\Event\BeforeMainServerStop',
+            'Hyperf\Process\Event\BeforeProcessHandle',
         ];
     }
 
@@ -51,16 +47,16 @@ class ServerIdListener implements ListenerInterface
     {
         try {
             switch (get_class($event)) {
-                case BeforeMainServerStart::class:
+                case 'Hyperf\Framework\Event\BeforeMainServerStart':
                     $this->handleBeforeServerStart($event);
                     break;
-                case AfterMainServerStart::class:
+                case 'Hyperf\Framework\Event\AfterMainServerStart':
                     $this->handleAfterServerStart($event);
                     break;
-                case BeforeMainServerStop::class:
+                case 'Hyperf\Framework\Event\BeforeMainServerStop':
                     $this->handleBeforeServerStop($event);
                     break;
-                case BeforeProcessHandle::class:
+                case 'Hyperf\Process\Event\BeforeProcessHandle':
                     $this->handleBeforeProcessHandle($event);
                     break;
                 default:
@@ -155,7 +151,7 @@ class ServerIdListener implements ListenerInterface
     /**
      * Handle server start preparation.
      */
-    private function handleBeforeServerStart(BeforeMainServerStart $event): void
+    private function handleBeforeServerStart(object $event): void
     {
         static::$serverId = uniqid('mqtt_server_', true);
 
@@ -175,7 +171,7 @@ class ServerIdListener implements ListenerInterface
      * Handle server start completion.
      * @param mixed $event
      */
-    private function handleAfterServerStart($event): void
+    private function handleAfterServerStart(object $event): void
     {
         self::$serverMetrics->recordServerStart(static::$serverId);
 
@@ -198,7 +194,7 @@ class ServerIdListener implements ListenerInterface
      * Handle server stop preparation.
      * @param mixed $event
      */
-    private function handleBeforeServerStop($event): void
+    private function handleBeforeServerStop(object $event): void
     {
         $uptime = self::$serverMetrics->getUptime();
         $reason = 'normal_shutdown';
@@ -220,7 +216,7 @@ class ServerIdListener implements ListenerInterface
      * Handle process events.
      * @param mixed $event
      */
-    private function handleBeforeProcessHandle($event): void
+    private function handleBeforeProcessHandle(object $event): void
     {
         self::$serverMetrics->recordServerEvent('process_handle', [
             'pid' => getmypid(),
