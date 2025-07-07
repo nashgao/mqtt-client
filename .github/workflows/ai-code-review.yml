@@ -1,0 +1,106 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    name: AI Code Analysis
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Get PR diff
+        id: get-diff
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git diff origin/${{ github.base_ref }}..HEAD > pr-diff.txt
+          echo "diff_size=$(wc -l < pr-diff.txt)" >> $GITHUB_OUTPUT
+          
+      - name: Setup review environment
+        run: |
+          echo "Setting up AI review environment..."
+          echo "PR #${{ github.event.pull_request.number }}"
+          echo "Base: ${{ github.base_ref }}"
+          echo "Head: ${{ github.head_ref }}"
+          
+      - name: Analyze code changes
+        id: analyze
+        run: |
+          # This is where Claude Code integration would go
+          # For now, we'll create a template for manual review
+          
+          cat > review-template.md << 'EOF'
+          ## 🤖 Code Review Checklist
+          
+          ### Security
+          - [ ] No hardcoded secrets or credentials
+          - [ ] Input validation implemented
+          - [ ] SQL injection prevention
+          - [ ] XSS protection
+          
+          ### Performance
+          - [ ] No N+1 queries
+          - [ ] Efficient algorithms used
+          - [ ] Memory usage optimized
+          - [ ] Connection pooling utilized
+          
+          ### Code Quality
+          - [ ] SOLID principles followed
+          - [ ] DRY (Don't Repeat Yourself)
+          - [ ] Clear naming conventions
+          - [ ] Proper error handling
+          
+          ### Testing
+          - [ ] Unit tests added/updated
+          - [ ] Integration tests considered
+          - [ ] Edge cases covered
+          - [ ] Test coverage maintained
+          
+          ### Documentation
+          - [ ] Code comments added where needed
+          - [ ] README updated if required
+          - [ ] API documentation current
+          - [ ] CHANGELOG updated
+          
+          EOF
+          
+      - name: Post review comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const diffSize = ${{ steps.get-diff.outputs.diff_size }};
+            
+            let comment = `## 🤖 Automated Code Review\n\n`;
+            comment += `**PR Size**: ${diffSize} lines changed\n\n`;
+            
+            // Add review checklist
+            const template = fs.readFileSync('review-template.md', 'utf8');
+            comment += template;
+            
+            comment += `\n### Next Steps\n`;
+            comment += `1. Address any unchecked items above\n`;
+            comment += `2. Run \`composer test\` locally\n`;
+            comment += `3. Update documentation if needed\n`;
+            comment += `\n---\n`;
+            comment += `*This is an automated review. For AI-powered analysis, configure Claude API.*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
