@@ -94,6 +94,12 @@ class ClientProxy extends Client
     public function receive()
     {
         $cont = new Channel();
+        // 检查是否需要发送PING请求以保持连接
+        // Check if ping is needed
+        if ((time() - $this->timeSincePing) >= $this->config->clientConfig->getKeepAlive()) {
+            call_user_func([$this, 'executePing']);
+        }
+
         $this->channel->push(
             function () use ($cont) {
                 $message = parent::recv();
