@@ -38,7 +38,7 @@ class ClientProxy extends Client
         $this->config = $config;
         $this->poolName = $poolName;
         $this->dispatcher = ApplicationContext::getContainer()->get(EventDispatcherInterface::class);
-         $this->logger = ApplicationContext::getContainer()->get(StdoutLoggerInterface::class);
+        $this->logger = ApplicationContext::getContainer()->get(StdoutLoggerInterface::class);
         $this->channel = new Channel();
         $this->timeSincePing = time();
         parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType);
