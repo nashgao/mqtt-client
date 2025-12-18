@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT;
 
+use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Context\ApplicationContext;
 use Hyperf\Engine\Channel;
 use Nashgao\MQTT\Config\ClientConfig;
@@ -22,6 +23,8 @@ class ClientProxy extends Client
 
     protected EventDispatcherInterface $dispatcher;
 
+    protected StdoutLoggerInterface $logger;
+
     protected string $poolName;
 
     protected ClientConfig $config;
@@ -35,6 +38,7 @@ class ClientProxy extends Client
         $this->config = $config;
         $this->poolName = $poolName;
         $this->dispatcher = ApplicationContext::getContainer()->get(EventDispatcherInterface::class);
+         $this->logger = ApplicationContext::getContainer()->get(StdoutLoggerInterface::class);
         $this->channel = new Channel();
         $this->timeSincePing = time();
         parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType);
