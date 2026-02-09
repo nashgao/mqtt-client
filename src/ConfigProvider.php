@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT;
 
+use Nashgao\MQTT\Debug\DebugTapListener;
+use Nashgao\MQTT\Debug\DebugTapServer;
+use Nashgao\MQTT\Debug\DebugTapStartListener;
 use Nashgao\MQTT\Listener\AfterWorkerStartListener;
 use Nashgao\MQTT\Listener\OnDisconnectListener;
 use Nashgao\MQTT\Listener\OnPublishListener;
@@ -27,9 +30,14 @@ class ConfigProvider
                 PublishListener::class,
                 AfterWorkerStartListener::class,
                 ServerIdListener::class,
+                // Debug tap listeners
+                DebugTapStartListener::class,
+                DebugTapListener::class,
             ],
             'dependencies' => [
                 ClientIdProviderInterface::class => RandomClientIdProvider::class,
+                // Debug tap server (singleton)
+                DebugTapServer::class => DebugTapServer::class,
             ],
             'publish' => [
                 [

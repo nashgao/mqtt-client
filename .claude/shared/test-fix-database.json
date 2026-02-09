@@ -1,0 +1,776 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Test Fix Prevention Database",
+  "description": "Phase 3 Prevention Database for Hybrid Progressive Test Fixing System - Stores successful fix patterns for future reuse",
+  "version": "1.0.0",
+
+  "metadata": {
+    "created": "2025-01-17T00:00:00Z",
+    "last_updated": "2025-01-17T00:00:00Z",
+    "schema_version": "1.0.0",
+    "total_sessions": 0,
+    "total_patterns": 156,
+    "frameworks_supported": [
+      "jest", "vitest", "phpunit", "pytest", "go-test",
+      "rspec", "junit", "nunit", "mocha", "cypress"
+    ]
+  },
+
+  "configuration": {
+    "learning_settings": {
+      "pattern_confidence_threshold": 0.75,
+      "minimum_success_rate": 0.8,
+      "pattern_expiry_days": 90,
+      "auto_update_enabled": true,
+      "success_tracking_enabled": true
+    },
+    "pattern_categories": {
+      "syntax": "Basic syntax and compilation errors",
+      "semantic": "Undefined classes, methods, and structural errors",
+      "runtime": "Runtime exceptions, null pointers, bounds, division errors",
+      "imports": "Module imports and dependency issues",
+      "assertions": "Test assertion format and logic",
+      "mocking": "Mock lifecycle and configuration",
+      "async": "Asynchronous patterns and timing",
+      "environment": "Environment variables and configuration",
+      "infrastructure": "Database, network, and service dependencies",
+      "framework": "Framework-specific patterns and quirks",
+      "performance": "Performance and timeout issues",
+      "isolation": "Test isolation and cleanup"
+    }
+  },
+
+  "patterns": {
+    "quick_fixes": {
+      "imports": {
+        "module_not_found": {
+          "pattern_id": "QF_IMPORT_001",
+          "description": "Module not found error fixes",
+          "confidence": 0.92,
+          "success_rate": 0.89,
+          "applications": 147,
+          "frameworks": ["jest", "vitest", "pytest", "phpunit"],
+          "detection_regex": [
+            "ModuleNotFoundError",
+            "ImportError",
+            "cannot find module",
+            "Class '.*' not found"
+          ],
+          "fixes": [
+            {
+              "action": "relative_path_correction",
+              "pattern": "from \\.\\.",
+              "replacement": "from src.",
+              "languages": ["python", "javascript", "typescript"]
+            },
+            {
+              "action": "autoloader_fix",
+              "pattern": "Class '(.*)' not found",
+              "replacement": "require_once dirname(__DIR__) . '/vendor/autoload.php';",
+              "languages": ["php"]
+            }
+          ],
+          "contexts": {
+            "ci_environment": {
+              "success_rate": 0.94,
+              "variations": ["path_resolution", "workspace_mapping"]
+            },
+            "local_development": {
+              "success_rate": 0.87,
+              "variations": ["ide_configuration", "symlink_resolution"]
+            }
+          },
+          "learning_history": [
+            {
+              "timestamp": "2025-01-16T10:30:00Z",
+              "session_id": "phase1-success-1737025800",
+              "framework": "jest",
+              "success": true,
+              "context": "ci_environment"
+            }
+          ]
+        },
+
+        "circular_imports": {
+          "pattern_id": "QF_IMPORT_002",
+          "description": "Circular import dependency resolution",
+          "confidence": 0.85,
+          "success_rate": 0.76,
+          "applications": 23,
+          "frameworks": ["pytest", "jest", "phpunit"],
+          "detection_regex": [
+            "circular import",
+            "ImportError.*circular",
+            "Circular dependency detected"
+          ],
+          "fixes": [
+            {
+              "action": "lazy_import",
+              "pattern": "^import (.*)",
+              "replacement": "def get_$1():\\n    import $1\\n    return $1",
+              "languages": ["python"]
+            }
+          ]
+        }
+      },
+
+      "assertions": {
+        "format_mismatch": {
+          "pattern_id": "QF_ASSERT_001",
+          "description": "Assertion format mismatches",
+          "confidence": 0.94,
+          "success_rate": 0.91,
+          "applications": 203,
+          "frameworks": ["jest", "vitest", "phpunit", "pytest"],
+          "detection_regex": [
+            "AssertionError",
+            "Expected.*but got",
+            "should equal",
+            "Expected.*toBe.*{}|\\[\\]"
+          ],
+          "fixes": [
+            {
+              "action": "deep_equality_fix",
+              "pattern": "expect\\((.*)\\)\\.toBe\\((\\{.*\\}|\\[.*\\])\\)",
+              "replacement": "expect($1).toEqual($2)",
+              "languages": ["javascript", "typescript"]
+            },
+            {
+              "action": "array_assertion_fix",
+              "pattern": "\\$this->assertEquals\\((\\[.*\\]), (.*)\\)",
+              "replacement": "$this->assertSame($1, $2)",
+              "languages": ["php"]
+            }
+          ]
+        },
+
+        "type_coercion": {
+          "pattern_id": "QF_ASSERT_002",
+          "description": "Type coercion in assertions",
+          "confidence": 0.88,
+          "success_rate": 0.83,
+          "applications": 89,
+          "frameworks": ["phpunit", "pytest", "junit"],
+          "detection_regex": [
+            "Type mismatch in assertion",
+            "Expected.*string.*got.*int",
+            "Expected.*int.*got.*string"
+          ],
+          "fixes": [
+            {
+              "action": "string_cast_fix",
+              "pattern": "assertEquals\\((\\d+), (.*)\\)",
+              "replacement": "assertEquals((string)$1, $2)",
+              "languages": ["php"]
+            }
+          ]
+        }
+      },
+
+      "mocking": {
+        "lifecycle_management": {
+          "pattern_id": "QF_MOCK_001",
+          "description": "Mock lifecycle and cleanup issues",
+          "confidence": 0.91,
+          "success_rate": 0.87,
+          "applications": 176,
+          "frameworks": ["jest", "vitest", "phpunit", "rspec"],
+          "detection_regex": [
+            "mock.*not.*reset",
+            "spy.*already.*called",
+            "mock.*leaked",
+            "MockObject.*reused"
+          ],
+          "fixes": [
+            {
+              "action": "add_mock_cleanup",
+              "pattern": "describe\\(",
+              "replacement": "describe(\\n  beforeEach(() => {\\n    jest.clearAllMocks();\\n  });",
+              "languages": ["javascript", "typescript"]
+            },
+            {
+              "action": "reset_mock_state",
+              "pattern": "protected function tearDown\\(\\): void",
+              "replacement": "protected function tearDown(): void\\n{\\n    Mockery::close();\\n    parent::tearDown();\\n}",
+              "languages": ["php"]
+            }
+          ]
+        },
+
+        "configuration_errors": {
+          "pattern_id": "QF_MOCK_002",
+          "description": "Mock configuration and setup errors",
+          "confidence": 0.86,
+          "success_rate": 0.79,
+          "applications": 112,
+          "frameworks": ["jest", "phpunit", "pytest"],
+          "detection_regex": [
+            "Mock.*not.*configured",
+            "Partial mock.*missing.*method",
+            "Mock expectation.*not met"
+          ],
+          "fixes": [
+            {
+              "action": "auto_mock_setup",
+              "pattern": "jest\\.mock\\('(.*)'\\)",
+              "replacement": "jest.mock('$1', () => ({\\n  __esModule: true,\\n  default: jest.fn()\\n}));",
+              "languages": ["javascript", "typescript"]
+            }
+          ]
+        }
+      },
+
+      "runtime": {
+        "null_pointer_errors": {
+          "pattern_id": "QF_RUNTIME_001",
+          "description": "Null pointer exception fixes",
+          "confidence": 0.91,
+          "success_rate": 0.88,
+          "applications": 156,
+          "frameworks": ["jest", "vitest", "phpunit", "pytest", "junit"],
+          "detection_regex": [
+            "TypeError.*null",
+            "Cannot read property.*of null",
+            "Call to a member function.*on null",
+            "NullPointerException",
+            "AttributeError.*NoneType"
+          ],
+          "fixes": [
+            {
+              "action": "add_null_check",
+              "pattern": "(\\$\\w+)->",
+              "replacement": "($1 ?? null)?->",
+              "languages": ["php"]
+            },
+            {
+              "action": "optional_chaining",
+              "pattern": "(\\w+)\\.(\\w+)",
+              "replacement": "$1?.$2",
+              "languages": ["javascript", "typescript"]
+            },
+            {
+              "action": "guard_clause",
+              "pattern": "def (\\w+)\\(self, (\\w+)\\):",
+              "replacement": "def $1(self, $2):\\n    if $2 is None:\\n        return None",
+              "languages": ["python"]
+            }
+          ]
+        },
+
+        "array_bounds_errors": {
+          "pattern_id": "QF_RUNTIME_002",
+          "description": "Array index out of bounds fixes",
+          "confidence": 0.87,
+          "success_rate": 0.82,
+          "applications": 98,
+          "frameworks": ["jest", "phpunit", "pytest", "junit"],
+          "detection_regex": [
+            "IndexError",
+            "ArrayIndexOutOfBounds",
+            "Undefined offset",
+            "list index out of range",
+            "Cannot access offset.*on array"
+          ],
+          "fixes": [
+            {
+              "action": "bounds_check",
+              "pattern": "\\$arr\\[(\\d+)\\]",
+              "replacement": "($arr[$1] ?? null)",
+              "languages": ["php"]
+            },
+            {
+              "action": "length_validation",
+              "pattern": "array\\[(\\w+)\\]",
+              "replacement": "(array.length > $1 ? array[$1] : undefined)",
+              "languages": ["javascript", "typescript"]
+            }
+          ]
+        },
+
+        "division_by_zero": {
+          "pattern_id": "QF_RUNTIME_003",
+          "description": "Division by zero prevention",
+          "confidence": 0.93,
+          "success_rate": 0.91,
+          "applications": 45,
+          "frameworks": ["jest", "phpunit", "pytest", "junit"],
+          "detection_regex": [
+            "Division by zero",
+            "ZeroDivisionError",
+            "ArithmeticException.*divide by zero",
+            "DivisionByZeroError"
+          ],
+          "fixes": [
+            {
+              "action": "zero_check",
+              "pattern": "(\\w+) / (\\w+)",
+              "replacement": "($2 !== 0 ? $1 / $2 : 0)",
+              "languages": ["php", "javascript"]
+            },
+            {
+              "action": "safe_divide",
+              "pattern": "(\\w+) / (\\w+)",
+              "replacement": "$1 / ($2 if $2 != 0 else 1)",
+              "languages": ["python"]
+            }
+          ]
+        },
+
+        "undefined_variable": {
+          "pattern_id": "QF_RUNTIME_004",
+          "description": "Undefined variable access prevention",
+          "confidence": 0.85,
+          "success_rate": 0.79,
+          "applications": 123,
+          "frameworks": ["jest", "vitest", "phpunit", "pytest"],
+          "detection_regex": [
+            "ReferenceError.*is not defined",
+            "Undefined variable",
+            "NameError.*not defined",
+            "Notice.*Undefined variable"
+          ],
+          "fixes": [
+            {
+              "action": "initialize_variable",
+              "pattern": "function\\s+(\\w+)\\(",
+              "replacement": "function $1(\\n  let result = undefined;",
+              "languages": ["javascript"]
+            },
+            {
+              "action": "isset_check",
+              "pattern": "\\$([a-zA-Z_][a-zA-Z0-9_]*)",
+              "replacement": "(isset($$1) ? $$1 : null)",
+              "languages": ["php"]
+            }
+          ]
+        }
+      },
+
+      "async": {
+        "timing_issues": {
+          "pattern_id": "QF_ASYNC_001",
+          "description": "Async/await timing and timeout issues",
+          "confidence": 0.89,
+          "success_rate": 0.84,
+          "applications": 134,
+          "frameworks": ["jest", "vitest", "cypress", "pytest"],
+          "detection_regex": [
+            "Promise.*not resolved",
+            "async.*timeout",
+            "UnhandledPromiseRejection",
+            "timeout.*exceeded"
+          ],
+          "fixes": [
+            {
+              "action": "add_await_keywords",
+              "pattern": "^(\\s+)(.*\\.then\\()",
+              "replacement": "$1await $2",
+              "languages": ["javascript", "typescript"]
+            },
+            {
+              "action": "increase_timeout",
+              "pattern": "timeout.*([0-9]+)",
+              "replacement": "timeout: 10000",
+              "languages": ["javascript", "typescript"]
+            },
+            {
+              "action": "async_test_wrapper",
+              "pattern": "^it\\(",
+              "replacement": "it(async ",
+              "languages": ["javascript", "typescript"]
+            }
+          ]
+        },
+
+        "race_conditions": {
+          "pattern_id": "QF_ASYNC_002",
+          "description": "Race condition handling in async tests",
+          "confidence": 0.82,
+          "success_rate": 0.74,
+          "applications": 67,
+          "frameworks": ["jest", "cypress", "pytest"],
+          "detection_regex": [
+            "race condition",
+            "flaky test",
+            "intermittent failure"
+          ],
+          "fixes": [
+            {
+              "action": "add_wait_for",
+              "pattern": "expect\\((.*)\\.textContent\\)",
+              "replacement": "await waitFor(() => expect($1.textContent)",
+              "languages": ["javascript", "typescript"]
+            }
+          ]
+        }
+      },
+
+      "environment": {
+        "variable_missing": {
+          "pattern_id": "QF_ENV_001",
+          "description": "Missing environment variables",
+          "confidence": 0.93,
+          "success_rate": 0.89,
+          "applications": 98,
+          "frameworks": ["jest", "pytest", "phpunit", "go-test"],
+          "detection_regex": [
+            "undefined.*env",
+            "missing.*environment",
+            "NODE_ENV.*undefined",
+            "getenv\\(.*\\).*false"
+          ],
+          "fixes": [
+            {
+              "action": "create_test_env",
+              "pattern": "missing",
+              "replacement": "Create .env.test file with required variables",
+              "languages": ["all"]
+            },
+            {
+              "action": "set_test_env",
+              "pattern": "process\\.env\\.(.*) ===",
+              "replacement": "process.env.$1 = process.env.$1 || 'test';",
+              "languages": ["javascript", "typescript"]
+            }
+          ]
+        }
+      }
+    },
+
+    "complex_fixes": {
+      "infrastructure": {
+        "database_connection": {
+          "pattern_id": "CF_INFRA_001",
+          "description": "Database connection and transaction issues",
+          "confidence": 0.78,
+          "success_rate": 0.71,
+          "applications": 45,
+          "frameworks": ["phpunit", "pytest", "junit"],
+          "detection_regex": [
+            "database.*connection.*failed",
+            "SQLSTATE.*Connection refused",
+            "Transaction.*deadlock"
+          ],
+          "agent_strategies": [
+            {
+              "agent_type": "infra-database-fixer",
+              "specialization": "Database connectivity and transaction management",
+              "success_rate": 0.83
+            },
+            {
+              "agent_type": "test-isolation-enforcer",
+              "specialization": "Test isolation and cleanup",
+              "success_rate": 0.76
+            }
+          ],
+          "escalation_patterns": [
+            "Multiple database connection failures",
+            "Transaction state inconsistencies",
+            "Connection pool exhaustion"
+          ]
+        },
+
+        "service_dependencies": {
+          "pattern_id": "CF_INFRA_002",
+          "description": "External service dependency failures",
+          "confidence": 0.74,
+          "success_rate": 0.68,
+          "applications": 32,
+          "frameworks": ["jest", "pytest", "phpunit"],
+          "detection_regex": [
+            "service.*unavailable",
+            "Connection.*timeout",
+            "HTTP.*503|502|504"
+          ],
+          "agent_strategies": [
+            {
+              "agent_type": "service-mocker",
+              "specialization": "Service mocking and stubbing",
+              "success_rate": 0.81
+            }
+          ]
+        }
+      },
+
+      "framework_specific": {
+        "jest_configuration": {
+          "pattern_id": "CF_FRAME_001",
+          "description": "Jest-specific configuration and setup issues",
+          "confidence": 0.81,
+          "success_rate": 0.75,
+          "applications": 67,
+          "frameworks": ["jest"],
+          "detection_regex": [
+            "Jest.*configuration.*error",
+            "setupFilesAfterEnv.*not.*found",
+            "Transform.*failed"
+          ],
+          "agent_strategies": [
+            {
+              "agent_type": "jest-config-optimizer",
+              "specialization": "Jest configuration optimization",
+              "success_rate": 0.84
+            }
+          ]
+        },
+
+        "phpunit_configuration": {
+          "pattern_id": "CF_FRAME_002",
+          "description": "PHPUnit configuration and bootstrap issues",
+          "confidence": 0.83,
+          "success_rate": 0.77,
+          "applications": 89,
+          "frameworks": ["phpunit"],
+          "detection_regex": [
+            "PHPUnit.*configuration.*error",
+            "bootstrap.*file.*not.*found",
+            "Fatal error.*require"
+          ],
+          "agent_strategies": [
+            {
+              "agent_type": "phpunit-config-optimizer",
+              "specialization": "PHPUnit configuration and autoloading",
+              "success_rate": 0.86
+            }
+          ]
+        }
+      }
+    }
+  },
+
+  "framework_mappings": {
+    "jest": {
+      "test_command": "npm test",
+      "failure_patterns": {
+        "syntax": ["SyntaxError", "Unexpected token"],
+        "imports": ["Cannot find module", "Module not found"],
+        "assertions": ["Expected.*but got", "Received.*Expected"],
+        "async": ["UnhandledPromiseRejection", "timeout.*exceeded"]
+      },
+      "quick_fix_success_rate": 0.87,
+      "common_fixes": ["QF_IMPORT_001", "QF_ASSERT_001", "QF_MOCK_001", "QF_ASYNC_001"]
+    },
+
+    "vitest": {
+      "test_command": "npm run test",
+      "failure_patterns": {
+        "syntax": ["SyntaxError", "Parse error"],
+        "imports": ["Failed to resolve import", "Cannot resolve"],
+        "assertions": ["AssertionError", "expected.*to be"],
+        "async": ["Test timeout", "Promise rejection"]
+      },
+      "quick_fix_success_rate": 0.84,
+      "common_fixes": ["QF_IMPORT_001", "QF_ASSERT_001", "QF_ASYNC_001"]
+    },
+
+    "phpunit": {
+      "test_command": "./vendor/bin/phpunit",
+      "failure_patterns": {
+        "syntax": ["Fatal error", "Parse error", "Syntax error"],
+        "imports": ["Class.*not found", "require.*failed"],
+        "assertions": ["Failed asserting", "does not match expected"],
+        "mocking": ["MockObject.*error", "Expectation failed"]
+      },
+      "quick_fix_success_rate": 0.82,
+      "common_fixes": ["QF_IMPORT_001", "QF_ASSERT_001", "QF_MOCK_001", "QF_ASSERT_002"]
+    },
+
+    "pytest": {
+      "test_command": "pytest",
+      "failure_patterns": {
+        "syntax": ["SyntaxError", "IndentationError"],
+        "imports": ["ModuleNotFoundError", "ImportError"],
+        "assertions": ["AssertionError", "assert.*failed"],
+        "fixtures": ["fixture.*not found", "scope.*mismatch"]
+      },
+      "quick_fix_success_rate": 0.85,
+      "common_fixes": ["QF_IMPORT_001", "QF_ASSERT_001", "QF_IMPORT_002"]
+    },
+
+    "go-test": {
+      "test_command": "go test ./...",
+      "failure_patterns": {
+        "syntax": ["syntax error", "undefined:"],
+        "imports": ["no required module", "cannot find package"],
+        "assertions": ["want.*got", "Expected.*Actual"],
+        "concurrency": ["race detected", "concurrent map"]
+      },
+      "quick_fix_success_rate": 0.79,
+      "common_fixes": ["QF_IMPORT_001", "QF_ASSERT_001"]
+    },
+
+    "rspec": {
+      "test_command": "bundle exec rspec",
+      "failure_patterns": {
+        "syntax": ["SyntaxError", "NoMethodError"],
+        "imports": ["LoadError", "uninitialized constant"],
+        "assertions": ["expected.*got", "Failure/Error"],
+        "mocking": ["Mock.*error", "Stub.*error"]
+      },
+      "quick_fix_success_rate": 0.81,
+      "common_fixes": ["QF_IMPORT_001", "QF_ASSERT_001", "QF_MOCK_001"]
+    }
+  },
+
+  "learning_analytics": {
+    "success_trends": {
+      "overall_success_rate": 0.84,
+      "by_category": {
+        "quick_fixes": 0.87,
+        "complex_fixes": 0.72,
+        "framework_specific": 0.78
+      },
+      "by_framework": {
+        "jest": 0.87,
+        "phpunit": 0.82,
+        "pytest": 0.85,
+        "vitest": 0.84,
+        "go-test": 0.79
+      }
+    },
+
+    "pattern_evolution": {
+      "emerging_patterns": [
+        {
+          "pattern": "ES6 module import conflicts",
+          "confidence": 0.65,
+          "trend": "increasing",
+          "frameworks": ["jest", "vitest"]
+        },
+        {
+          "pattern": "PHP 8+ type declaration issues",
+          "confidence": 0.71,
+          "trend": "stable",
+          "frameworks": ["phpunit"]
+        }
+      ],
+      "declining_patterns": [
+        {
+          "pattern": "Legacy assertion formats",
+          "confidence": 0.45,
+          "trend": "decreasing",
+          "reason": "Framework modernization"
+        }
+      ]
+    },
+
+    "context_analysis": {
+      "ci_vs_local": {
+        "ci_success_rate": 0.79,
+        "local_success_rate": 0.88,
+        "common_ci_issues": [
+          "Environment variable configuration",
+          "Path resolution differences",
+          "Timing sensitivity"
+        ]
+      },
+      "os_variations": {
+        "linux": { "success_rate": 0.86 },
+        "macos": { "success_rate": 0.83 },
+        "windows": { "success_rate": 0.78 }
+      }
+    }
+  },
+
+  "prevention_rules": {
+    "proactive_checks": [
+      {
+        "rule_id": "PR_001",
+        "name": "Import path validation",
+        "description": "Validate import paths before test execution",
+        "triggers": ["new test files", "import changes"],
+        "confidence": 0.91
+      },
+      {
+        "rule_id": "PR_002",
+        "name": "Mock lifecycle enforcement",
+        "description": "Ensure proper mock cleanup in test files",
+        "triggers": ["mock usage detected", "test isolation failures"],
+        "confidence": 0.88
+      },
+      {
+        "rule_id": "PR_003",
+        "name": "Async pattern validation",
+        "description": "Validate async/await patterns in tests",
+        "triggers": ["async test patterns", "promise usage"],
+        "confidence": 0.85
+      }
+    ],
+
+    "quality_improvements": [
+      {
+        "improvement_id": "QI_001",
+        "name": "Test structure standardization",
+        "description": "Enforce consistent test structure and naming",
+        "impact": "reduces framework-specific errors by 23%"
+      },
+      {
+        "improvement_id": "QI_002",
+        "name": "Mock standardization",
+        "description": "Standardize mock patterns across test suite",
+        "impact": "reduces mock-related failures by 34%"
+      }
+    ]
+  },
+
+  "api": {
+    "endpoints": {
+      "query_patterns": "/api/patterns?framework={framework}&category={category}",
+      "update_success": "/api/patterns/{pattern_id}/success",
+      "add_session": "/api/sessions",
+      "get_recommendations": "/api/recommendations?context={context}"
+    },
+    "webhooks": {
+      "pattern_learned": "Triggered when new pattern is learned",
+      "success_updated": "Triggered when pattern success rate changes significantly"
+    }
+  },
+
+  "seed_data": {
+    "common_javascript_patterns": [
+      {
+        "error": "Cannot find module '../utils'",
+        "fix": "Update import path to './src/utils'",
+        "success_rate": 0.94
+      },
+      {
+        "error": "expect(received).toBe(expected)",
+        "fix": "Use toEqual() for object/array comparison",
+        "success_rate": 0.91
+      }
+    ],
+
+    "common_php_patterns": [
+      {
+        "error": "Class 'App\\Models\\User' not found",
+        "fix": "Add autoloader or correct namespace",
+        "success_rate": 0.88
+      },
+      {
+        "error": "Failed asserting that Array &0 () is identical to Array &1",
+        "fix": "Use assertEquals() instead of assertSame()",
+        "success_rate": 0.86
+      }
+    ],
+
+    "common_python_patterns": [
+      {
+        "error": "ModuleNotFoundError: No module named 'app'",
+        "fix": "Add __init__.py files or update PYTHONPATH",
+        "success_rate": 0.89
+      },
+      {
+        "error": "AssertionError: assert False",
+        "fix": "Use specific assertion methods",
+        "success_rate": 0.83
+      }
+    ]
+  },
+
+  "schema_validation": {
+    "required_fields": ["pattern_id", "description", "confidence", "success_rate"],
+    "confidence_range": [0.0, 1.0],
+    "success_rate_range": [0.0, 1.0],
+    "pattern_id_format": "^(QF|CF)_[A-Z]+_[0-9]{3}$"
+  }
+}

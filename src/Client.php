@@ -151,11 +151,20 @@ class Client
             );
 
             $hasContextConnection = Context::has($this->getContextKey());
-            if ($name = $name === MQTTConstants::MULTISUB ? MQTTConstants::SUBSCRIBE : $name) {
-                $num = count($arguments) !== 3 ? 1 : end($arguments); // set multi sub default as 2
+
+            // Handle multiSub: change method name to subscribe and get iteration count
+            $isMultiSub = $name === MQTTConstants::MULTISUB;
+            /** @var array<int, mixed> $arguments */
+            $argsArray = is_array($arguments) ? $arguments : [];
+            if ($isMultiSub) {
+                $name = MQTTConstants::SUBSCRIBE;
+                // multiSub third argument is the subscription count, default to 1
+                $num = count($argsArray) >= 3 ? (int) end($argsArray) : 1;
+            } else {
+                $num = 1;
             }
 
-            for ($count = 0; $count < ($num ?? 1); ++$count) {
+            for ($count = 0; $count < $num; ++$count) {
                 ($this->getConnection)($hasContextConnection, $name, $arguments);
             }
 

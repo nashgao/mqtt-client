@@ -1,0 +1,708 @@
+{
+  "function_mappings": {
+    "array_operations": {
+      "array_map": {
+        "native": "array_map",
+        "space_utils": "Collection::map",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->map(fn($item) => $item * 2)"
+      },
+      "array_filter": {
+        "native": "array_filter",
+        "space_utils": "Collection::filter",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->filter(fn($item) => $item > 0)"
+      },
+      "array_reduce": {
+        "native": "array_reduce",
+        "space_utils": "Collection::reduce",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->reduce(fn($carry, $item) => $carry + $item, 0)"
+      },
+      "array_merge": {
+        "native": "array_merge",
+        "space_utils": "Collection::merge",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array1)->merge($array2)"
+      },
+      "array_unique": {
+        "native": "array_unique",
+        "space_utils": "Collection::unique",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->unique()"
+      },
+      "array_chunk": {
+        "native": "array_chunk",
+        "space_utils": "Collection::chunk",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->chunk(3)"
+      },
+      "array_slice": {
+        "native": "array_slice",
+        "space_utils": "Collection::slice",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->slice(0, 10)"
+      },
+      "array_values": {
+        "native": "array_values",
+        "space_utils": "Collection::values",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->values()"
+      },
+      "array_keys": {
+        "native": "array_keys",
+        "space_utils": "Collection::keys",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->keys()"
+      },
+      "in_array": {
+        "native": "in_array",
+        "space_utils": "Collection::contains",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->contains($value)"
+      },
+      "array_push": {
+        "native": "array_push",
+        "space_utils": "Collection::push",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->push($value)"
+      },
+      "array_pop": {
+        "native": "array_pop",
+        "space_utils": "Collection::pop",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->pop()"
+      },
+      "array_shift": {
+        "native": "array_shift",
+        "space_utils": "Collection::shift",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->shift()"
+      },
+      "array_unshift": {
+        "native": "array_unshift",
+        "space_utils": "Collection::unshift",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->unshift($value)"
+      },
+      "array_reverse": {
+        "native": "array_reverse",
+        "space_utils": "Collection::reverse",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->reverse()"
+      },
+      "sort": {
+        "native": "sort",
+        "space_utils": "Collection::sort",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->sort()"
+      },
+      "count": {
+        "native": "count",
+        "space_utils": "Collection::count",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "Collection::from($array)->count()"
+      }
+    },
+    "string_operations": {
+      "str_replace": {
+        "native": "str_replace",
+        "space_utils": "Str::replace",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::replace($string, $search, $replace)"
+      },
+      "substr": {
+        "native": "substr",
+        "space_utils": "Str::substr",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::substr($string, 0, 10)"
+      },
+      "strlen": {
+        "native": "strlen",
+        "space_utils": "Str::length",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::length($string)"
+      },
+      "strtolower": {
+        "native": "strtolower",
+        "space_utils": "Str::lower",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::lower($string)"
+      },
+      "strtoupper": {
+        "native": "strtoupper",
+        "space_utils": "Str::upper",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::upper($string)"
+      },
+      "trim": {
+        "native": "trim",
+        "space_utils": "Str::trim",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::trim($string)"
+      },
+      "explode": {
+        "native": "explode",
+        "space_utils": "Str::explode",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::explode($string, ',')"
+      },
+      "implode": {
+        "native": "implode",
+        "space_utils": "Str::implode",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::implode($array, ',')"
+      },
+      "strpos": {
+        "native": "strpos",
+        "space_utils": "Str::position",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::position($haystack, $needle)"
+      },
+      "preg_match": {
+        "native": "preg_match",
+        "space_utils": "Str::match",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::match($string, '/pattern/')"
+      },
+      "ucfirst": {
+        "native": "ucfirst",
+        "space_utils": "Str::ucfirst",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::ucfirst($string)"
+      },
+      "str_contains": {
+        "native": "str_contains",
+        "space_utils": "Str::contains",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::contains($haystack, $needle)"
+      },
+      "str_starts_with": {
+        "native": "str_starts_with",
+        "space_utils": "Str::startsWith",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::startsWith($haystack, $needle)"
+      },
+      "str_ends_with": {
+        "native": "str_ends_with",
+        "space_utils": "Str::endsWith",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Str",
+        "example": "Str::endsWith($haystack, $needle)"
+      }
+    },
+    "file_operations": {
+      "file_get_contents": {
+        "native": "file_get_contents",
+        "space_utils": "FileSystem::read",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::read($path)"
+      },
+      "file_put_contents": {
+        "native": "file_put_contents",
+        "space_utils": "FileSystem::write",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::write($path, $content)"
+      },
+      "file_exists": {
+        "native": "file_exists",
+        "space_utils": "FileSystem::exists",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::exists($path)"
+      },
+      "is_file": {
+        "native": "is_file",
+        "space_utils": "FileSystem::isFile",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::isFile($path)"
+      },
+      "is_dir": {
+        "native": "is_dir",
+        "space_utils": "FileSystem::isDirectory",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::isDirectory($path)"
+      },
+      "mkdir": {
+        "native": "mkdir",
+        "space_utils": "FileSystem::makeDirectory",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::makeDirectory($path)"
+      },
+      "unlink": {
+        "native": "unlink",
+        "space_utils": "FileSystem::delete",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::delete($path)"
+      },
+      "scandir": {
+        "native": "scandir",
+        "space_utils": "FileSystem::listDirectory",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::listDirectory($path)"
+      },
+      "glob": {
+        "native": "glob",
+        "space_utils": "FileSystem::glob",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::glob($pattern)"
+      },
+      "copy": {
+        "native": "copy",
+        "space_utils": "FileSystem::copy",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::copy($source, $destination)"
+      },
+      "rename": {
+        "native": "rename",
+        "space_utils": "FileSystem::move",
+        "namespace": "SpacePlatform\\Utils\\FileSystem\\FileSystem",
+        "example": "FileSystem::move($source, $destination)"
+      }
+    },
+    "json_operations": {
+      "json_encode": {
+        "native": "json_encode",
+        "space_utils": "JsonSerializer::serialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::serialize($data)"
+      },
+      "json_decode": {
+        "native": "json_decode",
+        "space_utils": "JsonSerializer::unserialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::unserialize($json)"
+      },
+      "json_encode_with_flags": {
+        "native": "json_encode($data, $flags)",
+        "space_utils": "JsonSerializer::serialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::serialize($data, $flags)"
+      },
+      "json_decode_assoc": {
+        "native": "json_decode($json, true)",
+        "space_utils": "JsonSerializer::unserialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::unserialize($json, true)"
+      },
+      "json_decode_object": {
+        "native": "json_decode($json, false)",
+        "space_utils": "JsonSerializer::unserialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::unserialize($json, false)"
+      },
+      "json_encode_pretty": {
+        "native": "json_encode($data, JSON_PRETTY_PRINT)",
+        "space_utils": "JsonSerializer::serialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::serialize($data, JSON_PRETTY_PRINT)"
+      },
+      "json_encode_unescaped": {
+        "native": "json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)",
+        "space_utils": "JsonSerializer::serialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::serialize($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)"
+      },
+      "json_encode_numeric": {
+        "native": "json_encode($data, JSON_NUMERIC_CHECK)",
+        "space_utils": "JsonSerializer::serialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::serialize($data, JSON_NUMERIC_CHECK)"
+      },
+      "json_encode_with_depth": {
+        "native": "json_encode($data, $flags, $depth)",
+        "space_utils": "JsonSerializer::serialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::serialize($data, $flags, $depth)"
+      },
+      "json_decode_with_depth": {
+        "native": "json_decode($json, $assoc, $depth)",
+        "space_utils": "JsonSerializer::unserialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::unserialize($json, $assoc, $depth)"
+      },
+      "json_decode_with_flags": {
+        "native": "json_decode($json, $assoc, $depth, $flags)",
+        "space_utils": "JsonSerializer::unserialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Json\\JsonSerializer",
+        "example": "JsonSerializer::unserialize($json, $assoc, $depth, $flags)"
+      }
+    },
+    "time_operations": {
+      "time": {
+        "native": "time",
+        "space_utils": "Time::now",
+        "namespace": "SpacePlatform\\Utils\\Time\\Time",
+        "example": "Time::now()"
+      },
+      "date": {
+        "native": "date",
+        "space_utils": "Time::format",
+        "namespace": "SpacePlatform\\Utils\\Time\\Time",
+        "example": "Time::format('Y-m-d H:i:s')"
+      },
+      "strtotime": {
+        "native": "strtotime",
+        "space_utils": "Time::parse",
+        "namespace": "SpacePlatform\\Utils\\Time\\Time",
+        "example": "Time::parse('2024-01-01')"
+      },
+      "microtime": {
+        "native": "microtime",
+        "space_utils": "Time::micro",
+        "namespace": "SpacePlatform\\Utils\\Time\\Time",
+        "example": "Time::micro()"
+      },
+      "sleep": {
+        "native": "sleep",
+        "space_utils": "Time::sleep",
+        "namespace": "SpacePlatform\\Utils\\Time\\Time",
+        "example": "Time::sleep(1)"
+      },
+      "usleep": {
+        "native": "usleep",
+        "space_utils": "Time::usleep",
+        "namespace": "SpacePlatform\\Utils\\Time\\Time",
+        "example": "Time::usleep(1000)"
+      }
+    },
+    "async_operations": {
+      "foreach": {
+        "native": "foreach",
+        "space_utils": "Concurrent::each",
+        "namespace": "SpacePlatform\\Utils\\Concurrent\\Concurrent",
+        "example": "Concurrent::each($items, fn($item) => process($item))",
+        "condition": "when_parallel_processing_needed"
+      },
+      "array_map": {
+        "native": "array_map",
+        "space_utils": "Concurrent::map",
+        "namespace": "SpacePlatform\\Utils\\Concurrent\\Concurrent",
+        "example": "Concurrent::map($items, fn($item) => transform($item))",
+        "condition": "when_parallel_processing_needed"
+      },
+      "sequential_processing": {
+        "native": "for/while/foreach",
+        "space_utils": "Batch::process",
+        "namespace": "SpacePlatform\\Utils\\Batch\\Batch",
+        "example": "Batch::process($items, fn($batch) => processBatch($batch))"
+      },
+      "callback": {
+        "native": "callback",
+        "space_utils": "Promise::create",
+        "namespace": "SpacePlatform\\Utils\\Promise\\Promise",
+        "example": "Promise::create(fn($resolve, $reject) => asyncOperation())"
+      }
+    },
+    "data_structures": {
+      "array": {
+        "native": "array",
+        "space_utils": "Collection",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Collection",
+        "example": "new Collection($items)",
+        "condition": "when_complex_operations_needed"
+      },
+      "SplQueue": {
+        "native": "SplQueue",
+        "space_utils": "Queue",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Queue",
+        "example": "new Queue()"
+      },
+      "SplStack": {
+        "native": "SplStack",
+        "space_utils": "Stack",
+        "namespace": "SpacePlatform\\Utils\\Structure\\Stack",
+        "example": "new Stack()"
+      },
+      "SplPriorityQueue": {
+        "native": "SplPriorityQueue",
+        "space_utils": "PriorityQueue",
+        "namespace": "SpacePlatform\\Utils\\Structure\\PriorityQueue",
+        "example": "new PriorityQueue()"
+      },
+      "stdClass": {
+        "native": "stdClass",
+        "space_utils": "Entity",
+        "namespace": "SpacePlatform\\Utils\\Entity\\Entity",
+        "example": "class MyEntity extends Entity { }",
+        "condition": "when_structure_and_validation_needed"
+      }
+    },
+    "validation": {
+      "filter_var": {
+        "native": "filter_var",
+        "space_utils": "Validator::validate",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Validator",
+        "example": "Validator::validate($value, 'email')"
+      },
+      "htmlspecialchars": {
+        "native": "htmlspecialchars",
+        "space_utils": "Sanitizer::html",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Sanitizer",
+        "example": "Sanitizer::html($string)"
+      },
+      "strip_tags": {
+        "native": "strip_tags",
+        "space_utils": "Sanitizer::stripTags",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Sanitizer",
+        "example": "Sanitizer::stripTags($string)"
+      },
+      "is_email": {
+        "native": "filter_var(..., FILTER_VALIDATE_EMAIL)",
+        "space_utils": "Validator::isEmail",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Validator",
+        "example": "Validator::isEmail($email)"
+      },
+      "is_url": {
+        "native": "filter_var(..., FILTER_VALIDATE_URL)",
+        "space_utils": "Validator::isUrl",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Validator",
+        "example": "Validator::isUrl($url)"
+      }
+    },
+    "error_handling": {
+      "try_catch": {
+        "native": "try/catch",
+        "space_utils": "Result::try",
+        "namespace": "SpacePlatform\\Utils\\Functional\\Result",
+        "example": "Result::try(fn() => riskyOperation())"
+      },
+      "null_check": {
+        "native": "is_null/isset",
+        "space_utils": "Maybe::of",
+        "namespace": "SpacePlatform\\Utils\\Functional\\Maybe",
+        "example": "Maybe::of($value)->map(fn($v) => process($v))"
+      },
+      "error_array": {
+        "native": "['success' => false, 'error' => ...]",
+        "space_utils": "Either::left",
+        "namespace": "SpacePlatform\\Utils\\Functional\\Either",
+        "example": "Either::left($error)"
+      },
+      "success_array": {
+        "native": "['success' => true, 'data' => ...]",
+        "space_utils": "Either::right",
+        "namespace": "SpacePlatform\\Utils\\Functional\\Either",
+        "example": "Either::right($data)"
+      }
+    },
+    "caching": {
+      "manual_cache": {
+        "native": "static variables or arrays",
+        "space_utils": "Cache::remember",
+        "namespace": "SpacePlatform\\Utils\\Cache\\Cache",
+        "example": "Cache::remember('key', fn() => expensiveOperation())"
+      },
+      "object_pooling": {
+        "native": "manual object reuse",
+        "space_utils": "ObjectPool",
+        "namespace": "SpacePlatform\\Utils\\Entity\\Pool\\ObjectPool",
+        "example": "ObjectPool::get('connection')"
+      }
+    },
+    "math_operations": {
+      "round": {
+        "native": "round",
+        "space_utils": "Math::round",
+        "namespace": "SpacePlatform\\Utils\\Math\\Math",
+        "example": "Math::round($number, 2)"
+      },
+      "ceil": {
+        "native": "ceil",
+        "space_utils": "Math::ceil",
+        "namespace": "SpacePlatform\\Utils\\Math\\Math",
+        "example": "Math::ceil($number)"
+      },
+      "floor": {
+        "native": "floor",
+        "space_utils": "Math::floor",
+        "namespace": "SpacePlatform\\Utils\\Math\\Math",
+        "example": "Math::floor($number)"
+      },
+      "abs": {
+        "native": "abs",
+        "space_utils": "Math::abs",
+        "namespace": "SpacePlatform\\Utils\\Math\\Math",
+        "example": "Math::abs($number)"
+      },
+      "min": {
+        "native": "min",
+        "space_utils": "Math::min",
+        "namespace": "SpacePlatform\\Utils\\Math\\Math",
+        "example": "Math::min($a, $b)"
+      },
+      "max": {
+        "native": "max",
+        "space_utils": "Math::max",
+        "namespace": "SpacePlatform\\Utils\\Math\\Math",
+        "example": "Math::max($a, $b)"
+      }
+    },
+    "serialization_operations": {
+      "serialize": {
+        "native": "serialize",
+        "space_utils": "PhpSerializer::serialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Php\\PhpSerializer",
+        "example": "PhpSerializer::serialize($data)"
+      },
+      "unserialize": {
+        "native": "unserialize",
+        "space_utils": "PhpSerializer::unserialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\Php\\PhpSerializer",
+        "example": "PhpSerializer::unserialize($data)"
+      },
+      "igbinary_serialize": {
+        "native": "igbinary_serialize",
+        "space_utils": "IgBinarySerializer::serialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\IgBinary\\IgBinarySerializer",
+        "example": "IgBinarySerializer::serialize($data)",
+        "condition": "when_igbinary_extension_loaded"
+      },
+      "igbinary_unserialize": {
+        "native": "igbinary_unserialize",
+        "space_utils": "IgBinarySerializer::unserialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\IgBinary\\IgBinarySerializer",
+        "example": "IgBinarySerializer::unserialize($data)",
+        "condition": "when_igbinary_extension_loaded"
+      },
+      "msgpack_pack": {
+        "native": "msgpack_pack",
+        "space_utils": "MessagePackSerializer::serialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\MessagePack\\MessagePackSerializer",
+        "example": "MessagePackSerializer::serialize($data)",
+        "condition": "when_msgpack_extension_loaded"
+      },
+      "msgpack_unpack": {
+        "native": "msgpack_unpack",
+        "space_utils": "MessagePackSerializer::unserialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\MessagePack\\MessagePackSerializer",
+        "example": "MessagePackSerializer::unserialize($data)",
+        "condition": "when_msgpack_extension_loaded"
+      },
+      "MessagePack::pack": {
+        "native": "MessagePack::pack",
+        "space_utils": "MessagePackSerializer::serialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\MessagePack\\MessagePackSerializer",
+        "example": "MessagePackSerializer::serialize($data)"
+      },
+      "MessagePack::unpack": {
+        "native": "MessagePack::unpack",
+        "space_utils": "MessagePackSerializer::unserialize",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\MessagePack\\MessagePackSerializer",
+        "example": "MessagePackSerializer::unserialize($data)"
+      },
+      "msgpack_unpack_chunk": {
+        "native": "custom msgpack chunk unpacking",
+        "space_utils": "MessagePackSerializer::unpackChunk",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\MessagePack\\MessagePackSerializer",
+        "example": "MessagePackSerializer::unpackChunk($data)",
+        "condition": "when_streaming_msgpack_needed"
+      },
+      "auto_serializer": {
+        "native": "serialize or igbinary_serialize",
+        "space_utils": "SerializerFactory",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Serializer\\SerializerFactory",
+        "example": "$serializer = (new SerializerFactory())()",
+        "description": "Automatically selects best available serializer"
+      }
+    },
+    "hashing": {
+      "md5": {
+        "native": "md5",
+        "space_utils": "Hash::md5",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Hash",
+        "example": "Hash::md5($string)"
+      },
+      "sha1": {
+        "native": "sha1",
+        "space_utils": "Hash::sha1",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Hash",
+        "example": "Hash::sha1($string)"
+      },
+      "sha256": {
+        "native": "hash('sha256', ...)",
+        "space_utils": "Hash::sha256",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Hash",
+        "example": "Hash::sha256($string)"
+      },
+      "password_hash": {
+        "native": "password_hash",
+        "space_utils": "Hash::password",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Hash",
+        "example": "Hash::password($password)"
+      },
+      "password_verify": {
+        "native": "password_verify",
+        "space_utils": "Hash::verifyPassword",
+        "namespace": "SpacePlatform\\Utils\\Utils\\Hash",
+        "example": "Hash::verifyPassword($password, $hash)"
+      }
+    }
+  },
+  "agent_registry": {
+    "problem_investigator": {
+      "name": "problem-investigator",
+      "description": "Comprehensive problem investigation agent using multi-layered analysis and research coordination",
+      "capabilities": [
+        "Symptom analysis and classification",
+        "Root cause discovery using 5 Whys and Fishbone analysis",
+        "Impact assessment and risk evaluation",
+        "Evidence collection and validation",
+        "Solution synthesis and fix recommendations",
+        "Multi-agent research coordination"
+      ],
+      "trigger_patterns": [
+        "Bug investigation",
+        "Error diagnosis",
+        "System problem analysis",
+        "Performance issue investigation",
+        "Integration failure debugging"
+      ],
+      "best_for": "Complex bugs, production issues, systematic problem analysis"
+    }
+  },
+  "command_registry": {
+    "investigate": {
+      "name": "/investigate",
+      "description": "Deploy specialized investigation agents for systematic problem analysis",
+      "usage": "/investigate <problem description>",
+      "modes": {
+        "standard": "Comprehensive 5-phase investigation",
+        "critical": "Emergency response mode with immediate stabilization",
+        "deep": "Extended analysis with historical patterns"
+      },
+      "agents_used": [
+        "problem-investigator",
+        "research-orchestrator",
+        "infra-context-discovery",
+        "specialized agents based on problem type"
+      ],
+      "output": "Investigation report with root cause, evidence, and solutions",
+      "execution_time": "5-15 minutes standard, 2-5 minutes critical"
+    }
+  },
+  "pattern_replacements": {
+    "data_models": {
+      "pattern": "class (\\w+) \\{[^}]*\\}",
+      "replacement": "class $1 extends Entity { }",
+      "description": "Convert plain classes to Entity pattern"
+    },
+    "array_operations": {
+      "pattern": "array_map\\((.+?)\\)",
+      "replacement": "Collection::from($1)->map($2)",
+      "description": "Convert array_map to Collection"
+    },
+    "error_handling": {
+      "pattern": "try \\{(.+?)\\} catch",
+      "replacement": "Result::try(fn() => $1)",
+      "description": "Convert try/catch to Result monad"
+    }
+  },
+  "auto_imports": [
+    "use SpacePlatform\\Utils\\Structure\\Collection;",
+    "use SpacePlatform\\Utils\\Entity\\Entity;",
+    "use SpacePlatform\\Utils\\Pipeline\\Pipeline;",
+    "use SpacePlatform\\Utils\\Concurrent\\Concurrent;",
+    "use SpacePlatform\\Utils\\Functional\\Result;",
+    "use SpacePlatform\\Utils\\Functional\\Maybe;",
+    "use SpacePlatform\\Utils\\Functional\\Either;"
+  ]
+}

@@ -1,0 +1,66 @@
+# Output Paths Configuration
+# Standardized paths for Claude Code output organization
+# Changelog directory is in project root, not under .claude/
+
+version: "1.0.0"
+
+# Primary changelog directory (in project root)
+directories:
+  # Changelog directory for all summaries and documentation
+  changelog:
+    path: "changelog"  # Direct in project root
+    description: "Session summaries, work logs, and progress documentation"
+    retention: "permanent"
+    subdirs:
+      - pattern: "YYYY-MM"  # Monthly organization
+      - latest: "symlink"   # Always points to most recent file
+    file_naming:
+      - pattern: "YYYYMMDD_HHMMSS_[type].md"
+      - types: ["session_summary", "problems_solved", "major_changes", "milestone_complete"]
+  
+
+# Special files
+special_files:
+  latest:
+    path: "changelog/latest.md"
+    type: "symlink"
+    description: "Always points to most recent summary"
+  index:
+    path: "changelog/index.yaml"
+    type: "index"
+    description: "Master index of all changelog entries"
+
+# Timestamp formats
+timestamps:
+  filename: "%Y%m%d_%H%M%S"
+  directory: "%Y-%m"
+  iso: "%Y-%m-%dT%H:%M:%SZ"
+
+# Migration paths (for backward compatibility)
+legacy_paths:
+  - from: ".claude/outputs/changelog/"
+    to: "changelog/"
+  - from: ".milestones/summaries/"
+    to: "changelog/"
+  - from: ".milestones/exports/"
+    to: "changelog/exports/"
+
+# Retention policies (in days)
+retention:
+  default: 90
+  session_summaries: 180
+  problems_solved: 365
+  major_changes: 365
+  temp_files: 1
+
+# Auto-cleanup settings
+cleanup:
+  enabled: false
+  schedule: "weekly"
+  keep_minimum: 10  # Always keep at least 10 most recent entries
+
+# Environment variable overrides
+environment:
+  CHANGELOG_DIR: "${CHANGELOG_DIR:-changelog}"
+  CHANGELOG_RETENTION: "${CHANGELOG_RETENTION:-90}"
+  CHANGELOG_AUTO_CLEAN: "${CHANGELOG_AUTO_CLEAN:-false}"
