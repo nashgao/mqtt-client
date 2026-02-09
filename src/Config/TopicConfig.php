@@ -10,35 +10,50 @@ class TopicConfig
 {
     public string $topic;
 
-    public bool $enable_multisub = false;
+    public bool $enableMultisub = false;
 
-    public int $multisub_num;
+    public int $multisubNum = 1;
 
-    public bool $enable_share_topic = false;
+    public bool $enableShareTopic = false;
 
     /**
-     * @var array<string>
+     * @var array<string, array<string>>
      */
-    public array $share_topic;
+    public array $shareTopic = [];
 
-    public bool $enable_queue_topic = false;
+    public bool $enableQueueTopic = false;
 
-    public int $qos;
+    public int $qos = 0;
 
-    public bool $no_local = true;
+    public bool $noLocal = true;
 
-    public bool $retain_as_published = true;
+    public bool $retainAsPublished = true;
 
-    public int $retain_handling = 2;
+    public int $retainHandling = 2;
 
     public function __construct(array $params = [])
     {
         // Validate configuration before setting properties
         $validatedParams = ConfigValidator::validateTopicConfig($params);
 
+        // Map snake_case config keys to camelCase properties
+        $keyMapping = [
+            'enable_multisub' => 'enableMultisub',
+            'multisub_num' => 'multisubNum',
+            'enable_share_topic' => 'enableShareTopic',
+            'share_topic' => 'shareTopic',
+            'enable_queue_topic' => 'enableQueueTopic',
+            'no_local' => 'noLocal',
+            'retain_as_published' => 'retainAsPublished',
+            'retain_handling' => 'retainHandling',
+        ];
+
         foreach ($validatedParams as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->{$key} = $value;
+            // Convert snake_case key to camelCase property name if mapping exists
+            $propertyName = $keyMapping[$key] ?? $key;
+
+            if (property_exists($this, $propertyName)) {
+                $this->{$propertyName} = $value;
             }
         }
     }
@@ -49,33 +64,33 @@ class TopicConfig
         return $this;
     }
 
-    public function setEnableMultisub(bool $enable_multisub): TopicConfig
+    public function setEnableMultisub(bool $enableMultisub): TopicConfig
     {
-        $this->enable_multisub = $enable_multisub;
+        $this->enableMultisub = $enableMultisub;
         return $this;
     }
 
-    public function setMultisubNum(int $multisub_num): TopicConfig
+    public function setMultisubNum(int $multisubNum): TopicConfig
     {
-        $this->multisub_num = $multisub_num;
+        $this->multisubNum = $multisubNum;
         return $this;
     }
 
-    public function setEnableShareTopic(bool $enable_share_topic): TopicConfig
+    public function setEnableShareTopic(bool $enableShareTopic): TopicConfig
     {
-        $this->enable_share_topic = $enable_share_topic;
+        $this->enableShareTopic = $enableShareTopic;
         return $this;
     }
 
-    public function setShareTopic(array $share_topic): TopicConfig
+    public function setShareTopic(array $shareTopic): TopicConfig
     {
-        $this->share_topic = $share_topic;
+        $this->shareTopic = $shareTopic;
         return $this;
     }
 
-    public function setEnableQueueTopic(bool $enable_queue_topic): TopicConfig
+    public function setEnableQueueTopic(bool $enableQueueTopic): TopicConfig
     {
-        $this->enable_queue_topic = $enable_queue_topic;
+        $this->enableQueueTopic = $enableQueueTopic;
         return $this;
     }
 
@@ -85,21 +100,21 @@ class TopicConfig
         return $this;
     }
 
-    public function setNoLocal(bool $no_local): TopicConfig
+    public function setNoLocal(bool $noLocal): TopicConfig
     {
-        $this->no_local = $no_local;
+        $this->noLocal = $noLocal;
         return $this;
     }
 
-    public function setRetainAsPublished(bool $retain_as_published): TopicConfig
+    public function setRetainAsPublished(bool $retainAsPublished): TopicConfig
     {
-        $this->retain_as_published = $retain_as_published;
+        $this->retainAsPublished = $retainAsPublished;
         return $this;
     }
 
-    public function setRetainHandling(int $retain_handling): TopicConfig
+    public function setRetainHandling(int $retainHandling): TopicConfig
     {
-        $this->retain_handling = $retain_handling;
+        $this->retainHandling = $retainHandling;
         return $this;
     }
 
@@ -107,9 +122,9 @@ class TopicConfig
     {
         return [
             'qos' => $this->qos,
-            'no_local' => $this->no_local,
-            'retain_as_published' => $this->retain_as_published,
-            'retain_handling' => $this->retain_handling,
+            'no_local' => $this->noLocal,
+            'retain_as_published' => $this->retainAsPublished,
+            'retain_handling' => $this->retainHandling,
         ];
     }
 }

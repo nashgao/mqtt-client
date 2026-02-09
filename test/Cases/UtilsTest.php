@@ -88,9 +88,9 @@ class UtilsTest extends AbstractTestCase
 
         $this->assertEquals('test/topic/with/properties', $result->topic);
         $this->assertEquals(1, $result->qos);
-        $this->assertFalse($result->no_local);
-        $this->assertFalse($result->retain_as_published);
-        $this->assertEquals(0, $result->retain_handling);
+        $this->assertFalse($result->noLocal);
+        $this->assertFalse($result->retainAsPublished);
+        $this->assertEquals(0, $result->retainHandling);
     }
 
     public function testTopicParserParseShareTopicWithComplexGroup()
@@ -102,8 +102,8 @@ class UtilsTest extends AbstractTestCase
 
         $this->assertEquals('data/stream/analytics', $result->topic);
         $this->assertEquals(2, $result->qos);
-        $this->assertTrue($result->enable_share_topic);
-        $this->assertEquals(['group_name' => ['processing-workers']], $result->share_topic);
+        $this->assertTrue($result->enableShareTopic);
+        $this->assertEquals(['group_name' => ['processing-workers']], $result->shareTopic);
     }
 
     public function testTopicParserParseQueueTopicWithComplexPath()
@@ -115,8 +115,8 @@ class UtilsTest extends AbstractTestCase
 
         $this->assertEquals('commands/device/control/temperature/set', $result->topic);
         $this->assertEquals(1, $result->qos);
-        $this->assertTrue($result->enable_queue_topic);
-        $this->assertFalse($result->enable_share_topic);
+        $this->assertTrue($result->enableQueueTopic);
+        $this->assertFalse($result->enableShareTopic);
     }
 
     public function testTopicParserParseTopicWithWildcards()
@@ -128,8 +128,8 @@ class UtilsTest extends AbstractTestCase
 
         $this->assertEquals('sensors/+/temperature/#', $result->topic);
         $this->assertEquals(0, $result->qos);
-        $this->assertFalse($result->enable_share_topic);
-        $this->assertFalse($result->enable_queue_topic);
+        $this->assertFalse($result->enableShareTopic);
+        $this->assertFalse($result->enableQueueTopic);
     }
 
     public function testTopicParserParseEmptyTopic()
@@ -151,8 +151,8 @@ class UtilsTest extends AbstractTestCase
 
         $result = TopicParser::parseTopic($topic, $qos);
 
-        $this->assertTrue($result->enable_queue_topic);
-        $this->assertFalse($result->enable_share_topic);
+        $this->assertTrue($result->enableQueueTopic);
+        $this->assertFalse($result->enableShareTopic);
         $this->assertEquals('$share/group/topic', $result->topic);
     }
 }

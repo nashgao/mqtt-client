@@ -185,13 +185,13 @@ class SubscribeListener implements ListenerInterface
         }
 
         // Validate multi-subscription configuration
-        if ($topicConfig->enable_multisub && $topicConfig->multisub_num < 1) {
+        if ($topicConfig->enableMultisub && $topicConfig->multisubNum < 1) {
             throw new \InvalidArgumentException('Multi-subscription number must be at least 1');
         }
 
         // Validate shared topic configuration
-        if ($topicConfig->enable_share_topic) {
-            if (empty($topicConfig->share_topic['group_name']) || ! is_array($topicConfig->share_topic['group_name'])) {
+        if ($topicConfig->enableShareTopic) {
+            if (empty($topicConfig->shareTopic['group_name']) || ! is_array($topicConfig->shareTopic['group_name'])) {
                 throw new \InvalidArgumentException('Shared topic requires valid group names');
             }
         }
@@ -207,11 +207,11 @@ class SubscribeListener implements ListenerInterface
         array &$processedTopics
     ): void {
         // Handle queue topic first (has higher priority)
-        if ($topicConfig->enable_queue_topic) {
+        if ($topicConfig->enableQueueTopic) {
             $topic = TopicParser::generateQueueTopic($topicConfig->topic);
 
-            if ($topicConfig->enable_multisub) {
-                $multiSubscribeConfigs[$topic] = $topicConfig->multisub_num;
+            if ($topicConfig->enableMultisub) {
+                $multiSubscribeConfigs[$topic] = $topicConfig->multisubNum;
             }
 
             $subscribeConfigs[] = TopicParser::generateTopicArray($topic, $topicConfig->getTopicProperties());
@@ -220,21 +220,21 @@ class SubscribeListener implements ListenerInterface
             $this->logger->debug('Processed queue topic', [
                 'original_topic' => $topicConfig->topic,
                 'queue_topic' => $topic,
-                'multisub' => $topicConfig->enable_multisub,
+                'multisub' => $topicConfig->enableMultisub,
             ]);
 
             return;
         }
 
         // Handle shared topics
-        if ($topicConfig->enable_share_topic) {
+        if ($topicConfig->enableShareTopic) {
             $shareTopics = [];
 
-            foreach ($topicConfig->share_topic['group_name'] as $groupName) {
+            foreach ($topicConfig->shareTopic['group_name'] as $groupName) {
                 $topic = TopicParser::generateShareTopic($topicConfig->topic, $groupName);
 
-                if ($topicConfig->enable_multisub) {
-                    $multiSubscribeConfigs[$topic] = $topicConfig->multisub_num;
+                if ($topicConfig->enableMultisub) {
+                    $multiSubscribeConfigs[$topic] = $topicConfig->multisubNum;
                 }
 
                 $shareTopics[] = TopicParser::generateTopicArray($topic, $topicConfig->getTopicProperties());
@@ -244,7 +244,7 @@ class SubscribeListener implements ListenerInterface
                     'original_topic' => $topicConfig->topic,
                     'shared_topic' => $topic,
                     'group_name' => $groupName,
-                    'multisub' => $topicConfig->enable_multisub,
+                    'multisub' => $topicConfig->enableMultisub,
                 ]);
             }
 
@@ -253,8 +253,8 @@ class SubscribeListener implements ListenerInterface
         }
 
         // Handle regular topic
-        if ($topicConfig->enable_multisub) {
-            $multiSubscribeConfigs[$topicConfig->topic] = $topicConfig->multisub_num;
+        if ($topicConfig->enableMultisub) {
+            $multiSubscribeConfigs[$topicConfig->topic] = $topicConfig->multisubNum;
         }
 
         $subscribeConfigs[] = TopicParser::generateTopicArray($topicConfig->topic, $topicConfig->getTopicProperties());
@@ -262,7 +262,7 @@ class SubscribeListener implements ListenerInterface
 
         $this->logger->debug('Processed regular topic', [
             'topic' => $topicConfig->topic,
-            'multisub' => $topicConfig->enable_multisub,
+            'multisub' => $topicConfig->enableMultisub,
         ]);
     }
 

@@ -174,9 +174,9 @@ class SecurityTest extends AbstractTestCase
 
             // Verify that the parsing logic handles these securely
             if (strpos($topic, '$queue') === 0) {
-                $this->assertTrue($result->enable_queue_topic);
+                $this->assertTrue($result->enableQueueTopic);
             } elseif (strpos($topic, '$share') === 0) {
-                $this->assertTrue($result->enable_share_topic);
+                $this->assertTrue($result->enableShareTopic);
             }
         }
     }

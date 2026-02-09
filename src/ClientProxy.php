@@ -69,15 +69,25 @@ class ClientProxy extends Client
         array $properties = []
     ) {
         $cont = new Channel();
-        $this->channel->push(fn () => $this->dispatcher->dispatch(new OnPublishEvent($this->poolName, $topic, $message, $qos, parent::publish($topic, $message, $qos, $dup, $retain, $properties))));
+        $this->channel->push(function () use ($cont, $topic, $message, $qos, $dup, $retain, $properties) {
+            $result = parent::publish($topic, $message, $qos, $dup, $retain, $properties);
+            $this->dispatcher->dispatch(new OnPublishEvent($this->poolName, $topic, $message, $qos, $result));
+            $cont->push($result);
+        });
         return $cont->pop();
     }
 
     public function subscribe(array $topics, array $properties = []): array|bool
     {
         $cont = new Channel();
-        $this->channel->push(fn () => $this->dispatcher->dispatch(new OnSubscribeEvent($this->poolName, parent::getConfig()->getClientId(), $topics, parent::subscribe($topics, $properties))));
-        return $cont->pop();
+        $this->channel->push(function () use ($cont, $topics, $properties) {
+            $result = parent::subscribe($topics, $properties);
+            $this->dispatcher->dispatch(new OnSubscribeEvent($this->poolName, parent::getConfig()->getClientId(), $topics, $result));
+            $cont->push($result);
+        });
+        /** @var array|bool $result */
+        $result = $cont->pop();
+        return $result;
     }
 
     public function unsubscribe(array $topics, array $properties = [])
@@ -93,7 +103,8 @@ class ClientProxy extends Client
         $this->channel->push(
             function () use ($cont) {
                 $message = parent::recv();
-                if ($this->timeSincePing <= (time() - ($this->config->clientConfig->getKeepAlive() + $this->delayTime))) {
+                // Send ping if keepAlive seconds have passed since last ping
+                if ((time() - $this->timeSincePing) >= $this->config->clientConfig->getKeepAlive()) {
                     if (parent::ping()) {
                         $this->timeSincePing = time();
                     } else {

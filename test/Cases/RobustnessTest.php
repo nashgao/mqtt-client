@@ -106,7 +106,7 @@ class RobustnessTest extends AbstractTestCase
         $nestedTime = microtime(true) - $nestedStart;
 
         $this->performanceMetrics->recordOperationTime('deep_nested_topic_setting', $nestedTime);
-        $this->assertEquals($deepNested, $config->share_topic);
+        $this->assertEquals($deepNested, $config->shareTopic);
 
         $totalTime = microtime(true) - $startTime;
         $this->performanceMetrics->recordOperationTime('resource_limits_test', $totalTime);

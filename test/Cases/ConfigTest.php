@@ -19,12 +19,12 @@ class ConfigTest extends AbstractTestCase
         $config = new TopicConfig();
 
         $this->assertInstanceOf(TopicConfig::class, $config);
-        $this->assertFalse($config->enable_multisub);
-        $this->assertFalse($config->enable_share_topic);
-        $this->assertFalse($config->enable_queue_topic);
-        $this->assertTrue($config->no_local);
-        $this->assertTrue($config->retain_as_published);
-        $this->assertEquals(2, $config->retain_handling);
+        $this->assertFalse($config->enableMultisub);
+        $this->assertFalse($config->enableShareTopic);
+        $this->assertFalse($config->enableQueueTopic);
+        $this->assertTrue($config->noLocal);
+        $this->assertTrue($config->retainAsPublished);
+        $this->assertEquals(2, $config->retainHandling);
     }
 
     public function testTopicConfigWithParams()
@@ -42,10 +42,10 @@ class ConfigTest extends AbstractTestCase
 
         $this->assertEquals('test/topic', $config->topic);
         $this->assertEquals(1, $config->qos);
-        $this->assertTrue($config->enable_multisub);
-        $this->assertEquals(3, $config->multisub_num);
-        $this->assertFalse($config->no_local);
-        $this->assertEquals(1, $config->retain_handling);
+        $this->assertTrue($config->enableMultisub);
+        $this->assertEquals(3, $config->multisubNum);
+        $this->assertFalse($config->noLocal);
+        $this->assertEquals(1, $config->retainHandling);
     }
 
     public function testTopicConfigIgnoresInvalidParams()
@@ -79,14 +79,14 @@ class ConfigTest extends AbstractTestCase
         $this->assertInstanceOf(TopicConfig::class, $result);
         $this->assertEquals('my/topic', $config->topic);
         $this->assertEquals(1, $config->qos);
-        $this->assertTrue($config->enable_multisub);
-        $this->assertEquals(5, $config->multisub_num);
-        $this->assertTrue($config->enable_share_topic);
-        $this->assertEquals(['group1', 'group2'], $config->share_topic);
-        $this->assertTrue($config->enable_queue_topic);
-        $this->assertFalse($config->no_local);
-        $this->assertFalse($config->retain_as_published);
-        $this->assertEquals(0, $config->retain_handling);
+        $this->assertTrue($config->enableMultisub);
+        $this->assertEquals(5, $config->multisubNum);
+        $this->assertTrue($config->enableShareTopic);
+        $this->assertEquals(['group1', 'group2'], $config->shareTopic);
+        $this->assertTrue($config->enableQueueTopic);
+        $this->assertFalse($config->noLocal);
+        $this->assertFalse($config->retainAsPublished);
+        $this->assertEquals(0, $config->retainHandling);
     }
 
     public function testTopicConfigGetTopicProperties()
