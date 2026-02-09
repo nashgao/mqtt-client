@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.6] - 2026-02-09
+## [0.2.0] - 2026-02-10
 
 ### Added
 - Interactive MQTT Debug Shell (`src/Shell/`) for real-time message inspection
