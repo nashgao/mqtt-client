@@ -468,6 +468,55 @@ class MqttMessageFormatterTest extends AbstractTestCase
     }
 
     /**
+     * SPECIFICATION: Default depth limit should be 0 (unlimited).
+     */
+    public function testDefaultDepthLimitIsZero(): void
+    {
+        $this->assertEquals(0, $this->formatter->getDepthLimit());
+    }
+
+    /**
+     * SPECIFICATION: Depth limit can be set and retrieved.
+     */
+    public function testDepthLimitGetterSetter(): void
+    {
+        $this->formatter->setDepthLimit(5);
+        $this->assertEquals(5, $this->formatter->getDepthLimit());
+
+        $this->formatter->setDepthLimit(0);
+        $this->assertEquals(0, $this->formatter->getDepthLimit());
+    }
+
+    /**
+     * SPECIFICATION: Negative depth limit should be clamped to zero.
+     */
+    public function testDepthLimitClampsNegativeToZero(): void
+    {
+        $this->formatter->setDepthLimit(-5);
+        $this->assertEquals(0, $this->formatter->getDepthLimit());
+    }
+
+    /**
+     * SPECIFICATION: Schema mode should be disabled by default.
+     */
+    public function testSchemaModeIsDisabledByDefault(): void
+    {
+        $this->assertFalse($this->formatter->isSchemaMode());
+    }
+
+    /**
+     * SPECIFICATION: Schema mode can be enabled and disabled.
+     */
+    public function testSchemaModeGetterSetter(): void
+    {
+        $this->formatter->setSchemaMode(true);
+        $this->assertTrue($this->formatter->isSchemaMode());
+
+        $this->formatter->setSchemaMode(false);
+        $this->assertFalse($this->formatter->isSchemaMode());
+    }
+
+    /**
      * Helper to create a publish message.
      */
     private function createPublishMessage(

@@ -126,7 +126,12 @@ final class FilterExpression
     }
 
     /**
-     * Clone the filter expression.
+     * Create an independent copy of this filter expression.
+     *
+     * The cloned filter can be modified without affecting the original.
+     * All clauses are deep-copied to ensure complete independence.
+     *
+     * @return self A new FilterExpression with identical clauses
      */
     public function clone(): self
     {

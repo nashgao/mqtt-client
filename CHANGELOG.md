@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1-alpha.2] - 2026-02-11
+
+### Added
+- **Test Coverage**: Added 29 new unit tests for Shell components
+  - `FilterExpressionTest` - tests for clone(), where(), addAnd/Or/Not(), clear(), remove()
+  - `MessageHistoryTest` - tests for getLatest(), getLatestId(), get(), circular buffer
+  - Extended `MqttMessageFormatterTest` with depth limit and schema mode tests
+  - Extended `PoolConfigTest` with max connections validation tests
+- **API Documentation**: Created comprehensive `docs/API.md` for Shell components
+  - FilterExpression API with examples
+  - MessageHistory API with examples
+  - MqttMessageFormatter API with examples
+  - StatsCollector API with examples
+  - Complete usage workflow examples
+
+### Changed
+- Improved PHPDoc annotations for new methods
+
 ## [0.2.1-alpha.1] - 2026-02-10
 
 ### Fixed
