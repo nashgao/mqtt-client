@@ -188,10 +188,6 @@ class OnPublishListener implements ListenerInterface
             throw new \InvalidArgumentException('Topic cannot be empty');
         }
 
-        if (! is_string($event->topic)) {
-            throw new \InvalidArgumentException('Topic must be a string');
-        }
-
         if (! ConfigValidator::isValidTopicName($event->topic)) {
             throw new \InvalidArgumentException("Invalid topic format: {$event->topic}");
         }
@@ -200,12 +196,8 @@ class OnPublishListener implements ListenerInterface
             throw new \InvalidArgumentException("Invalid QoS level: {$event->qos}");
         }
 
-        if (isset($event->messageId) && (! is_int($event->messageId) || $event->messageId < 0)) {
+        if (isset($event->messageId) && $event->messageId < 0) {
             throw new \InvalidArgumentException('Message ID must be a non-negative integer');
-        }
-
-        if (isset($event->clientId) && ! is_string($event->clientId)) {
-            throw new \InvalidArgumentException('Client ID must be a string');
         }
     }
 

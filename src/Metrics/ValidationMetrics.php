@@ -58,6 +58,16 @@ class ValidationMetrics
         ];
     }
 
+    /**
+     * Get operation statistics (alias for getValidationCount).
+     *
+     * @return array{total: int, successful: int, failed: int}
+     */
+    public function getOperationStats(string $operation): array
+    {
+        return $this->getValidationCount($operation);
+    }
+
     public function getValidationSuccessRate(string $type): float
     {
         $counts = $this->getValidationCount($type);

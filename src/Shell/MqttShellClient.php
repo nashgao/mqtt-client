@@ -444,7 +444,7 @@ final class MqttShellClient
 
         $command = array_shift($parts);
         return new ParsedCommand(
-            command: $command ?? '',
+            command: $command,
             arguments: $parts,
             options: [],
             raw: $input,

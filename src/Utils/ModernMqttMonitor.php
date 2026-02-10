@@ -396,7 +396,6 @@ class ModernMqttMonitor
                 'topic_config' => 'Topic name contains illegal characters',
                 'pool_config' => 'Pool size exceeds maximum limit',
                 'client_config' => 'Client ID already in use',
-                default => 'Unknown validation error'
             };
 
             $validation->recordValidation($validationType, false, $errorMessage);

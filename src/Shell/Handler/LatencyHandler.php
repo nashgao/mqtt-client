@@ -73,13 +73,6 @@ final class LatencyHandler implements HandlerInterface
             return;
         }
 
-        assert(is_float($stats['min']) || is_int($stats['min']));
-        assert(is_float($stats['max']) || is_int($stats['max']));
-        assert(is_float($stats['avg']) || is_int($stats['avg']));
-        assert(is_float($stats['p50']) || is_int($stats['p50']));
-        assert(is_float($stats['p95']) || is_int($stats['p95']));
-        assert(is_float($stats['p99']) || is_int($stats['p99']));
-
         $min = (float) $stats['min'];
         $max = (float) $stats['max'];
         $avg = (float) $stats['avg'];

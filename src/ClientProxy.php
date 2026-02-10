@@ -40,12 +40,11 @@ class ClientProxy extends Client
         parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType);
     }
 
-    public function loop()
+    public function loop(): void
     {
         while (true) {
-            /** @var Closure $closure */
             $closure = $this->channel->pop();
-            if (! $closure) {
+            if (! $closure instanceof \Closure) {
                 break;
             }
 

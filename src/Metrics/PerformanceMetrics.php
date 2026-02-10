@@ -98,7 +98,7 @@ class PerformanceMetrics
         $recentMessages = array_sum($this->messageThroughput);
         $timeWindow = count($this->messageThroughput);
 
-        return $timeWindow > 0 ? $recentMessages / $timeWindow : 0.0;
+        return $recentMessages / $timeWindow;
     }
 
     public function getAverageLatency(): float

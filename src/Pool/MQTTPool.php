@@ -51,6 +51,11 @@ class MQTTPool extends Pool
         return $this->option->getMaxConnections() - $this->currentConnections;
     }
 
+    public function getMaxConnections(): int
+    {
+        return $this->option->getMaxConnections();
+    }
+
     protected function createConnection(): ConnectionInterface
     {
         return new MQTTConnection($this->container, $this, $this->config);

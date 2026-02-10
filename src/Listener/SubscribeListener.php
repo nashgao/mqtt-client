@@ -172,10 +172,6 @@ class SubscribeListener implements ListenerInterface
             throw new \InvalidArgumentException('Topic cannot be empty');
         }
 
-        if (! is_string($topicConfig->topic)) {
-            throw new \InvalidArgumentException('Topic must be a string');
-        }
-
         if (! ConfigValidator::isValidTopicName($topicConfig->topic)) {
             throw new \InvalidArgumentException("Invalid topic format: {$topicConfig->topic}");
         }
@@ -191,7 +187,7 @@ class SubscribeListener implements ListenerInterface
 
         // Validate shared topic configuration
         if ($topicConfig->enableShareTopic) {
-            if (empty($topicConfig->shareTopic['group_name']) || ! is_array($topicConfig->shareTopic['group_name'])) {
+            if (empty($topicConfig->shareTopic['group_name'])) {
                 throw new \InvalidArgumentException('Shared topic requires valid group names');
             }
         }

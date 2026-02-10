@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1-alpha.1] - 2026-02-10
+
+### Fixed
+- **Namespace Corrections**: Fixed incorrect `Simps\MQTT` namespace references to `Nashgao\MQTT`
+  - `ValidationTrait.php` - corrected namespace declaration
+  - `PublishListener.php` - corrected import statements
+- **PHPStan Compliance**: Resolved all 79 PHPStan level 5 errors
+  - Fixed type mismatches and PHPDoc return types
+  - Removed redundant type checks on typed properties
+  - Fixed arsort() return value handling in ErrorMetrics
+- **Dead Code Removal**:
+  - Removed unused `ConfigDefaults` trait
+  - Removed unused properties: `$sortBy`, `$errorCounts`, `$panels`, `$widgets`, `$terminalHeight`
+  - Removed unreachable catch blocks in HealthChecker
+  - Removed unused `determineOverallStatus()` method
+- **Missing Implementations**:
+  - Added `MQTTPool::getMaxConnections()` method
+  - Added missing methods to `MessageHistory` class
+  - Added `clone()` method to FilterExpression
+  - Added depth/schema mode methods to MqttMessageFormatter
+
+### Changed
+- Improved Client class `@method` PHPDoc annotations with proper return types
+- Simplified PerformanceMetrics rate calculation
+- Made formatHexBytes() public in MqttMessageFormatter
+
 ## [0.2.0] - 2026-02-10
 
 ### Added

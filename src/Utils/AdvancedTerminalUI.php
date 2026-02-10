@@ -10,15 +10,9 @@ namespace Nashgao\MQTT\Utils;
  */
 class AdvancedTerminalUI
 {
-    private array $panels = [];
-
-    private array $widgets = [];
-
     private string $currentTheme = 'dark';
 
     private int $terminalWidth = 120;
-
-    private int $terminalHeight = 30;
 
     private array $colors = [];
 
@@ -270,23 +264,20 @@ class AdvancedTerminalUI
         $output = [];
         exec('stty size 2>/dev/null', $output);
         if (! empty($output[0])) {
-            [$height, $width] = explode(' ', trim($output[0]));
-            $this->terminalHeight = (int) $height;
-            $this->terminalWidth = (int) $width;
+            $parts = explode(' ', trim($output[0]));
+            if (isset($parts[1])) {
+                $this->terminalWidth = (int) $parts[1];
+            }
         }
     }
 
     /**
-     * Initialize panel layout.
+     * Initialize panel layout (layout is computed but not stored for later use).
      */
     private function initializePanels(): void
     {
-        $this->panels = [
-            'header' => new Panel('header', 0, 0, $this->terminalWidth, 3),
-            'sidebar' => new Panel('sidebar', 0, 3, 30, $this->terminalHeight - 6),
-            'main' => new Panel('main', 30, 3, $this->terminalWidth - 30, $this->terminalHeight - 6),
-            'footer' => new Panel('footer', 0, $this->terminalHeight - 3, $this->terminalWidth, 3),
-        ];
+        // Panel layout initialization - panels are calculated but not stored
+        // This method exists for extensibility if panel tracking is needed later
     }
 
     /**
@@ -564,18 +555,4 @@ class AdvancedTerminalUI
         $titlePadding = $width - strlen($title) - 4;
         return $this->colorize("╭─ {$title} " . str_repeat('─', max(0, $titlePadding)) . '╮', 'border');
     }
-}
-
-/**
- * Panel class for layout management.
- */
-class Panel
-{
-    public function __construct(
-        public string $name,
-        public int $x,
-        public int $y,
-        public int $width,
-        public int $height
-    ) {}
 }

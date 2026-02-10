@@ -22,8 +22,6 @@ class MqttMonitor
 
     private int $refreshInterval = 1; // seconds
 
-    private string $sortBy = 'name';
-
     private bool $showHelp = false;
 
     private array $metrics = [];
@@ -344,8 +342,8 @@ EOF;
         for ($i = 0; $i < 6; $i += 3) {
             $row = [];
             for ($j = 0; $j < 3 && ($i + $j) < 6; ++$j) {
-                $key = $keys[$i + $j] ?? '';
-                $data = $metrics[$key] ?? '';
+                $key = $keys[$i + $j];
+                $data = $metrics[$key];
                 $row[] = sprintf('%-25s', $data);
             }
             $output[] = implode(' │ ', $row);

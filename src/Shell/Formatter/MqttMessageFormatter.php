@@ -27,6 +27,8 @@ final class MqttMessageFormatter
     private int $keyDisplayLength = 40;
     private bool $colorEnabled = true;
     private string $format = self::FORMAT_COMPACT;
+    private int $depthLimit = 0;
+    private bool $schemaMode = false;
 
     /** @var array<string, bool> Field filters for selective display */
     private array $fieldFilters = [];
@@ -63,6 +65,38 @@ final class MqttMessageFormatter
     public function getFormat(): string
     {
         return $this->format;
+    }
+
+    /**
+     * Get the JSON depth limit.
+     */
+    public function getDepthLimit(): int
+    {
+        return $this->depthLimit;
+    }
+
+    /**
+     * Set the JSON depth limit (0 = unlimited).
+     */
+    public function setDepthLimit(int $depth): void
+    {
+        $this->depthLimit = max(0, $depth);
+    }
+
+    /**
+     * Check if schema mode is enabled.
+     */
+    public function isSchemaMode(): bool
+    {
+        return $this->schemaMode;
+    }
+
+    /**
+     * Enable or disable schema mode.
+     */
+    public function setSchemaMode(bool $enabled): void
+    {
+        $this->schemaMode = $enabled;
     }
 
     /**
@@ -128,11 +162,10 @@ final class MqttMessageFormatter
     /**
      * Format bytes as hexadecimal dump.
      */
-    private function formatHexBytes(string $data): string
+    public function formatHexBytes(string $data, int $bytesPerLine = 16): string
     {
         $lines = [];
         $length = strlen($data);
-        $bytesPerLine = 16;
 
         for ($offset = 0; $offset < $length; $offset += $bytesPerLine) {
             $chunk = substr($data, $offset, $bytesPerLine);

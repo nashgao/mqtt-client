@@ -211,19 +211,11 @@ class OnSubscribeListener implements ListenerInterface
             throw new \InvalidArgumentException('Pool name cannot be empty');
         }
 
-        if (! is_string($event->poolName)) {
-            throw new \InvalidArgumentException('Pool name must be a string');
-        }
-
         if (empty($event->clientId)) {
             throw new \InvalidArgumentException('Client ID cannot be empty');
         }
 
-        if (! is_string($event->clientId)) {
-            throw new \InvalidArgumentException('Client ID must be a string');
-        }
-
-        if (empty($event->topics) || ! is_array($event->topics)) {
+        if (empty($event->topics)) {
             throw new \InvalidArgumentException('Topics must be a non-empty array');
         }
 

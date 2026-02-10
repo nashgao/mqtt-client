@@ -210,9 +210,10 @@ final class StatsCollector
     /**
      * Get latency histogram for distribution analysis.
      *
+     * @param int $bucketCount Number of buckets (ignored, uses fixed buckets)
      * @return array<string, int>
      */
-    public function getLatencyHistogram(): array
+    public function getLatencyHistogram(int $bucketCount = 10): array
     {
         $histogram = [];
         $buckets = [0, 1, 5, 10, 25, 50, 100, 250, 500, 1000];

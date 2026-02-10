@@ -212,13 +212,9 @@ class HealthChecker
 
     private function isConnectionAlive(MQTTConnection $connection): bool
     {
-        try {
-            // This is a simplified check - in real implementation,
-            // you might ping the connection or check its internal state
-            return $connection instanceof MQTTConnection;
-        } catch (\Exception $e) {
-            return false;
-        }
+        // This is a simplified check - in real implementation,
+        // you might ping the connection or check its internal state
+        return $connection instanceof MQTTConnection;
     }
 
     private function getConnectionAge(MQTTConnection $connection): int
@@ -229,26 +225,9 @@ class HealthChecker
 
     private function checkPingResponse(MQTTConnection $connection): bool
     {
-        try {
-            // Simplified ping check - in real implementation,
-            // you would send a PING packet and wait for PONG
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    private function determineOverallStatus(array $checks): string
-    {
-        $allPassed = true;
-        foreach ($checks as $check => $result) {
-            if (! $result) {
-                $allPassed = false;
-                break;
-            }
-        }
-
-        return $allPassed ? 'healthy' : 'unhealthy';
+        // Simplified ping check - in real implementation,
+        // you would send a PING packet and wait for PONG
+        return true;
     }
 
     private function parseMemoryLimit(string $limit): int

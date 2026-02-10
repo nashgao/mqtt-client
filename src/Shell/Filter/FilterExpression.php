@@ -126,6 +126,18 @@ final class FilterExpression
     }
 
     /**
+     * Clone the filter expression.
+     */
+    public function clone(): self
+    {
+        $clone = new self();
+        foreach ($this->clauses as $clause) {
+            $clone->clauses[] = new FilterClause($clause->expression, $clause->operator);
+        }
+        return $clone;
+    }
+
+    /**
      * Check if a message matches the filter.
      */
     public function matches(Message $message): bool

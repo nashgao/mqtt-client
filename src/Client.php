@@ -19,15 +19,13 @@ use Nashgao\MQTT\Utils\ErrorHandler;
 use Nashgao\MQTT\Utils\HealthChecker;
 
 /**
- * @method subscribe(array $topics, array $properties = [])
- * @todo:verify the unsub function
- * @method unSubscribe(array $topics, array $properties = [])
- * @method publish(string $topic,string $message,int $qos = 0,int $dup = 0,int $retain = 0,array $properties = [])
- * @method multiSub(array $topics, array $properties, int $num = 2)
- * @method connect(bool $clean, array $will = [])
- */
-/**
  * Enhanced MQTT Client with comprehensive metrics tracking.
+ *
+ * @method void subscribe(array $topics, array $properties = [])
+ * @method void unSubscribe(array $topics, array $properties = [])
+ * @method void publish(string $topic, string $message, int $qos = 0, int $dup = 0, int $retain = 0, array $properties = [])
+ * @method void multiSub(array $topics, array $properties = [], int $num = 2)
+ * @method void connect(bool $clean, array $will = [])
  */
 class Client
 {
@@ -154,8 +152,8 @@ class Client
 
             // Handle multiSub: change method name to subscribe and get iteration count
             $isMultiSub = $name === MQTTConstants::MULTISUB;
-            /** @var array<int, mixed> $arguments */
-            $argsArray = is_array($arguments) ? $arguments : [];
+            /** @var array<int, mixed> $argsArray */
+            $argsArray = $arguments;
             if ($isMultiSub) {
                 $name = MQTTConstants::SUBSCRIBE;
                 // multiSub third argument is the subscription count, default to 1
