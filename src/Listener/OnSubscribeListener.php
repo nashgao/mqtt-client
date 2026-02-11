@@ -229,8 +229,10 @@ class OnSubscribeListener implements ListenerInterface
                 throw new \InvalidArgumentException("Invalid topic format: {$topic}");
             }
 
-            if (! ConfigValidator::isValidQoS($qos)) {
-                throw new \InvalidArgumentException("Invalid QoS level: {$qos}");
+            // Support both MQTT v3 (int) and v5 (array with 'qos' key) formats
+            $qosValue = is_array($qos) ? ($qos['qos'] ?? 0) : $qos;
+            if (! ConfigValidator::isValidQoS($qosValue)) {
+                throw new \InvalidArgumentException("Invalid QoS level: {$qosValue}");
             }
         }
     }
@@ -280,17 +282,19 @@ class OnSubscribeListener implements ListenerInterface
     private function logSuccessfulSubscription(OnSubscribeEvent $event): void
     {
         foreach ($event->topics as $topic => $qos) {
+            // Support both MQTT v3 (int) and v5 (array with 'qos' key) formats
+            $qosValue = is_array($qos) ? ($qos['qos'] ?? 0) : $qos;
             $context = [
                 'client_id' => $event->clientId,
                 'pool_name' => $event->poolName,
                 'topic' => $topic,
-                'qos' => $qos,
+                'qos' => $qosValue,
                 'result_type' => isset($event->result['type']) ? Types::getType($event->result['type']) : 'unknown',
                 'timestamp' => date('Y-m-d H:i:s'),
             ];
 
             $this->logger->info(
-                "MQTT subscription successful: Client {$event->clientId} from {$event->poolName} pool subscribed to {$topic} with QoS {$qos}",
+                "MQTT subscription successful: Client {$event->clientId} from {$event->poolName} pool subscribed to {$topic} with QoS {$qosValue}",
                 $context
             );
         }
