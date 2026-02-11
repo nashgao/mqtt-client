@@ -29,8 +29,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[Command]
 class MqttDebugCommand extends HyperfCommand
 {
-    protected ?string $signature = 'mqtt:debug {--socket= : Unix socket path} {--filter= : Initial filter expression} {--timeout=30 : Connection timeout in seconds}';
-
     protected string $description = 'Interactive debug shell for monitoring real-time MQTT traffic';
 
     public function __construct(
@@ -42,6 +40,7 @@ class MqttDebugCommand extends HyperfCommand
     public function configure(): void
     {
         parent::configure();
+        $this->setName('mqtt:debug');
         $this->setDescription($this->description);
         $this->addOption('socket', 's', InputOption::VALUE_OPTIONAL, 'Unix socket path (default: from config or /tmp/mqtt-debug.sock)');
         $this->addOption('filter', 'f', InputOption::VALUE_OPTIONAL, 'Initial filter expression (e.g., "topic:sensors/#")');

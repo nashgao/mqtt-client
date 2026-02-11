@@ -62,6 +62,12 @@
         "test": "co-phpunit --prepend test/bootstrap.php -c phpunit.xml --colors=always",
         "cs-fix": "php-cs-fixer fix $1",
         "analyse": "phpstan analyse --memory-limit 300M -l 0 -c phpstan.neon ./src",
+        "check-commands": "php scripts/check-command-tests.php",
+        "ci": [
+            "@check-commands",
+            "@analyse",
+            "@test"
+        ],
         "start": "php ./bin/hyperf.php start"
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nashgao\MQTT;
 
+use Nashgao\MQTT\Command\MqttDebugCommand;
 use Nashgao\MQTT\Debug\DebugTapListener;
 use Nashgao\MQTT\Debug\DebugTapServer;
 use Nashgao\MQTT\Debug\DebugTapStartListener;
@@ -22,6 +23,9 @@ class ConfigProvider
     public function __invoke(): array
     {
         return [
+            'commands' => [
+                MqttDebugCommand::class,
+            ],
             'listeners' => [
                 OnSubscribeListener::class,
                 OnPublishListener::class,
