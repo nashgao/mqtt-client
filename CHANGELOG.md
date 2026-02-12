@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1-alpha.3] - 2026-02-12
+
 ### Fixed
 - **DebugTapServer logger resolution**: Now prefers `StdoutLoggerInterface` over PSR `LoggerInterface` so debug messages appear in console instead of log files
 - **MqttShellClient Swoole go() function**: Fixed "Call to undefined function go()" error by using fully qualified `\Swoole\Coroutine\go()`
+- **Swoole Socket API migration**: Migrated `DebugTapServer` and `WebDashboard` from native PHP `socket_*` functions to `Swoole\Coroutine\Socket` API to avoid PHP 8.2+ deprecation warnings
 - Added troubleshooting documentation for logger binding issues
 
 ## [0.2.1-alpha.2] - 2026-02-11
