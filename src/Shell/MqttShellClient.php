@@ -112,7 +112,13 @@ final class MqttShellClient
     {
         $this->running = true;
 
-        // Connect
+        // Check for Swoole first - Swoole transport requires coroutine context
+        // for all socket operations (connect, send, recv)
+        if (extension_loaded('swoole')) {
+            return $this->runWithSwoole($output);
+        }
+
+        // Non-Swoole mode: connect here since no coroutine context needed
         try {
             $this->transport->connect();
         } catch (\Throwable $e) {
@@ -123,11 +129,6 @@ final class MqttShellClient
         // Print welcome
         foreach ($this->getWelcomeLines() as $line) {
             $output->writeln($line);
-        }
-
-        // Check for Swoole
-        if (extension_loaded('swoole')) {
-            return $this->runWithSwoole($output);
         }
 
         // Fallback to polling mode
@@ -291,55 +292,102 @@ final class MqttShellClient
 
     /**
      * Run with Swoole coroutines.
+     *
+     * All socket operations (connect, send, recv) must happen inside
+     * the coroutine context when using Swoole\Coroutine\Socket.
      */
     private function runWithSwoole(OutputInterface $output): int
     {
-        // Start streaming
-        $this->transport->startStreaming();
+        // Check if already in coroutine context (e.g., from Hyperf command)
+        // @phpstan-ignore-next-line (Swoole class only available when ext-swoole is loaded)
+        if (\Swoole\Coroutine::getCid() > 0) {
+            // Already in coroutine - run directly without creating nested container
+            return $this->runSwooleCoroutines($output);
+        }
+
+        // Not in coroutine - create container
+        $exitCode = 0;
 
         // @phpstan-ignore-next-line (Swoole function only available when ext-swoole is loaded)
-        \Swoole\Coroutine\run(function () use ($output): void {
-            $channel = new \Swoole\Coroutine\Channel($this->channelBufferSize);
+        \Swoole\Coroutine\run(function () use ($output, &$exitCode): void {
+            $exitCode = $this->runSwooleCoroutines($output);
+        });
 
-            // Coroutine 1: Message receiver
-            \Swoole\Coroutine\go(function () use ($channel): void {
-                while ($this->running) {
-                    $message = $this->transport->receive(0.1);
-                    if ($message !== null) {
-                        $channel->push($message);
-                    }
-                    \Swoole\Coroutine::sleep(0.01);
-                }
-            });
+        return $exitCode;
+    }
 
-            // Coroutine 2: Message display
-            \Swoole\Coroutine\go(function () use ($channel, $output): void {
-                while ($this->running) {
-                    $message = $channel->pop(0.1);
-                    if ($message instanceof Message) {
-                        $this->processMessage($message, $output);
-                    }
-                }
-            });
+    /**
+     * Execute the Swoole coroutine logic.
+     *
+     * Must be called from within a coroutine context.
+     */
+    private function runSwooleCoroutines(OutputInterface $output): int
+    {
+        // Connect (requires coroutine context for Swoole\Coroutine\Socket)
+        try {
+            $this->transport->connect();
+        } catch (\Throwable $e) {
+            $output->writeln("<error>Failed to connect: {$e->getMessage()}</error>");
+            return 1;
+        }
 
-            // Coroutine 3: Input handler
-            \Swoole\Coroutine\go(function () use ($output): void {
-                while ($this->running) {
-                    $line = $this->readLineNonBlocking();
-                    if ($line !== null) {
-                        $this->handleInput($line, $output);
-                    }
-                    \Swoole\Coroutine::sleep(0.01);
-                }
-            });
+        // Print welcome
+        foreach ($this->getWelcomeLines() as $line) {
+            $output->writeln($line);
+        }
 
-            // Wait for exit
+        // Start streaming (uses socket->send, must be in coroutine)
+        $this->transport->startStreaming();
+
+        // @phpstan-ignore-next-line (Swoole class only available when ext-swoole is loaded)
+        $channel = new \Swoole\Coroutine\Channel($this->channelBufferSize);
+
+        // Coroutine 1: Message receiver
+        // @phpstan-ignore-next-line (Swoole function only available when ext-swoole is loaded)
+        \Swoole\Coroutine\go(function () use ($channel): void {
             while ($this->running) {
-                \Swoole\Coroutine::sleep(0.1);
+                $message = $this->transport->receive(0.1);
+                if ($message !== null) {
+                    $channel->push($message);
+                }
+                // @phpstan-ignore-next-line (Swoole class only available when ext-swoole is loaded)
+                \Swoole\Coroutine::sleep(0.01);
             }
         });
 
+        // Coroutine 2: Message display
+        // @phpstan-ignore-next-line (Swoole function only available when ext-swoole is loaded)
+        \Swoole\Coroutine\go(function () use ($channel, $output): void {
+            while ($this->running) {
+                $message = $channel->pop(0.1);
+                if ($message instanceof Message) {
+                    $this->processMessage($message, $output);
+                }
+            }
+        });
+
+        // Coroutine 3: Input handler
+        // @phpstan-ignore-next-line (Swoole function only available when ext-swoole is loaded)
+        \Swoole\Coroutine\go(function () use ($output): void {
+            while ($this->running) {
+                $line = $this->readLineNonBlocking();
+                if ($line !== null) {
+                    $this->handleInput($line, $output);
+                }
+                // @phpstan-ignore-next-line (Swoole class only available when ext-swoole is loaded)
+                \Swoole\Coroutine::sleep(0.01);
+            }
+        });
+
+        // Wait for exit
+        while ($this->running) {
+            // @phpstan-ignore-next-line (Swoole class only available when ext-swoole is loaded)
+            \Swoole\Coroutine::sleep(0.1);
+        }
+
+        // Cleanup (stopStreaming uses socket->send)
         $this->cleanup($output);
+
         return 0;
     }
 

@@ -50,8 +50,21 @@ class MqttDebugCommand extends HyperfCommand
         $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'Output format (compact, table, vertical, json)', 'compact');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): int
+    /**
+     * Execute the command using Hyperf's handle() pattern.
+     *
+     * Hyperf wraps handle() in coroutine context automatically when
+     * $coroutine = true (default), so Swoole\Coroutine\Socket operations work.
+     */
+    public function handle(): int
     {
+        $input = $this->input;
+        $output = $this->output;
+
+        if ($input === null || $output === null) {
+            throw new \RuntimeException('Input and output must be set before calling handle()');
+        }
+
         // Get socket path from option, config, or default
         $socketPath = $this->getSocketPath($input);
         $timeoutOption = $input->getOption('timeout');
