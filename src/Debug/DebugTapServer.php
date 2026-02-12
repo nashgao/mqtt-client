@@ -47,12 +47,18 @@ final class DebugTapServer
     /** @var array<string, int> Command execution statistics */
     private array $commandStats = [];
 
+    /**
+     * @param ConfigInterface|null $config Configuration interface
+     * @param LoggerInterface|null $logger PSR logger (fallback, typically file-based)
+     * @param StdoutLoggerInterface|null $stdoutLogger Console logger (preferred for debug output)
+     */
     public function __construct(
         ?ConfigInterface $config = null,
-        ?StdoutLoggerInterface $stdoutLogger = null,
         ?LoggerInterface $logger = null,
+        ?StdoutLoggerInterface $stdoutLogger = null,
     ) {
-        $this->logger = $logger ?? $stdoutLogger ?? new NullLogger();
+        // Prefer stdout logger for debug output visibility
+        $this->logger = $stdoutLogger ?? $logger ?? new NullLogger();
         $socketPath = $config?->get('mqtt.default.debug.socket_path', self::DEFAULT_SOCKET_PATH);
         $this->socketPath = is_string($socketPath) ? $socketPath : self::DEFAULT_SOCKET_PATH;
         $this->enabled = (bool) ($config?->get('mqtt.default.debug.enabled', false) ?? false);

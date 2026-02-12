@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **DebugTapServer logger resolution**: Now prefers `StdoutLoggerInterface` over PSR `LoggerInterface` so debug messages appear in console instead of log files
+- Added troubleshooting documentation for logger binding issues
+
 ## [0.2.1-alpha.2] - 2026-02-11
 
 ### Added
