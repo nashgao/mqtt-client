@@ -960,6 +960,28 @@ if ($engine->matches($message)) {
 - Use `clear` carefully - it removes all captured messages
 - Check filter - history respects active filters
 
+**Debug tap server messages not appearing in console:**
+- By default, `DebugTapServer` prefers `StdoutLoggerInterface` for console output
+- If you have `hyperf/logger` installed, the PSR `LoggerInterface` may bind to a file logger
+- Override the DI binding to ensure stdout output:
+
+```php
+// config/autoload/dependencies.php
+use Nashgao\MQTT\Debug\DebugTapServer;
+use Hyperf\Contract\ConfigInterface;
+use Hyperf\Contract\StdoutLoggerInterface;
+
+return [
+    DebugTapServer::class => function ($container) {
+        return new DebugTapServer(
+            $container->get(ConfigInterface::class),
+            null, // Skip PSR LoggerInterface
+            $container->get(StdoutLoggerInterface::class),
+        );
+    },
+];
+```
+
 ### Getting Help
 
 ```bash

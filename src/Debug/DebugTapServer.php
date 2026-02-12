@@ -8,6 +8,7 @@ use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Swoole\Coroutine\Socket;
 
 /**
  * Unix socket server for broadcasting MQTT messages to debug shell clients.
@@ -19,14 +20,23 @@ use Psr\Log\NullLogger;
  * - Broadcasts MQTT events to all connected debug shells
  * - Accepts commands from shells (publish, subscribe, etc.)
  * - Executes MQTT operations via registered callbacks
+ *
+ * Uses Swoole's native coroutine socket API to avoid PHP 8.2+ deprecation
+ * warnings from Swoole's socket function hooks.
  */
 final class DebugTapServer
 {
     private const DEFAULT_SOCKET_PATH = '/tmp/mqtt-debug.sock';
 
-    private ?\Socket $serverSocket = null;
+    /** Non-blocking receive timeout in seconds */
+    private const RECV_TIMEOUT = 0.01;
 
-    /** @var array<int, \Socket> */
+    /** Accept timeout in seconds (non-blocking) */
+    private const ACCEPT_TIMEOUT = 0.001;
+
+    private ?Socket $serverSocket = null;
+
+    /** @var array<int, Socket> */
     private array $clients = [];
 
     private bool $running = false;
@@ -42,17 +52,23 @@ final class DebugTapServer
      *
      * @var null|callable(string, array<string, mixed>): array<string, mixed>
      */
-    private $commandCallback = null;
+    private $commandCallback;
 
     /** @var array<string, int> Command execution statistics */
     private array $commandStats = [];
 
+    /**
+     * @param null|ConfigInterface $config Configuration interface
+     * @param null|LoggerInterface $logger PSR logger (fallback, typically file-based)
+     * @param null|StdoutLoggerInterface $stdoutLogger Console logger (preferred for debug output)
+     */
     public function __construct(
         ?ConfigInterface $config = null,
-        ?StdoutLoggerInterface $stdoutLogger = null,
         ?LoggerInterface $logger = null,
+        ?StdoutLoggerInterface $stdoutLogger = null,
     ) {
-        $this->logger = $logger ?? $stdoutLogger ?? new NullLogger();
+        // Prefer stdout logger for debug output visibility
+        $this->logger = $stdoutLogger ?? $logger ?? new NullLogger();
         $socketPath = $config?->get('mqtt.default.debug.socket_path', self::DEFAULT_SOCKET_PATH);
         $this->socketPath = is_string($socketPath) ? $socketPath : self::DEFAULT_SOCKET_PATH;
         $this->enabled = (bool) ($config?->get('mqtt.default.debug.enabled', false) ?? false);
@@ -85,29 +101,20 @@ final class DebugTapServer
             @unlink($this->socketPath);
         }
 
-        $socket = @socket_create(AF_UNIX, SOCK_STREAM, 0);
-        if ($socket === false) {
-            $this->logger->error('Failed to create debug tap socket: ' . socket_strerror(socket_last_error()));
+        $socket = new Socket(AF_UNIX, SOCK_STREAM, 0);
+
+        if (! $socket->bind($this->socketPath)) {
+            $this->logger->error("Failed to bind debug tap socket to {$this->socketPath}: " . $this->getSocketError($socket));
+            $socket->close();
             return;
         }
 
-        if (@socket_bind($socket, $this->socketPath) === false) {
-            $error = socket_strerror(socket_last_error($socket));
-            socket_close($socket);
-            $this->logger->error("Failed to bind debug tap socket to {$this->socketPath}: {$error}");
-            return;
-        }
-
-        if (@socket_listen($socket, 10) === false) {
-            $error = socket_strerror(socket_last_error($socket));
-            socket_close($socket);
+        if (! $socket->listen(10)) {
+            $this->logger->error('Failed to listen on debug tap socket: ' . $this->getSocketError($socket));
+            $socket->close();
             @unlink($this->socketPath);
-            $this->logger->error("Failed to listen on debug tap socket: {$error}");
             return;
         }
-
-        // Set non-blocking mode
-        socket_set_nonblock($socket);
 
         $this->serverSocket = $socket;
         $this->running = true;
@@ -129,7 +136,7 @@ final class DebugTapServer
 
         // Close server socket
         if ($this->serverSocket !== null) {
-            socket_close($this->serverSocket);
+            $this->serverSocket->close();
             $this->serverSocket = null;
         }
 
@@ -163,7 +170,7 @@ final class DebugTapServer
      */
     public function broadcastPublish(
         string $topic,
-        null|array|string $message,
+        array|string|null $message,
         int $qos,
         string $poolName,
         array $metadata = [],
@@ -307,12 +314,12 @@ final class DebugTapServer
             return;
         }
 
-        $client = @socket_accept($this->serverSocket);
+        // Non-blocking accept with short timeout
+        /** @var false|Socket $client */
+        $client = $this->serverSocket->accept(self::ACCEPT_TIMEOUT);
         if ($client === false) {
-            return; // No pending connections
+            return; // No pending connections or timeout
         }
-
-        socket_set_nonblock($client);
 
         $id = spl_object_id($client);
         $this->clients[$id] = $client;
@@ -335,12 +342,13 @@ final class DebugTapServer
     private function processClientCommands(): void
     {
         foreach ($this->clients as $id => $client) {
-            $data = @socket_read($client, 4096);
+            // Non-blocking recv with short timeout
+            /** @var false|string $data */
+            $data = $client->recv(4096, self::RECV_TIMEOUT);
 
             if ($data === false) {
-                $error = socket_last_error($client);
-                // EAGAIN/EWOULDBLOCK means no data available (non-blocking)
-                if ($error !== 11 && $error !== 35 && $error !== 0) {
+                // Check if it's a real error or just timeout (EAGAIN)
+                if ($client->errCode !== SOCKET_EAGAIN && $client->errCode !== 0) {
                     $this->disconnectClient($id);
                 }
                 continue;
@@ -382,7 +390,6 @@ final class DebugTapServer
             case 'ping':
                 $this->sendToClient($clientId, ['type' => 'pong', 'timestamp' => date(\DateTimeInterface::ATOM)]);
                 break;
-
             case 'subscribe':
                 // Client wants to start receiving messages (already receiving by default)
                 $this->sendToClient($clientId, [
@@ -393,7 +400,6 @@ final class DebugTapServer
                     'metadata' => [],
                 ]);
                 break;
-
             case 'unsubscribe':
                 // Client wants to pause (we'll keep them connected but they can filter client-side)
                 $this->sendToClient($clientId, [
@@ -404,7 +410,6 @@ final class DebugTapServer
                     'metadata' => [],
                 ]);
                 break;
-
             case 'command':
                 // Handle debug commands from the shell
                 $this->handleDebugCommand($clientId, $command);
@@ -441,8 +446,7 @@ final class DebugTapServer
                     'metadata' => ['command' => 'stats'],
                 ]);
                 break;
-
-            // MQTT Operations - delegate to callback
+                // MQTT Operations - delegate to callback
             case 'mqtt_publish':
             case 'mqtt_subscribe':
             case 'mqtt_unsubscribe':
@@ -453,7 +457,6 @@ final class DebugTapServer
             case 'mqtt_pool_connections':
                 $this->handleMqttCommand($clientId, $cmdName, $command);
                 break;
-
             default:
                 // Echo unknown commands back
                 $this->sendToClient($clientId, [
@@ -527,7 +530,7 @@ final class DebugTapServer
         }
 
         $json = json_encode($data, JSON_THROW_ON_ERROR) . "\n";
-        $result = @socket_write($this->clients[$clientId], $json);
+        $result = $this->clients[$clientId]->send($json);
 
         if ($result === false) {
             $this->disconnectClient($clientId);
@@ -551,7 +554,7 @@ final class DebugTapServer
         $json = json_encode($data, JSON_THROW_ON_ERROR) . "\n";
 
         foreach ($this->clients as $id => $client) {
-            $result = @socket_write($client, $json);
+            $result = $client->send($json);
             if ($result === false) {
                 $this->disconnectClient($id);
             }
@@ -564,9 +567,17 @@ final class DebugTapServer
     private function disconnectClient(int $clientId): void
     {
         if (isset($this->clients[$clientId])) {
-            @socket_close($this->clients[$clientId]);
+            $this->clients[$clientId]->close();
             unset($this->clients[$clientId]);
             $this->logger->debug("Debug tap client disconnected: {$clientId}");
         }
+    }
+
+    /**
+     * Get human-readable socket error message.
+     */
+    private function getSocketError(Socket $socket): string
+    {
+        return socket_strerror($socket->errCode);
     }
 }
