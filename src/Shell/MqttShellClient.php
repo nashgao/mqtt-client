@@ -302,7 +302,7 @@ final class MqttShellClient
             $channel = new \Swoole\Coroutine\Channel($this->channelBufferSize);
 
             // Coroutine 1: Message receiver
-            go(function () use ($channel): void {
+            \Swoole\Coroutine\go(function () use ($channel): void {
                 while ($this->running) {
                     $message = $this->transport->receive(0.1);
                     if ($message !== null) {
@@ -313,7 +313,7 @@ final class MqttShellClient
             });
 
             // Coroutine 2: Message display
-            go(function () use ($channel, $output): void {
+            \Swoole\Coroutine\go(function () use ($channel, $output): void {
                 while ($this->running) {
                     $message = $channel->pop(0.1);
                     if ($message instanceof Message) {
@@ -323,7 +323,7 @@ final class MqttShellClient
             });
 
             // Coroutine 3: Input handler
-            go(function () use ($output): void {
+            \Swoole\Coroutine\go(function () use ($output): void {
                 while ($this->running) {
                     $line = $this->readLineNonBlocking();
                     if ($line !== null) {
