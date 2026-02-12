@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1-alpha.7] - 2026-02-12
+
+### Fixed
+- **Swoole Unix socket client transport**: Fixed `TypeError: swoole_socket_set_option(): Argument #1 ($socket) must be of type Swoole\Coroutine\Socket, Socket given` when using `mqtt:debug` command in Swoole coroutine context
+  - Created `SwooleUnixSocketTransport` that uses `Swoole\Coroutine\Socket` instead of native PHP sockets
+  - `MqttDebugCommand` now auto-selects the appropriate transport based on Swoole availability
+  - Completes the Swoole socket migration (alpha.6 fixed server-side, this fixes client-side)
+
+### Added
+- Integration tests for `SwooleUnixSocketTransport` verifying coroutine compatibility
+
 ## [0.2.1-alpha.6] - 2026-02-12
 
 ### Fixed
