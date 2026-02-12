@@ -7,9 +7,11 @@ namespace Nashgao\MQTT\Command;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
 use Hyperf\Contract\ConfigInterface;
+use NashGao\InteractiveShell\Transport\StreamingTransportInterface;
+use NashGao\InteractiveShell\Transport\UnixSocketTransport;
 use Nashgao\MQTT\Shell\Config\ShellConfig;
 use Nashgao\MQTT\Shell\MqttShellClient;
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+use Nashgao\MQTT\Shell\Transport\SwooleUnixSocketTransport;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -69,8 +71,9 @@ class MqttDebugCommand extends HyperfCommand
             return 1;
         }
 
-        // Create transport
-        $transport = new UnixSocketTransport($socketPath, $timeout);
+        // Create transport - use Swoole transport when available to avoid
+        // type conflicts between native Socket and Swoole\Coroutine\Socket
+        $transport = $this->createTransport($socketPath, $timeout);
 
         // Create MQTT shell client with MQTT-specific features
         $shell = new MqttShellClient(
@@ -167,5 +170,22 @@ class MqttDebugCommand extends HyperfCommand
         }
 
         return empty($parts) ? $filter : implode(' and ', $parts);
+    }
+
+    /**
+     * Create the appropriate transport based on available extensions.
+     *
+     * When Swoole is loaded, uses SwooleUnixSocketTransport to avoid
+     * type conflicts between native PHP Socket and Swoole\Coroutine\Socket.
+     * Swoole's runtime hooks intercept socket_* functions and expect
+     * Swoole\Coroutine\Socket objects, causing TypeError with native sockets.
+     */
+    private function createTransport(string $socketPath, float $timeout): StreamingTransportInterface
+    {
+        if (extension_loaded('swoole')) {
+            return new SwooleUnixSocketTransport($socketPath, $timeout);
+        }
+
+        return new UnixSocketTransport($socketPath, $timeout);
     }
 }
