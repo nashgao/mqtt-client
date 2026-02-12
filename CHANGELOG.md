@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1-alpha.8] - 2026-02-12
+
+### Fixed
+- **Hyperf coroutine context compatibility**: Fixed `Swoole\Error: API must be called in the coroutine` when running `mqtt:debug` command in Hyperf
+  - Changed `MqttDebugCommand` from `execute()` to `handle()` to follow Hyperf's standard pattern
+  - Hyperf automatically wraps `handle()` in coroutine context when `$coroutine = true` (default)
+  - Updated `MqttShellClient` to detect existing coroutine context and avoid nested `\Swoole\Coroutine\run()`
+
 ## [0.2.1-alpha.7] - 2026-02-12
 
 ### Fixed
