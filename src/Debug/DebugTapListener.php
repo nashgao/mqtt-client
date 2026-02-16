@@ -40,12 +40,24 @@ final class DebugTapListener implements ListenerInterface
 
     public function process(object $event): void
     {
-        if (! $this->server->isEnabled() || ! $this->server->isRunning()) {
+        $eventType = $event::class;
+        $this->server->logVerbose("Event received: {$eventType}");
+
+        if (! $this->server->isEnabled()) {
+            $this->server->logVerbose('Server not enabled, skipping event');
+            return;
+        }
+
+        if (! $this->server->isRunning()) {
+            $this->server->logVerbose('Server not running, skipping event');
             return;
         }
 
         // Process pending connections and commands
         $this->server->tick();
+
+        $clientCount = $this->server->getClientCount();
+        $this->server->logVerbose("Processing event, connected clients: {$clientCount}");
 
         // Forward event to debug clients
         match (true) {
@@ -59,12 +71,29 @@ final class DebugTapListener implements ListenerInterface
 
     private function handleReceive(OnReceiveEvent $event): void
     {
-        if ($event->topic === null) {
-            return;
+        $this->server->logVerbose('handleReceive called', [
+            'original_topic' => $event->topic,
+            'qos' => $event->qos,
+            'message_type' => gettype($event->message),
+            'properties' => $event->properties,
+        ]);
+
+        // MQTT v5 may use topic alias where topic is null/empty after first message
+        // Try to extract topic from properties or use a placeholder
+        $topic = $event->topic;
+        if ($topic === null || $topic === '') {
+            // Check if topic alias is present in properties (MQTT v5)
+            $topicAlias = $event->properties['topic_alias'] ?? null;
+            $topic = $topicAlias !== null
+                ? "(alias:{$topicAlias})"
+                : '(unknown)';
+            $this->server->logVerbose("Topic resolved from alias/fallback: {$topic}");
         }
 
+        $this->server->logVerbose("Broadcasting to clients, topic: {$topic}");
+
         $this->server->broadcastPublish(
-            topic: $event->topic,
+            topic: $topic,
             message: $event->message,
             qos: $event->qos ?? 0,
             poolName: $event->poolName,

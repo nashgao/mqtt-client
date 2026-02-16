@@ -47,6 +47,7 @@ return [
         // Debug tap configuration for real-time message streaming
         'debug' => [
             'enabled' => env('MQTT_DEBUG_ENABLED', false),
+            'verbose' => env('MQTT_DEBUG_VERBOSE', false), // Enable verbose logging for debugging event flow
             'socket_path' => env('MQTT_DEBUG_SOCKET', '/tmp/mqtt-debug.sock'),
             // Shell-specific configuration
             'shell' => [

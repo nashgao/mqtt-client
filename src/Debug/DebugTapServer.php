@@ -47,6 +47,8 @@ final class DebugTapServer
 
     private bool $enabled;
 
+    private bool $verbose;
+
     /**
      * Callback for executing MQTT commands from the shell.
      *
@@ -72,6 +74,27 @@ final class DebugTapServer
         $socketPath = $config?->get('mqtt.default.debug.socket_path', self::DEFAULT_SOCKET_PATH);
         $this->socketPath = is_string($socketPath) ? $socketPath : self::DEFAULT_SOCKET_PATH;
         $this->enabled = (bool) ($config?->get('mqtt.default.debug.enabled', false) ?? false);
+        $this->verbose = (bool) ($config?->get('mqtt.default.debug.verbose', false) ?? false);
+    }
+
+    /**
+     * Check if verbose logging is enabled.
+     */
+    public function isVerbose(): bool
+    {
+        return $this->verbose;
+    }
+
+    /**
+     * Log a verbose message (only if verbose mode is enabled).
+     *
+     * @param array<string, mixed> $context
+     */
+    public function logVerbose(string $message, array $context = []): void
+    {
+        if ($this->verbose) {
+            $this->logger->debug("[DebugTap] {$message}", $context);
+        }
     }
 
     /**
@@ -547,15 +570,27 @@ final class DebugTapServer
      */
     private function broadcast(array $data): void
     {
-        if (! $this->running || empty($this->clients)) {
+        if (! $this->running) {
+            $this->logVerbose('broadcast: server not running, skipping');
+            return;
+        }
+
+        if (empty($this->clients)) {
+            $this->logVerbose('broadcast: no clients connected, skipping');
             return;
         }
 
         $json = json_encode($data, JSON_THROW_ON_ERROR) . "\n";
+        $clientCount = count($this->clients);
+        $this->logVerbose("broadcast: sending to {$clientCount} client(s)", [
+            'type' => $data['type'] ?? 'unknown',
+            'source' => $data['source'] ?? 'unknown',
+        ]);
 
         foreach ($this->clients as $id => $client) {
             $result = $client->send($json);
             if ($result === false) {
+                $this->logVerbose("broadcast: failed to send to client {$id}");
                 $this->disconnectClient($id);
             }
         }
