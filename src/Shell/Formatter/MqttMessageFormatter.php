@@ -511,7 +511,9 @@ final class MqttMessageFormatter
     {
         if (is_array($message->payload) && isset($message->payload['topics'])) {
             $topics = $message->payload['topics'];
-            return is_array($topics) ? array_map('strval', $topics) : [];
+            // Topics format: ['topic/name' => qos] or ['topic/name' => ['qos' => 1, ...]]
+            // Topic names are the keys, not the values
+            return is_array($topics) ? array_map('strval', array_keys($topics)) : [];
         }
         return [];
     }
