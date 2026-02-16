@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1-alpha.10] - 2026-02-17
+
+### Fixed
+- **MQTT v5 topic alias handling**: Debug shell no longer silently drops messages when topic is null/empty (MQTT v5 topic alias feature)
+  - Shows `(alias:X)` when topic alias is used
+  - Shows `(unknown)` as fallback instead of dropping the message
+
+### Added
+- **Verbose debug logging**: New `MQTT_DEBUG_VERBOSE=true` config option to trace debug tap event flow
+  - Logs event reception, processing, and broadcast operations
+  - Helps diagnose issues with message not appearing in debug shell
+
 ## [0.2.1-alpha.9] - 2026-02-16
 
 ### Fixed
