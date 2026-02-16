@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1-alpha.9] - 2026-02-16
+
+### Fixed
+- **Debug shell subscribe event display**: Fixed "Array to string conversion" warning when displaying subscribe events in `mqtt:debug` shell
+  - Subscribe topics format uses topic names as array keys (e.g., `['sensors/#' => ['qos' => 1]]`)
+  - `extractSubscribeTopics()` now correctly uses `array_keys()` to extract topic names
+
 ## [0.2.1-alpha.8] - 2026-02-12
 
 ### Fixed
