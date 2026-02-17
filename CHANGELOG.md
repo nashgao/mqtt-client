@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1-alpha.11] - 2026-02-17
+
+### Fixed
+- **Critical: Coroutine race condition in DebugTapServer**: Fixed `Socket already bound to another coroutine` error when multiple MQTT events fire simultaneously
+  - Added guard flag to prevent concurrent `tick()` calls from multiple coroutines
+  - This was causing subscriber disconnects due to unhandled exceptions
+
 ## [0.2.1-alpha.10] - 2026-02-17
 
 ### Fixed

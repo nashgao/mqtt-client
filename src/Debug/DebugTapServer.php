@@ -49,6 +49,9 @@ final class DebugTapServer
 
     private bool $verbose;
 
+    /** @var bool Prevent concurrent tick() calls from multiple coroutines */
+    private bool $ticking = false;
+
     /**
      * Callback for executing MQTT commands from the shell.
      *
@@ -174,6 +177,9 @@ final class DebugTapServer
     /**
      * Accept pending connections and process client commands.
      * Call this periodically in your main loop.
+     *
+     * Uses a guard flag to prevent concurrent calls from multiple coroutines,
+     * which would cause "Socket already bound to another coroutine" errors.
      */
     public function tick(): void
     {
@@ -181,8 +187,18 @@ final class DebugTapServer
             return;
         }
 
-        $this->acceptConnections();
-        $this->processClientCommands();
+        // Prevent concurrent tick() calls from multiple coroutines
+        if ($this->ticking) {
+            return;
+        }
+
+        $this->ticking = true;
+        try {
+            $this->acceptConnections();
+            $this->processClientCommands();
+        } finally {
+            $this->ticking = false;
+        }
     }
 
     /**
