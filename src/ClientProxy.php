@@ -43,8 +43,9 @@ class ClientProxy extends Client
     public function loop(): void
     {
         while (true) {
+            /** @var \Closure $closure */
             $closure = $this->channel->pop();
-            if (! $closure instanceof \Closure) {
+            if (! $closure) {
                 break;
             }
 
@@ -68,25 +69,15 @@ class ClientProxy extends Client
         array $properties = []
     ) {
         $cont = new Channel();
-        $this->channel->push(function () use ($cont, $topic, $message, $qos, $dup, $retain, $properties) {
-            $result = parent::publish($topic, $message, $qos, $dup, $retain, $properties);
-            $this->dispatcher->dispatch(new OnPublishEvent($this->poolName, $topic, $message, $qos, $result));
-            $cont->push($result);
-        });
+        $this->channel->push(fn () => $this->dispatcher->dispatch(new OnPublishEvent($this->poolName, $topic, $message, $qos, parent::publish($topic, $message, $qos, $dup, $retain, $properties))));
         return $cont->pop();
     }
 
-    public function subscribe(array $topics, array $properties = []): array|bool
+    public function subscribe(array $topics, array $properties = []): bool|array
     {
         $cont = new Channel();
-        $this->channel->push(function () use ($cont, $topics, $properties) {
-            $result = parent::subscribe($topics, $properties);
-            $this->dispatcher->dispatch(new OnSubscribeEvent($this->poolName, parent::getConfig()->getClientId(), $topics, $result));
-            $cont->push($result);
-        });
-        /** @var array|bool $result */
-        $result = $cont->pop();
-        return $result;
+        $this->channel->push(fn () => $this->dispatcher->dispatch(new OnSubscribeEvent($this->poolName, parent::getConfig()->getClientId(), $topics, parent::subscribe($topics, $properties))));
+        return $cont->pop();
     }
 
     public function unsubscribe(array $topics, array $properties = [])

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Nashgao\MQTT;
 
 use Hyperf\Context\Context;
-use Hyperf\Coroutine\Coroutine;
+use Hyperf\Engine\Coroutine;
 use Nashgao\MQTT\Constants\MQTTConstants;
 use Nashgao\MQTT\Exception\InvalidMethodException;
 use Nashgao\MQTT\Exception\InvalidMQTTConnectionException;
@@ -76,38 +76,14 @@ class Client
             if (($name === MQTTConstants::SUBSCRIBE || $name === MQTTConstants::MULTISUB) && $pool->getAvailableConnectionNum() < 2) {
                 throw new \RuntimeException('Connection pool exhausted. Cannot establish new connection before wait_timeout.');
             }
-            $connection = $this->getConnection($hasContextConnection);
-
-            // Record the operation attempt for health monitoring
-            $this->healthChecker->recordConnectionAttempt();
-
-            // Record operation start time for performance metrics
-            $operationStartTime = microtime(true);
-
-            // Track operation attempt
-            $this->recordOperationAttempt($name);
-
+            $connection = $this->getConnection($hasContextConnection)->getConnection();
             try {
-                // Wrap the operation with error handling
-                $this->errorHandler->wrapOperation(function () use ($connection, $name, $arguments, $operationStartTime) {
-                    return Coroutine::create(
-                        function () use ($connection, $name, $arguments, $operationStartTime) {
-                            /* @var MQTTConnection $connection */
-
-                            // Execute the operation
-                            $result = $connection->{$name}(...$arguments);
-
-                            // Record successful operation metrics
-                            $this->recordSuccessfulOperation($name, $arguments, microtime(true) - $operationStartTime);
-
-                            return $result;
-                        }
-                    );
-                }, "mqtt_{$name}");
-            } catch (\Exception $e) {
-                // Record failed operation metrics
-                $this->recordFailedOperation($name, $arguments, $e, microtime(true) - $operationStartTime);
-                throw $e;
+                Coroutine::create(
+                    static function () use ($connection, $name, $arguments) {
+                        /* @var MQTTConnection $connection */
+                        $connection->{$name}(...$arguments);
+                    }
+                );
             } finally {
                 if ($name === MQTTConstants::SUBSCRIBE) {
                     Coroutine::create(
