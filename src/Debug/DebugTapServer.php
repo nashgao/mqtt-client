@@ -52,6 +52,8 @@ final class DebugTapServer
     /** @var bool Prevent concurrent tick() calls from multiple coroutines */
     private bool $ticking = false;
 
+    private ?int $timerId = null;
+
     /**
      * Callback for executing MQTT commands from the shell.
      *
@@ -145,6 +147,10 @@ final class DebugTapServer
         $this->serverSocket = $socket;
         $this->running = true;
 
+        $this->timerId = \Swoole\Timer::tick(100, function (): void {
+            $this->tick();
+        });
+
         $this->logger->info("Debug tap server started on {$this->socketPath}");
     }
 
@@ -154,6 +160,11 @@ final class DebugTapServer
     public function stop(): void
     {
         $this->running = false;
+
+        if ($this->timerId !== null) {
+            \Swoole\Timer::clear($this->timerId);
+            $this->timerId = null;
+        }
 
         // Close all client connections
         foreach ($this->clients as $id => $client) {
