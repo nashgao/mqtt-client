@@ -35,8 +35,10 @@ class SubscriptionMetrics extends BaseMetrics
         $this->addToTimestampArray($this->subscriptionTimes, $this->getCurrentTimestamp());
 
         foreach ($topics as $topic => $qos) {
-            $this->recordTopicActivity($topic, $qos);
-            $this->recordQosUsage($qos);
+            // Support both MQTT v3 (int) and v5 (array with 'qos' key) formats
+            $qosValue = is_array($qos) ? ($qos['qos'] ?? 0) : $qos;
+            $this->recordTopicActivity($topic, $qosValue);
+            $this->recordQosUsage($qosValue);
         }
 
         $this->updatePoolStats($poolName, count($topics), true);
@@ -49,7 +51,9 @@ class SubscriptionMetrics extends BaseMetrics
         $this->recordFailure();
 
         foreach ($topics as $topic => $qos) {
-            $this->recordTopicActivity($topic, $qos);
+            // Support both MQTT v3 (int) and v5 (array with 'qos' key) formats
+            $qosValue = is_array($qos) ? ($qos['qos'] ?? 0) : $qos;
+            $this->recordTopicActivity($topic, $qosValue);
         }
 
         $this->updatePoolStats($poolName, 0, false, $reason);

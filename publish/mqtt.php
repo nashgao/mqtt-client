@@ -44,6 +44,26 @@ return [
             'max_idle_time' => 60,
         ],
         'prefix' => '',
+        // Debug tap configuration for real-time message streaming
+        'debug' => [
+            'enabled' => env('MQTT_DEBUG_ENABLED', false),
+            'verbose' => env('MQTT_DEBUG_VERBOSE', false), // Enable verbose logging for debugging event flow
+            'socket_path' => env('MQTT_DEBUG_SOCKET', '/tmp/mqtt-debug.sock'),
+            // Shell-specific configuration
+            'shell' => [
+                'prompt' => 'mqtt> ',
+                'history_file' => '~/.mqtt_shell_history',
+                'history_limit' => 1000,
+                'message_buffer' => 500,  // Messages to keep in history
+                'default_format' => 'compact', // compact, table, vertical, json
+                'colors' => true,
+                // Default aliases for common operations
+                'aliases' => [
+                    'll' => 'history --limit=50',
+                    'sensors' => 'filter topic:sensors/#',
+                ],
+            ],
+        ],
         'subscribe' => [
             'topics' => [
                 [

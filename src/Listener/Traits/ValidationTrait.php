@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Simps\MQTT\Listener\Traits;
+namespace Nashgao\MQTT\Listener\Traits;
 
 trait ValidationTrait
 {
@@ -22,10 +22,14 @@ trait ValidationTrait
         }
 
         if (empty($poolName)) {
-            if (property_exists($this, 'logger') && $this->logger) {
-                $this->logger->warning('Invalid pool name, using default', [
-                    'provided_pool' => $poolName,
-                ]);
+            if (property_exists($this, 'logger')) {
+                /** @var mixed $logger */
+                $logger = $this->logger;
+                if ($logger !== null) {
+                    $logger->warning('Invalid pool name, using default', [
+                        'provided_pool' => $poolName,
+                    ]);
+                }
             }
             return 'default';
         }
@@ -35,8 +39,12 @@ trait ValidationTrait
 
     protected function recordValidationMetrics(string $operation, bool $success, string $details = ''): void
     {
-        if (property_exists($this, 'validationMetrics') && $this->validationMetrics) {
-            $this->validationMetrics->recordValidation($operation, $success, $details);
+        if (property_exists($this, 'validationMetrics')) {
+            /** @var mixed $metrics */
+            $metrics = $this->validationMetrics;
+            if ($metrics !== null) {
+                $metrics->recordValidation($operation, $success, $details);
+            }
         }
     }
 
@@ -44,11 +52,15 @@ trait ValidationTrait
     {
         $this->recordValidationMetrics($operation, false, "Failed validation: {$e->getMessage()}");
 
-        if (property_exists($this, 'logger') && $this->logger) {
-            $this->logger->error("Validation error in {$operation}", [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
+        if (property_exists($this, 'logger')) {
+            /** @var mixed $logger */
+            $logger = $this->logger;
+            if ($logger !== null) {
+                $logger->error("Validation error in {$operation}", [
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                ]);
+            }
         }
 
         throw $e;

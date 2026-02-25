@@ -51,6 +51,16 @@ class MQTTPool extends Pool
         return $this->option->getMaxConnections() - $this->currentConnections;
     }
 
+    /**
+     * Get the maximum number of connections allowed in this pool.
+     *
+     * @return int The configured maximum connection count
+     */
+    public function getMaxConnections(): int
+    {
+        return $this->option->getMaxConnections();
+    }
+
     protected function createConnection(): ConnectionInterface
     {
         return new MQTTConnection($this->container, $this, $this->config);

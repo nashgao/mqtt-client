@@ -40,8 +40,8 @@ class IntegrationTest extends AbstractTestCase
         $parsedConfig = TopicParser::parseTopic($shareTopic, Qos::QOS_AT_LEAST_ONCE);
 
         $this->assertEquals($originalTopic, $parsedConfig->topic);
-        $this->assertTrue($parsedConfig->enable_share_topic);
-        $this->assertEquals(['group_name' => [$group]], $parsedConfig->share_topic);
+        $this->assertTrue($parsedConfig->enableShareTopic);
+        $this->assertEquals(['group_name' => [$group]], $parsedConfig->shareTopic);
         $this->assertEquals(Qos::QOS_AT_LEAST_ONCE, $parsedConfig->qos);
     }
 
@@ -55,8 +55,8 @@ class IntegrationTest extends AbstractTestCase
         $parsedConfig = TopicParser::parseTopic($queueTopic, Qos::QOS_EXACTLY_ONCE);
 
         $this->assertEquals($originalTopic, $parsedConfig->topic);
-        $this->assertTrue($parsedConfig->enable_queue_topic);
-        $this->assertFalse($parsedConfig->enable_share_topic);
+        $this->assertTrue($parsedConfig->enableQueueTopic);
+        $this->assertFalse($parsedConfig->enableShareTopic);
         $this->assertEquals(Qos::QOS_EXACTLY_ONCE, $parsedConfig->qos);
     }
 

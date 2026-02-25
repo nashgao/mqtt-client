@@ -1,0 +1,1554 @@
+[
+  {
+    "session_id": "40450221-0a9c-466a-a21a-7058df5d294a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/40450221-0a9c-466a-a21a-7058df5d294a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "40450221-0a9c-466a-a21a-7058df5d294a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/40450221-0a9c-466a-a21a-7058df5d294a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "40450221-0a9c-466a-a21a-7058df5d294a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/40450221-0a9c-466a-a21a-7058df5d294a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "40450221-0a9c-466a-a21a-7058df5d294a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/40450221-0a9c-466a-a21a-7058df5d294a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "40450221-0a9c-466a-a21a-7058df5d294a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/40450221-0a9c-466a-a21a-7058df5d294a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "40450221-0a9c-466a-a21a-7058df5d294a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/40450221-0a9c-466a-a21a-7058df5d294a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "40450221-0a9c-466a-a21a-7058df5d294a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/40450221-0a9c-466a-a21a-7058df5d294a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "f2e553fe-1c28-4f83-83ca-b6ea8f924330",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f2e553fe-1c28-4f83-83ca-b6ea8f924330.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "f2e553fe-1c28-4f83-83ca-b6ea8f924330",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f2e553fe-1c28-4f83-83ca-b6ea8f924330.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "f1656293-7930-4606-8928-b62ba9e6d75f",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f1656293-7930-4606-8928-b62ba9e6d75f.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "f1656293-7930-4606-8928-b62ba9e6d75f",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f1656293-7930-4606-8928-b62ba9e6d75f.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "f1656293-7930-4606-8928-b62ba9e6d75f",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f1656293-7930-4606-8928-b62ba9e6d75f.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "f1656293-7930-4606-8928-b62ba9e6d75f",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f1656293-7930-4606-8928-b62ba9e6d75f.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "7e735a47-1efa-4b8a-a00a-6dc45e7683d0",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e735a47-1efa-4b8a-a00a-6dc45e7683d0.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "7e735a47-1efa-4b8a-a00a-6dc45e7683d0",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e735a47-1efa-4b8a-a00a-6dc45e7683d0.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "7e735a47-1efa-4b8a-a00a-6dc45e7683d0",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e735a47-1efa-4b8a-a00a-6dc45e7683d0.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "7e735a47-1efa-4b8a-a00a-6dc45e7683d0",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e735a47-1efa-4b8a-a00a-6dc45e7683d0.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "7e735a47-1efa-4b8a-a00a-6dc45e7683d0",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e735a47-1efa-4b8a-a00a-6dc45e7683d0.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "7e735a47-1efa-4b8a-a00a-6dc45e7683d0",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e735a47-1efa-4b8a-a00a-6dc45e7683d0.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7e735a47-1efa-4b8a-a00a-6dc45e7683d0",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e735a47-1efa-4b8a-a00a-6dc45e7683d0.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7d716388-e58f-4933-a489-4857977c81d2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7d716388-e58f-4933-a489-4857977c81d2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "98c8f295-bbb1-426b-8fcd-dae7dbe73e9a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/98c8f295-bbb1-426b-8fcd-dae7dbe73e9a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "d17a024a-a998-4d56-99b9-5862663f2212",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/d17a024a-a998-4d56-99b9-5862663f2212.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "d17a024a-a998-4d56-99b9-5862663f2212",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/d17a024a-a998-4d56-99b9-5862663f2212.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "d17a024a-a998-4d56-99b9-5862663f2212",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/d17a024a-a998-4d56-99b9-5862663f2212.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "98c8f295-bbb1-426b-8fcd-dae7dbe73e9a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/98c8f295-bbb1-426b-8fcd-dae7dbe73e9a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "b25c7725-07d9-442b-8081-5379f5cac0a7",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/b25c7725-07d9-442b-8081-5379f5cac0a7.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "9be0c069-8530-4a1b-81b8-5c7bad5cddb1",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9be0c069-8530-4a1b-81b8-5c7bad5cddb1.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "98c8f295-bbb1-426b-8fcd-dae7dbe73e9a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/98c8f295-bbb1-426b-8fcd-dae7dbe73e9a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "9be0c069-8530-4a1b-81b8-5c7bad5cddb1",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9be0c069-8530-4a1b-81b8-5c7bad5cddb1.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "98c8f295-bbb1-426b-8fcd-dae7dbe73e9a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/98c8f295-bbb1-426b-8fcd-dae7dbe73e9a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "593970c5-2ec1-448a-87e6-13ffa524f4d8",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/593970c5-2ec1-448a-87e6-13ffa524f4d8.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "593970c5-2ec1-448a-87e6-13ffa524f4d8",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/593970c5-2ec1-448a-87e6-13ffa524f4d8.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "593970c5-2ec1-448a-87e6-13ffa524f4d8",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/593970c5-2ec1-448a-87e6-13ffa524f4d8.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "9b47a5a5-dee9-4b69-8dd0-1448437c455d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9b47a5a5-dee9-4b69-8dd0-1448437c455d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "9b47a5a5-dee9-4b69-8dd0-1448437c455d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9b47a5a5-dee9-4b69-8dd0-1448437c455d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "98c8f295-bbb1-426b-8fcd-dae7dbe73e9a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/98c8f295-bbb1-426b-8fcd-dae7dbe73e9a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "9b47a5a5-dee9-4b69-8dd0-1448437c455d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9b47a5a5-dee9-4b69-8dd0-1448437c455d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "9b47a5a5-dee9-4b69-8dd0-1448437c455d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9b47a5a5-dee9-4b69-8dd0-1448437c455d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "98c8f295-bbb1-426b-8fcd-dae7dbe73e9a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/98c8f295-bbb1-426b-8fcd-dae7dbe73e9a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "6010a8c9-5351-4af3-83cd-28b188552e2e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/6010a8c9-5351-4af3-83cd-28b188552e2e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "98c8f295-bbb1-426b-8fcd-dae7dbe73e9a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/98c8f295-bbb1-426b-8fcd-dae7dbe73e9a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "6010a8c9-5351-4af3-83cd-28b188552e2e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/6010a8c9-5351-4af3-83cd-28b188552e2e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "4bef833e-80b0-4c88-ae97-29850123c183",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/4bef833e-80b0-4c88-ae97-29850123c183.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "6010a8c9-5351-4af3-83cd-28b188552e2e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/6010a8c9-5351-4af3-83cd-28b188552e2e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "6010a8c9-5351-4af3-83cd-28b188552e2e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/6010a8c9-5351-4af3-83cd-28b188552e2e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "f2043fa4-f172-4c98-afa5-55e6159ba8e8",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f2043fa4-f172-4c98-afa5-55e6159ba8e8.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "f2043fa4-f172-4c98-afa5-55e6159ba8e8",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f2043fa4-f172-4c98-afa5-55e6159ba8e8.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "f2043fa4-f172-4c98-afa5-55e6159ba8e8",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f2043fa4-f172-4c98-afa5-55e6159ba8e8.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "f2043fa4-f172-4c98-afa5-55e6159ba8e8",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f2043fa4-f172-4c98-afa5-55e6159ba8e8.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "d9561859-928d-49c2-b975-358d65436c7c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/d9561859-928d-49c2-b975-358d65436c7c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "d9561859-928d-49c2-b975-358d65436c7c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/d9561859-928d-49c2-b975-358d65436c7c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7ed57a82-a221-4b4b-8a50-45303d5c266b",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7ed57a82-a221-4b4b-8a50-45303d5c266b.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "a8dc996b-e37e-4e6d-9216-8ee8ac9aca60",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/a8dc996b-e37e-4e6d-9216-8ee8ac9aca60.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "5340e423-8aba-4f46-995d-ed656370222c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/5340e423-8aba-4f46-995d-ed656370222c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "5340e423-8aba-4f46-995d-ed656370222c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/5340e423-8aba-4f46-995d-ed656370222c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "a8dc996b-e37e-4e6d-9216-8ee8ac9aca60",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/a8dc996b-e37e-4e6d-9216-8ee8ac9aca60.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "5340e423-8aba-4f46-995d-ed656370222c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/5340e423-8aba-4f46-995d-ed656370222c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "5340e423-8aba-4f46-995d-ed656370222c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/5340e423-8aba-4f46-995d-ed656370222c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "e33e5c74-b2ed-4c1f-a71b-c06ae3cf1606",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/e33e5c74-b2ed-4c1f-a71b-c06ae3cf1606.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "e33e5c74-b2ed-4c1f-a71b-c06ae3cf1606",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/e33e5c74-b2ed-4c1f-a71b-c06ae3cf1606.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "a8dc996b-e37e-4e6d-9216-8ee8ac9aca60",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/a8dc996b-e37e-4e6d-9216-8ee8ac9aca60.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "a8dc996b-e37e-4e6d-9216-8ee8ac9aca60",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/a8dc996b-e37e-4e6d-9216-8ee8ac9aca60.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "ea692189-2981-4bef-93c3-ebee8dd117e5",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ea692189-2981-4bef-93c3-ebee8dd117e5.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "a8dc996b-e37e-4e6d-9216-8ee8ac9aca60",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/a8dc996b-e37e-4e6d-9216-8ee8ac9aca60.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "dc1a292f-c082-44c4-b3ff-a509a1a33a4f",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/dc1a292f-c082-44c4-b3ff-a509a1a33a4f.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ea692189-2981-4bef-93c3-ebee8dd117e5",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ea692189-2981-4bef-93c3-ebee8dd117e5.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "0b25ad5f-1e39-4652-be34-387380162cfa",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/0b25ad5f-1e39-4652-be34-387380162cfa.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "207a1d3e-228b-4e7a-8362-c9a21be9508d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/207a1d3e-228b-4e7a-8362-c9a21be9508d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "207a1d3e-228b-4e7a-8362-c9a21be9508d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/207a1d3e-228b-4e7a-8362-c9a21be9508d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "207a1d3e-228b-4e7a-8362-c9a21be9508d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/207a1d3e-228b-4e7a-8362-c9a21be9508d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "207a1d3e-228b-4e7a-8362-c9a21be9508d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/207a1d3e-228b-4e7a-8362-c9a21be9508d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "0b25ad5f-1e39-4652-be34-387380162cfa",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/0b25ad5f-1e39-4652-be34-387380162cfa.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3b98cdca-3b6d-4e6b-bfae-f6104d1720e2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/3b98cdca-3b6d-4e6b-bfae-f6104d1720e2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "f28a9fb2-76b9-4a82-b601-25d23510bcba",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f28a9fb2-76b9-4a82-b601-25d23510bcba.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "f28a9fb2-76b9-4a82-b601-25d23510bcba",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f28a9fb2-76b9-4a82-b601-25d23510bcba.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "f28a9fb2-76b9-4a82-b601-25d23510bcba",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f28a9fb2-76b9-4a82-b601-25d23510bcba.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "f28a9fb2-76b9-4a82-b601-25d23510bcba",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f28a9fb2-76b9-4a82-b601-25d23510bcba.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "f28a9fb2-76b9-4a82-b601-25d23510bcba",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/f28a9fb2-76b9-4a82-b601-25d23510bcba.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "95d05f07-716e-484b-8571-4a4b19e81fef",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/95d05f07-716e-484b-8571-4a4b19e81fef.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "34cfe458-a12d-43df-adcf-908184d72669",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/34cfe458-a12d-43df-adcf-908184d72669.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "34cfe458-a12d-43df-adcf-908184d72669",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/34cfe458-a12d-43df-adcf-908184d72669.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "34cfe458-a12d-43df-adcf-908184d72669",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/34cfe458-a12d-43df-adcf-908184d72669.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "0a225b7a-6851-4e79-8529-dd80e4f1c9f9",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/0a225b7a-6851-4e79-8529-dd80e4f1c9f9.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "0a225b7a-6851-4e79-8529-dd80e4f1c9f9",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/0a225b7a-6851-4e79-8529-dd80e4f1c9f9.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "ae33e54f-b76c-4c04-a2f8-4be16d3cfc79",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ae33e54f-b76c-4c04-a2f8-4be16d3cfc79.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ae33e54f-b76c-4c04-a2f8-4be16d3cfc79",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ae33e54f-b76c-4c04-a2f8-4be16d3cfc79.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ae33e54f-b76c-4c04-a2f8-4be16d3cfc79",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ae33e54f-b76c-4c04-a2f8-4be16d3cfc79.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ae33e54f-b76c-4c04-a2f8-4be16d3cfc79",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ae33e54f-b76c-4c04-a2f8-4be16d3cfc79.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ae33e54f-b76c-4c04-a2f8-4be16d3cfc79",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ae33e54f-b76c-4c04-a2f8-4be16d3cfc79.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ae33e54f-b76c-4c04-a2f8-4be16d3cfc79",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ae33e54f-b76c-4c04-a2f8-4be16d3cfc79.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "ae33e54f-b76c-4c04-a2f8-4be16d3cfc79",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ae33e54f-b76c-4c04-a2f8-4be16d3cfc79.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "690d1916-f95b-4b25-bb01-6d86130d3a21",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/690d1916-f95b-4b25-bb01-6d86130d3a21.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "ec75262e-80c6-49f6-b521-601de0a0c83b",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ec75262e-80c6-49f6-b521-601de0a0c83b.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ec75262e-80c6-49f6-b521-601de0a0c83b",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ec75262e-80c6-49f6-b521-601de0a0c83b.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ec75262e-80c6-49f6-b521-601de0a0c83b",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ec75262e-80c6-49f6-b521-601de0a0c83b.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "ec75262e-80c6-49f6-b521-601de0a0c83b",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ec75262e-80c6-49f6-b521-601de0a0c83b.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "ec75262e-80c6-49f6-b521-601de0a0c83b",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/ec75262e-80c6-49f6-b521-601de0a0c83b.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "4a0450e6-93d1-47ee-b077-2fe8b2bb7813",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/4a0450e6-93d1-47ee-b077-2fe8b2bb7813.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "4a0450e6-93d1-47ee-b077-2fe8b2bb7813",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/4a0450e6-93d1-47ee-b077-2fe8b2bb7813.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "4a0450e6-93d1-47ee-b077-2fe8b2bb7813",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/4a0450e6-93d1-47ee-b077-2fe8b2bb7813.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "4a0450e6-93d1-47ee-b077-2fe8b2bb7813",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/4a0450e6-93d1-47ee-b077-2fe8b2bb7813.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "a1b70fc0-683a-4b56-b397-d54d71a8f51d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/a1b70fc0-683a-4b56-b397-d54d71a8f51d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "a1b70fc0-683a-4b56-b397-d54d71a8f51d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/a1b70fc0-683a-4b56-b397-d54d71a8f51d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "a1b70fc0-683a-4b56-b397-d54d71a8f51d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/a1b70fc0-683a-4b56-b397-d54d71a8f51d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "a1b70fc0-683a-4b56-b397-d54d71a8f51d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/a1b70fc0-683a-4b56-b397-d54d71a8f51d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "a1b70fc0-683a-4b56-b397-d54d71a8f51d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/a1b70fc0-683a-4b56-b397-d54d71a8f51d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "6f15c5a3-80f1-4b61-9e42-dec44d71371f",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/6f15c5a3-80f1-4b61-9e42-dec44d71371f.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "9ca27643-fdda-412e-86f7-d5b1ba65fc43",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/9ca27643-fdda-412e-86f7-d5b1ba65fc43.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "6f15c5a3-80f1-4b61-9e42-dec44d71371f",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/6f15c5a3-80f1-4b61-9e42-dec44d71371f.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "6f15c5a3-80f1-4b61-9e42-dec44d71371f",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/6f15c5a3-80f1-4b61-9e42-dec44d71371f.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "df78d9f0-69c1-4084-95ee-903e6bb80a87",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/df78d9f0-69c1-4084-95ee-903e6bb80a87.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "b6c362af-0298-44b3-a5e6-646424bde503",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/b6c362af-0298-44b3-a5e6-646424bde503.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "b6c362af-0298-44b3-a5e6-646424bde503",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/b6c362af-0298-44b3-a5e6-646424bde503.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "b6c362af-0298-44b3-a5e6-646424bde503",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/b6c362af-0298-44b3-a5e6-646424bde503.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7ceed0e9-40db-4dba-9d3a-20c05a4cb4ba",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7ceed0e9-40db-4dba-9d3a-20c05a4cb4ba.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "7ceed0e9-40db-4dba-9d3a-20c05a4cb4ba",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7ceed0e9-40db-4dba-9d3a-20c05a4cb4ba.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7ceed0e9-40db-4dba-9d3a-20c05a4cb4ba",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7ceed0e9-40db-4dba-9d3a-20c05a4cb4ba.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "4f006632-b5f7-4a76-8c5f-031d1bcf2b8d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/4f006632-b5f7-4a76-8c5f-031d1bcf2b8d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "df78d9f0-69c1-4084-95ee-903e6bb80a87",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/df78d9f0-69c1-4084-95ee-903e6bb80a87.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "df78d9f0-69c1-4084-95ee-903e6bb80a87",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/df78d9f0-69c1-4084-95ee-903e6bb80a87.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "4f006632-b5f7-4a76-8c5f-031d1bcf2b8d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/4f006632-b5f7-4a76-8c5f-031d1bcf2b8d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "4f006632-b5f7-4a76-8c5f-031d1bcf2b8d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/4f006632-b5f7-4a76-8c5f-031d1bcf2b8d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "e28af7b4-f0b1-4f34-99df-c4918562da5e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/e28af7b4-f0b1-4f34-99df-c4918562da5e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "e28af7b4-f0b1-4f34-99df-c4918562da5e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/e28af7b4-f0b1-4f34-99df-c4918562da5e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "e28af7b4-f0b1-4f34-99df-c4918562da5e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/e28af7b4-f0b1-4f34-99df-c4918562da5e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "df78d9f0-69c1-4084-95ee-903e6bb80a87",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/df78d9f0-69c1-4084-95ee-903e6bb80a87.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "1ce1443c-d469-4ead-9d4b-fa67c9909f05",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/1ce1443c-d469-4ead-9d4b-fa67c9909f05.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "1ce1443c-d469-4ead-9d4b-fa67c9909f05",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/1ce1443c-d469-4ead-9d4b-fa67c9909f05.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "e28af7b4-f0b1-4f34-99df-c4918562da5e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/e28af7b4-f0b1-4f34-99df-c4918562da5e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "0a995f5e-b314-4c3e-a1d7-bec02ad21657",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/0a995f5e-b314-4c3e-a1d7-bec02ad21657.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "0a995f5e-b314-4c3e-a1d7-bec02ad21657",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/0a995f5e-b314-4c3e-a1d7-bec02ad21657.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "0a995f5e-b314-4c3e-a1d7-bec02ad21657",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/0a995f5e-b314-4c3e-a1d7-bec02ad21657.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "0a995f5e-b314-4c3e-a1d7-bec02ad21657",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/0a995f5e-b314-4c3e-a1d7-bec02ad21657.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "0a995f5e-b314-4c3e-a1d7-bec02ad21657",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/0a995f5e-b314-4c3e-a1d7-bec02ad21657.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "0a995f5e-b314-4c3e-a1d7-bec02ad21657",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/0a995f5e-b314-4c3e-a1d7-bec02ad21657.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7e78645f-8f1b-44a0-b8d9-643237622eab",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e78645f-8f1b-44a0-b8d9-643237622eab.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "7e78645f-8f1b-44a0-b8d9-643237622eab",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e78645f-8f1b-44a0-b8d9-643237622eab.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7e78645f-8f1b-44a0-b8d9-643237622eab",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e78645f-8f1b-44a0-b8d9-643237622eab.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7e78645f-8f1b-44a0-b8d9-643237622eab",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/7e78645f-8f1b-44a0-b8d9-643237622eab.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "fba4f944-6241-4df0-afd5-0029d064b0b8",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/fba4f944-6241-4df0-afd5-0029d064b0b8.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "fba4f944-6241-4df0-afd5-0029d064b0b8",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/fba4f944-6241-4df0-afd5-0029d064b0b8.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "fba4f944-6241-4df0-afd5-0029d064b0b8",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/fba4f944-6241-4df0-afd5-0029d064b0b8.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "62f49d62-f534-4dcd-a867-c7aeea887b09",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/62f49d62-f534-4dcd-a867-c7aeea887b09.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "62f49d62-f534-4dcd-a867-c7aeea887b09",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/62f49d62-f534-4dcd-a867-c7aeea887b09.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "62f49d62-f534-4dcd-a867-c7aeea887b09",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/62f49d62-f534-4dcd-a867-c7aeea887b09.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "62f49d62-f534-4dcd-a867-c7aeea887b09",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/62f49d62-f534-4dcd-a867-c7aeea887b09.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "2fc8a803-2cd4-4270-8923-836cb45ccfaf",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/2fc8a803-2cd4-4270-8923-836cb45ccfaf.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "2fc8a803-2cd4-4270-8923-836cb45ccfaf",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/2fc8a803-2cd4-4270-8923-836cb45ccfaf.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "2fc8a803-2cd4-4270-8923-836cb45ccfaf",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-mqtt/2fc8a803-2cd4-4270-8923-836cb45ccfaf.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/mqtt",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  }
+]

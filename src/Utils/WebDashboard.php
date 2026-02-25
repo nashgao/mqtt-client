@@ -9,10 +9,14 @@ use Nashgao\MQTT\Metrics\PerformanceMetrics;
 use Nashgao\MQTT\Metrics\PublishMetrics;
 use Nashgao\MQTT\Metrics\SubscriptionMetrics;
 use Nashgao\MQTT\Metrics\ValidationMetrics;
+use Swoole\Coroutine\Socket;
 
 /**
  * Web-based MQTT Dashboard with modern UI
  * Inspired by Grafana, Prometheus UI, and modern web dashboards.
+ *
+ * Uses Swoole's native coroutine socket API to avoid PHP 8.2+ deprecation
+ * warnings from Swoole's socket function hooks.
  */
 class WebDashboard
 {
@@ -75,29 +79,45 @@ class WebDashboard
     }
 
     /**
-     * Simple HTTP server implementation.
+     * Simple HTTP server implementation using Swoole coroutine sockets.
      */
     private function runServer(): void
     {
-        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
-        socket_bind($socket, $this->host, $this->port);
-        socket_listen($socket, 5);
+        $socket = new Socket(AF_INET, SOCK_STREAM, 0);
+        $socket->setOption(SOL_SOCKET, SO_REUSEADDR, 1);
+
+        if (! $socket->bind($this->host, $this->port)) {
+            echo "Failed to bind to {$this->host}:{$this->port}\n";
+            return;
+        }
+
+        if (! $socket->listen(5)) {
+            echo "Failed to listen on socket\n";
+            $socket->close();
+            return;
+        }
 
         while ($this->running) {
-            $client = socket_accept($socket);
+            /** @var false|Socket $client */
+            $client = $socket->accept();
             if ($client === false) {
                 continue;
             }
 
-            $request = socket_read($client, 4096);
+            /** @var false|string $request */
+            $request = $client->recv(4096);
+            if ($request === false || $request === '') {
+                $client->close();
+                continue;
+            }
+
             $response = $this->handleRequest($request);
 
-            socket_write($client, $response);
-            socket_close($client);
+            $client->send($response);
+            $client->close();
         }
 
-        socket_close($socket);
+        $socket->close();
     }
 
     /**

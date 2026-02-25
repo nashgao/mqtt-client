@@ -72,8 +72,8 @@ class TopicTest extends AbstractTestCase
         $this->assertInstanceOf(TopicConfig::class, $result);
         $this->assertEquals('test/topic', $result->topic);
         $this->assertEquals(1, $result->qos);
-        $this->assertFalse($result->enable_share_topic);
-        $this->assertFalse($result->enable_queue_topic);
+        $this->assertFalse($result->enableShareTopic);
+        $this->assertFalse($result->enableQueueTopic);
     }
 
     public function testTopicParserParseQueueTopic()
@@ -86,8 +86,8 @@ class TopicTest extends AbstractTestCase
         $this->assertInstanceOf(TopicConfig::class, $result);
         $this->assertEquals('test/topic', $result->topic);
         $this->assertEquals(2, $result->qos);
-        $this->assertTrue($result->enable_queue_topic);
-        $this->assertFalse($result->enable_share_topic);
+        $this->assertTrue($result->enableQueueTopic);
+        $this->assertFalse($result->enableShareTopic);
     }
 
     public function testTopicParserParseShareTopic()
@@ -100,8 +100,8 @@ class TopicTest extends AbstractTestCase
         $this->assertInstanceOf(TopicConfig::class, $result);
         $this->assertEquals('test/topic', $result->topic);
         $this->assertEquals(0, $result->qos);
-        $this->assertTrue($result->enable_share_topic);
-        $this->assertFalse($result->enable_queue_topic);
-        $this->assertEquals(['group_name' => ['mygroup']], $result->share_topic);
+        $this->assertTrue($result->enableShareTopic);
+        $this->assertFalse($result->enableQueueTopic);
+        $this->assertEquals(['group_name' => ['mygroup']], $result->shareTopic);
     }
 }

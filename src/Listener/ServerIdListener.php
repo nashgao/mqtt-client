@@ -169,7 +169,7 @@ class ServerIdListener implements ListenerInterface
 
     /**
      * Handle server start completion.
-     * @param mixed $event
+     * @param object $event
      */
     private function handleAfterServerStart(object $event): void
     {
@@ -192,7 +192,7 @@ class ServerIdListener implements ListenerInterface
 
     /**
      * Handle server stop preparation.
-     * @param mixed $event
+     * @param object $event
      */
     private function handleBeforeServerStop(object $event): void
     {
@@ -214,7 +214,7 @@ class ServerIdListener implements ListenerInterface
 
     /**
      * Handle process events.
-     * @param mixed $event
+     * @param object $event
      */
     private function handleBeforeProcessHandle(object $event): void
     {
@@ -232,7 +232,7 @@ class ServerIdListener implements ListenerInterface
 
     /**
      * Handle generic server events.
-     * @param mixed $event
+     * @param object $event
      */
     private function handleGenericEvent($event): void
     {

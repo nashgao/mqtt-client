@@ -238,18 +238,6 @@ class OnDisconnectListener implements ListenerInterface
         if (empty($event->poolName)) {
             throw new \InvalidArgumentException('Pool name cannot be empty');
         }
-
-        if (! is_string($event->poolName)) {
-            throw new \InvalidArgumentException('Pool name must be a string');
-        }
-
-        if (! is_int($event->code)) {
-            throw new \InvalidArgumentException('Disconnect code must be an integer');
-        }
-
-        if (! is_int($event->type)) {
-            throw new \InvalidArgumentException('Disconnect type must be an integer');
-        }
     }
 
     /**

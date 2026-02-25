@@ -44,10 +44,10 @@ class ClientProxy extends Client
         parent::__construct($config->host, $config->port, $config->clientConfig, $config->clientType);
     }
 
-    public function loop()
+    public function loop(): void
     {
         while (true) {
-            /** @var Closure $closure */
+            /** @var \Closure $closure */
             $closure = $this->channel->pop();
             if (! $closure) {
                 break;
@@ -77,7 +77,7 @@ class ClientProxy extends Client
         return $cont->pop();
     }
 
-    public function subscribe(array $topics, array $properties = []): array|bool
+    public function subscribe(array $topics, array $properties = []): bool|array
     {
         $cont = new Channel();
         $this->channel->push(fn () => $this->dispatcher->dispatch(new OnSubscribeEvent($this->poolName, parent::getConfig()->getClientId(), $topics, parent::subscribe($topics, $properties))));

@@ -6,8 +6,6 @@ namespace Nashgao\MQTT\Metrics;
 
 class ErrorMetrics
 {
-    private array $errorCounts = [];
-
     private array $errorsByType = [];
 
     private array $errorsByOperation = [];
@@ -74,10 +72,7 @@ class ErrorMetrics
             return 0.0;
         }
 
-        $totalMinutes = count($this->errorRates);
-        $totalErrors = array_sum($this->errorRates);
-
-        return $totalMinutes > 0 ? $totalErrors / $totalMinutes : 0.0;
+        return array_sum($this->errorRates) / count($this->errorRates);
     }
 
     public function getErrorCountByType(string $type): int
@@ -101,14 +96,10 @@ class ErrorMetrics
             return null;
         }
 
-        return array_key_first(
-            array_slice(
-                arsort($this->errorsByType) ? $this->errorsByType : [],
-                0,
-                1,
-                true
-            )
-        );
+        $sorted = $this->errorsByType;
+        arsort($sorted);
+
+        return array_key_first($sorted);
     }
 
     public function getMostProblematicOperation(): ?string
@@ -117,14 +108,10 @@ class ErrorMetrics
             return null;
         }
 
-        return array_key_first(
-            array_slice(
-                arsort($this->errorsByOperation) ? $this->errorsByOperation : [],
-                0,
-                1,
-                true
-            )
-        );
+        $sorted = $this->errorsByOperation;
+        arsort($sorted);
+
+        return array_key_first($sorted);
     }
 
     public function getTotalErrors(): int
@@ -162,7 +149,6 @@ class ErrorMetrics
 
     public function reset(): void
     {
-        $this->errorCounts = [];
         $this->errorsByType = [];
         $this->errorsByOperation = [];
         $this->recentErrors = [];

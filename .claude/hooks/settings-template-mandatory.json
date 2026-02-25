@@ -1,0 +1,53 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.claude/hooks/claude-pre-edit-adapter.sh:*)",
+      "Bash(.claude/hooks/claude-post-edit-adapter.sh:*)",
+      "Bash(.claude/hooks/php-paradigm/pre-edit.sh:*)",
+      "Bash(.claude/hooks/php-paradigm/post-edit.sh:*)",
+      "Bash(.claude/hooks/php-paradigm/post-edit-enhanced.sh:*)",
+      "Bash(.claude/hooks/php-paradigm/space-utils-enforcer.sh:*)",
+      "Bash(composer install:*)",
+      "Bash(vendor/bin/phpunit:*)"
+    ],
+    "deny": []
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/claude-pre-edit-adapter.sh",
+            "blocking": true,
+            "required": true
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/claude-post-edit-adapter.sh",
+            "blocking": true,
+            "required": true
+          }
+        ]
+      }
+    ]
+  },
+  "enforcement": {
+    "space_utils": {
+      "enabled": true,
+      "mode": "mandatory",
+      "auto_rollback": true,
+      "block_on_violation": true,
+      "transform_on_save": true,
+      "validation_level": "strict"
+    }
+  }
+}

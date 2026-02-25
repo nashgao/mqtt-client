@@ -253,7 +253,8 @@ class ConfigValidator
     public static function withRespectValidation(): self
     {
         if (class_exists('Respect\Validation\Validator')) {
-            self::setExternalValidator(\Respect\Validation\Validator::class, 'respect');
+            // Respect\Validation uses static methods, so we create a marker object
+            self::setExternalValidator(new \stdClass(), 'respect');
         }
         return new self();
     }

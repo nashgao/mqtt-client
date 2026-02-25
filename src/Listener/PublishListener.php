@@ -11,7 +11,7 @@ use Nashgao\MQTT\Metrics\ValidationMetrics;
 use Nashgao\MQTT\Utils\ConfigValidator;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Simps\MQTT\Listener\Traits\ValidationTrait;
+use Nashgao\MQTT\Listener\Traits\ValidationTrait;
 
 use function Hyperf\Support\make;
 
@@ -128,28 +128,8 @@ class PublishListener implements ListenerInterface
             throw new \InvalidArgumentException('Topic cannot be empty');
         }
 
-        if (! is_string($event->topic)) {
-            throw new \InvalidArgumentException('Topic must be a string');
-        }
-
-        if (! is_string($event->message)) {
-            throw new \InvalidArgumentException('Message must be a string');
-        }
-
         if (! ConfigValidator::isValidQoS($event->qos)) {
             throw new \InvalidArgumentException("Invalid QoS level: {$event->qos}");
-        }
-
-        if (! is_bool($event->retain)) {
-            throw new \InvalidArgumentException('Retain flag must be boolean');
-        }
-
-        if (! is_bool($event->dup)) {
-            throw new \InvalidArgumentException('Dup flag must be boolean');
-        }
-
-        if (! is_array($event->properties)) {
-            throw new \InvalidArgumentException('Properties must be an array');
         }
 
         // Validate topic format

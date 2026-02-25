@@ -1,0 +1,217 @@
+# Documentation Book Configuration
+# This file defines the structure and settings for book-like documentation generation
+
+book:
+  title: "Your Project Documentation"
+  version: "1.0.0"
+  author: "Development Team"
+  description: "Comprehensive documentation with natural chapter progression"
+  
+  # Chapter definitions - each chapter flows naturally into the next
+  chapters:
+    - id: "01-introduction"
+      title: "Introduction & Overview"
+      mode: "readme"
+      config:
+        include_badges: true
+        project_overview: expanded
+        quick_links: true
+        target_audience: ["developers", "users", "contributors"]
+    
+    - id: "02-getting-started"
+      title: "Getting Started Guide"
+      mode: "getting-started"
+      config:
+        target_time: 15  # minutes
+        platforms: ["windows", "mac", "linux"]
+        prerequisites: true
+        hello_world: true
+        next_steps: true
+    
+    - id: "03-core-concepts"
+      title: "Core Concepts & Principles"
+      mode: "custom"
+      source: "docs/templates/core-concepts.md"
+      config:
+        concept_maps: true
+        visual_aids: true
+        examples: true
+    
+    - id: "04-tutorials"
+      title: "Step-by-Step Tutorials"
+      mode: "custom"
+      source: "docs/templates/tutorials.md"
+      config:
+        difficulty_levels: ["beginner", "intermediate", "advanced"]
+        estimated_time: true
+        checkpoints: true
+    
+    - id: "05-api-reference"
+      title: "API Reference Documentation"
+      mode: "api"
+      config:
+        openapi_spec: true
+        examples_languages: ["curl", "python", "javascript", "go"]
+        authentication: true
+        rate_limiting: true
+        error_codes: true
+    
+    - id: "06-architecture"
+      title: "System Architecture & Design"
+      mode: "architecture"
+      config:
+        include_adrs: true
+        diagrams: true
+        patterns: true
+        scalability: true
+        security: true
+    
+    - id: "07-modules"
+      title: "Module Documentation"
+      mode: "module"
+      config:
+        modules: "auto-detect"  # or specify: ["cache", "database", "auth"]
+        include_examples: true
+        api_per_module: true
+        patterns_per_module: true
+    
+    - id: "08-guides"
+      title: "Advanced Guides"
+      mode: "custom"
+      source: "docs/templates/guides.md"
+      config:
+        topics:
+          - deployment
+          - performance
+          - security
+          - monitoring
+          - troubleshooting
+    
+    - id: "09-contributing"
+      title: "Contributing Guidelines"
+      mode: "custom"
+      source: "CONTRIBUTING.md"
+      config:
+        code_style: true
+        pull_request_process: true
+        issue_templates: true
+        community_standards: true
+    
+    - id: "10-changelog"
+      title: "Release History & Changelog"
+      mode: "changelog"
+      config:
+        format: "keep-a-changelog"
+        version_links: true
+        migration_guides: true
+        breaking_changes: highlighted
+    
+    - id: "11-troubleshooting"
+      title: "Troubleshooting & FAQ"
+      mode: "custom"
+      source: "docs/templates/troubleshooting.md"
+      config:
+        common_issues: true
+        error_messages: true
+        debug_guides: true
+        support_channels: true
+    
+    - id: "12-appendix"
+      title: "Appendix & Resources"
+      mode: "custom"
+      source: "docs/templates/appendix.md"
+      config:
+        glossary: true
+        references: true
+        tools: true
+        community_resources: true
+  
+  # Navigation and structure settings
+  navigation:
+    toc_depth: 3                    # Table of contents depth
+    chapter_links: true              # Links between chapters
+    breadcrumbs: true               # Breadcrumb navigation
+    search_enabled: true            # Search functionality
+    prev_next_buttons: true         # Previous/Next chapter buttons
+    progress_indicator: true        # Reading progress bar
+    
+  # Output configuration
+  output:
+    base_path: "docs/"              # Base documentation directory
+    chapter_separation: true        # Each chapter in separate directory
+    max_file_lines: 400            # Split files exceeding this
+    topic_threshold: 350           # Target lines per topic file
+    index_file: "README.md"        # Navigation hub filename
+    
+  # Formatting and style
+  formatting:
+    markdown_flavor: "gfm"         # GitHub Flavored Markdown
+    code_highlighting: true        # Syntax highlighting
+    line_numbers: false           # Line numbers in code blocks
+    auto_toc: true                # Automatic table of contents
+    heading_anchors: true         # Clickable heading anchors
+    
+  # Quality settings
+  quality:
+    validate_links: true          # Check all internal/external links
+    test_examples: true           # Test code examples
+    check_spelling: false         # Spell checking
+    readability_score: true       # Calculate readability metrics
+    completeness_check: true      # Verify all sections present
+    
+  # Generation options
+  generation:
+    parallel: true                # Generate chapters in parallel
+    incremental: true            # Only regenerate changed content
+    backup_existing: true        # Backup before overwriting
+    verbose: false               # Detailed generation output
+    dry_run: false              # Preview without writing files
+    
+  # Integration settings
+  integration:
+    git_commit: false           # Auto-commit after generation
+    ci_cd_hook: false          # Trigger CI/CD pipeline
+    publish_web: false         # Publish to documentation site
+    notify_team: false         # Send completion notifications
+    
+  # Custom variables (accessible in all templates)
+  variables:
+    company_name: "Your Company"
+    product_name: "Your Product"
+    support_email: "support@example.com"
+    docs_url: "https://docs.example.com"
+    github_url: "https://github.com/yourorg/yourrepo"
+    
+  # Conditional content (show/hide based on audience)
+  audiences:
+    - id: "developers"
+      label: "Developers"
+      default: true
+    - id: "users"
+      label: "End Users"
+      default: false
+    - id: "administrators"
+      label: "System Administrators"
+      default: false
+    
+  # Multi-language support (if needed)
+  languages:
+    default: "en"
+    available: ["en"]
+    # available: ["en", "es", "fr", "de", "ja", "zh"]
+    
+  # Version management
+  versioning:
+    enabled: false
+    versions:
+      - "v2.0" # current
+      - "v1.0" # legacy
+    show_version_selector: true
+    
+  # Analytics and feedback
+  analytics:
+    enabled: false
+    track_searches: true
+    track_navigation: true
+    feedback_widget: true
+    improvement_suggestions: true

@@ -298,4 +298,61 @@ class PoolConfigTest extends AbstractTestCase
         $this->assertEquals('TemperatureHandler', $tempTopic->getHandler());
         $this->assertEquals(['unit' => 'celsius'], $tempTopic->getMetadata());
     }
+
+    /**
+     * SPECIFICATION: Pool max connections should be retrievable from config.
+     */
+    public function testPoolMaxConnectionsFromConfig(): void
+    {
+        $config = [
+            'host' => 'localhost',
+            'port' => 1883,
+            'pool' => [
+                'max_connections' => 50,
+            ],
+        ];
+
+        $poolConfig = new PoolConfig('test-pool', $config);
+
+        $this->assertEquals(50, $poolConfig->maxConnections);
+
+        $poolSettings = $poolConfig->getPoolSettings();
+        $this->assertEquals(50, $poolSettings['max_connections']);
+    }
+
+    /**
+     * SPECIFICATION: Pool max connections should have sensible default.
+     */
+    public function testPoolMaxConnectionsDefaultValue(): void
+    {
+        $config = [
+            'host' => 'localhost',
+            'port' => 1883,
+        ];
+
+        $poolConfig = new PoolConfig('test-pool', $config);
+
+        // Default max_connections should be set
+        $this->assertGreaterThan(0, $poolConfig->maxConnections);
+    }
+
+    /**
+     * SPECIFICATION: Pool settings should be validated correctly by ConfigValidator.
+     */
+    public function testPoolConfigValidatorPreservesSettings(): void
+    {
+        $options = [
+            'min_connections' => 2,
+            'max_connections' => 20,
+            'connect_timeout' => 15.0,
+            'wait_timeout' => 5.0,
+        ];
+
+        $validated = ConfigValidator::validatePoolConfig($options);
+
+        $this->assertEquals(2, $validated['min_connections']);
+        $this->assertEquals(20, $validated['max_connections']);
+        $this->assertEquals(15.0, $validated['connect_timeout']);
+        $this->assertEquals(5.0, $validated['wait_timeout']);
+    }
 }
