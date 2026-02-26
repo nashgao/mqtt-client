@@ -48,13 +48,15 @@ final class DebugTapListener implements ListenerInterface
             return;
         }
 
-        if (! $this->server->isRunning()) {
-            $this->server->logVerbose('Server not running, skipping event');
+        if (! $this->server->isActive()) {
+            $this->server->logVerbose('Server not active, skipping event');
             return;
         }
 
-        // Process pending connections and commands
-        $this->server->tick();
+        // Only tick (accept connections, process commands) on the worker owning the socket
+        if ($this->server->isRunning()) {
+            $this->server->tick();
+        }
 
         $clientCount = $this->server->getClientCount();
         $this->server->logVerbose("Processing event, connected clients: {$clientCount}");

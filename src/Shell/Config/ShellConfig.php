@@ -33,6 +33,8 @@ final readonly class ShellConfig
      * @param float $activityTimeoutSeconds Timeout for activity detection
      * @param string $historyFile Path to readline history file
      * @param int $historyMaxEntries Maximum entries in readline history
+     * @param bool $showPrompt Whether to display the prompt indicator
+     * @param float $promptQuietThreshold Seconds of quiet before re-displaying prompt
      */
     public function __construct(
         // Message handling
@@ -67,6 +69,10 @@ final readonly class ShellConfig
         // Readline/History
         public string $historyFile = '~/.mqtt_shell_history',
         public int $historyMaxEntries = 1000,
+
+        // Prompt behavior
+        public bool $showPrompt = true,
+        public float $promptQuietThreshold = 2.0,
     ) {}
 
     /**
@@ -106,6 +112,8 @@ final readonly class ShellConfig
             activityTimeoutSeconds: self::getFloat($config, 'activityTimeoutSeconds', 60.0),
             historyFile: self::getString($config, 'historyFile', '~/.mqtt_shell_history'),
             historyMaxEntries: self::getInt($config, 'historyMaxEntries', 1000),
+            showPrompt: self::getBool($config, 'showPrompt', true),
+            promptQuietThreshold: self::getFloat($config, 'promptQuietThreshold', 2.0),
         );
     }
 
@@ -134,6 +142,15 @@ final readonly class ShellConfig
     {
         $value = $config[$key] ?? $default;
         return is_string($value) ? $value : $default;
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private static function getBool(array $config, string $key, bool $default): bool
+    {
+        $value = $config[$key] ?? $default;
+        return is_bool($value) ? $value : $default;
     }
 
     /**
@@ -185,6 +202,8 @@ final readonly class ShellConfig
             'activityTimeoutSeconds' => $this->activityTimeoutSeconds,
             'historyFile' => $this->historyFile,
             'historyMaxEntries' => $this->historyMaxEntries,
+            'showPrompt' => $this->showPrompt,
+            'promptQuietThreshold' => $this->promptQuietThreshold,
         ];
     }
 }

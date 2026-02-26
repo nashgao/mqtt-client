@@ -85,6 +85,10 @@ final class MqttShellClient
 
     private bool $verticalFormat = false;
 
+    private float $lastMessageTime = 0.0;
+
+    private bool $promptDisplayed = false;
+
     /**
      * @param array<string, string> $defaultAliases
      * @param ShellConfig|null $config Shell configuration (uses defaults if null)
@@ -130,6 +134,9 @@ final class MqttShellClient
         foreach ($this->getWelcomeLines() as $line) {
             $output->writeln($line);
         }
+
+        // Show initial prompt
+        $this->showPrompt($output);
 
         // Fallback to polling mode
         return $this->runPolling($output);
@@ -336,6 +343,9 @@ final class MqttShellClient
             $output->writeln($line);
         }
 
+        // Show initial prompt
+        $this->showPrompt($output);
+
         // Start streaming (uses socket->send, must be in coroutine)
         $this->transport->startStreaming();
 
@@ -381,6 +391,9 @@ final class MqttShellClient
 
         // Wait for exit
         while ($this->running) {
+            // Check for quiet period - show prompt if messages stopped
+            $this->checkQuietPeriod($output);
+
             // @phpstan-ignore-next-line (Swoole class only available when ext-swoole is loaded)
             \Swoole\Coroutine::sleep(0.1);
         }
@@ -419,6 +432,9 @@ final class MqttShellClient
                 $this->handleInput($line, $output);
             }
 
+            // Check for quiet period - show prompt if messages stopped
+            $this->checkQuietPeriod($output);
+
             // Small delay to prevent CPU spinning
             usleep(10000); // 10ms
         }
@@ -435,8 +451,12 @@ final class MqttShellClient
      */
     private function handleInput(string $line, OutputInterface $output): void
     {
+        // User typed something, so prompt is no longer displayed
+        $this->promptDisplayed = false;
+
         $line = trim($line);
         if ($line === '') {
+            $this->showPrompt($output);
             return;
         }
 
@@ -455,13 +475,18 @@ final class MqttShellClient
             // Check for exit request
             if ($result->shouldExit ?? false) {
                 $this->running = false;
+                return;
             }
+
+            // Show prompt after command completes
+            $this->showPrompt($output);
             return;
         }
 
         // Unknown command
         $output->writeln("<error>Unknown command: {$command}</error>");
         $output->writeln("Type 'help' for available commands");
+        $this->showPrompt($output);
     }
 
     /**
@@ -547,6 +572,8 @@ final class MqttShellClient
         // Display (only if not paused)
         if (!$this->paused) {
             $output->writeln($formatted);
+            $this->lastMessageTime = microtime(true);
+            $this->promptDisplayed = false;
         }
     }
 
@@ -621,6 +648,34 @@ final class MqttShellClient
             'Session ended. Total messages: %d',
             $this->stats->getTotalMessages()
         ));
+    }
+
+    /**
+     * Display the prompt if enabled and not already displayed.
+     */
+    private function showPrompt(OutputInterface $output): void
+    {
+        if (!$this->config->showPrompt || $this->promptDisplayed) {
+            return;
+        }
+
+        $output->write($this->prompt);
+        $this->promptDisplayed = true;
+    }
+
+    /**
+     * Check if messages have been quiet long enough to show the prompt.
+     */
+    private function checkQuietPeriod(OutputInterface $output): void
+    {
+        if ($this->paused || $this->lastMessageTime === 0.0) {
+            return;
+        }
+
+        $quietDuration = microtime(true) - $this->lastMessageTime;
+        if ($quietDuration >= $this->config->promptQuietThreshold) {
+            $this->showPrompt($output);
+        }
     }
 
     /**
