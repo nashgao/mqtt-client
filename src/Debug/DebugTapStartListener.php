@@ -6,12 +6,13 @@ namespace Nashgao\MQTT\Debug;
 
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Framework\Event\AfterWorkerStart;
+use Hyperf\Framework\Event\OnPipeMessage;
 
 /**
- * Starts the DebugTapServer when a Hyperf worker starts.
+ * Manages DebugTapServer lifecycle across Swoole workers.
  *
- * This listener is responsible for initializing the debug tap Unix socket server
- * so that debug clients can connect and receive MQTT message streams.
+ * - Worker 0: starts the Unix socket server and handles relayed events from other workers.
+ * - Workers 1+: store Swoole server context so events can be relayed to worker 0 via PipeMessage.
  */
 final class DebugTapStartListener implements ListenerInterface
 {
@@ -26,12 +27,24 @@ final class DebugTapStartListener implements ListenerInterface
     {
         return [
             AfterWorkerStart::class,
+            OnPipeMessage::class,
         ];
     }
 
     public function process(object $event): void
     {
-        // Start the debug tap server (will check if enabled internally)
-        $this->server->start();
+        if ($event instanceof AfterWorkerStart) {
+            $this->server->setWorkerContext($event->workerId, $event->server);
+
+            if ($event->workerId === 0) {
+                $this->server->start();
+            }
+
+            return;
+        }
+
+        if ($event instanceof OnPipeMessage) {
+            $this->server->handlePipeMessage($event->data);
+        }
     }
 }

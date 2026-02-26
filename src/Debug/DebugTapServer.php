@@ -9,6 +9,7 @@ use Hyperf\Contract\StdoutLoggerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Swoole\Coroutine\Socket;
+use Swoole\Server;
 
 /**
  * Unix socket server for broadcasting MQTT messages to debug shell clients.
@@ -53,6 +54,10 @@ final class DebugTapServer
     private bool $ticking = false;
 
     private ?int $timerId = null;
+
+    private ?int $workerId = null;
+
+    private ?Server $swooleServer = null;
 
     /**
      * Callback for executing MQTT commands from the shell.
@@ -145,6 +150,7 @@ final class DebugTapServer
         }
 
         $this->serverSocket = $socket;
+        chmod($this->socketPath, 0666);
         $this->running = true;
 
         $this->timerId = \Swoole\Timer::tick(100, function (): void {
@@ -324,6 +330,72 @@ final class DebugTapServer
     public function getSocketPath(): string
     {
         return $this->socketPath;
+    }
+
+    /**
+     * Set worker context for multi-worker relay support.
+     *
+     * On worker 0, the server owns the Unix socket and broadcasts directly.
+     * On other workers, events are relayed to worker 0 via Swoole PipeMessage.
+     */
+    public function setWorkerContext(int $workerId, Server $swooleServer): void
+    {
+        $this->workerId = $workerId;
+        $this->swooleServer = $swooleServer;
+    }
+
+    /**
+     * Check if the server can handle events (either direct broadcast or relay).
+     *
+     * Returns true if:
+     * - The socket server is running (worker 0), OR
+     * - The server is in relay mode (non-zero worker with Swoole server context)
+     */
+    public function isActive(): bool
+    {
+        if ($this->running) {
+            return true;
+        }
+
+        return $this->enabled
+            && $this->workerId !== null
+            && $this->workerId !== 0
+            && $this->swooleServer !== null;
+    }
+
+    /**
+     * Handle a PipeMessage that may contain a relayed debug tap event.
+     *
+     * Called on worker 0 when another worker relays an MQTT event via sendMessage().
+     * Non-relay messages are silently ignored.
+     */
+    public function handlePipeMessage(mixed $data): void
+    {
+        if (! $this->running || ! is_string($data)) {
+            return;
+        }
+
+        try {
+            /** @var array<string, mixed> $decoded */
+            $decoded = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            return;
+        }
+
+        if (! is_array($decoded) || ! isset($decoded['__debug_tap_relay'])) {
+            return;
+        }
+
+        $eventData = $decoded['data'] ?? null;
+        if (! is_array($eventData)) {
+            return;
+        }
+
+        $this->logVerbose('Received relayed event from another worker', [
+            'type' => $eventData['type'] ?? 'unknown',
+        ]);
+
+        $this->broadcastToClients($eventData);
     }
 
     /**
@@ -591,11 +663,51 @@ final class DebugTapServer
     }
 
     /**
-     * Broadcast data to all connected clients.
+     * Broadcast data to all connected clients, or relay to worker 0 if on another worker.
      *
      * @param array<string, mixed> $data
      */
     private function broadcast(array $data): void
+    {
+        // Non-zero workers relay to worker 0 via PipeMessage
+        if ($this->workerId !== null && $this->workerId !== 0) {
+            $this->relayToWorkerZero($data);
+            return;
+        }
+
+        $this->broadcastToClients($data);
+    }
+
+    /**
+     * Relay event data to worker 0 via Swoole PipeMessage.
+     *
+     * @param array<string, mixed> $data
+     */
+    private function relayToWorkerZero(array $data): void
+    {
+        $server = $this->swooleServer;
+        if ($server === null) {
+            return;
+        }
+
+        $payload = json_encode([
+            '__debug_tap_relay' => true,
+            'data' => $data,
+        ], JSON_THROW_ON_ERROR);
+
+        $this->logVerbose("Relaying event from worker {$this->workerId} to worker 0", [
+            'type' => $data['type'] ?? 'unknown',
+        ]);
+
+        $server->sendMessage($payload, 0);
+    }
+
+    /**
+     * Broadcast data directly to all connected socket clients.
+     *
+     * @param array<string, mixed> $data
+     */
+    private function broadcastToClients(array $data): void
     {
         if (! $this->running) {
             $this->logVerbose('broadcast: server not running, skipping');
