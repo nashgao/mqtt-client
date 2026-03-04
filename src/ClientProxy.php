@@ -95,7 +95,7 @@ class ClientProxy extends Client
                 $message = parent::recv();
                 // Send ping if keepAlive seconds have passed since last ping
                 if ((time() - $this->timeSincePing) >= $this->config->clientConfig->getKeepAlive()) {
-                    if (parent::ping()) {
+                    if (parent::ping(false)) {
                         $this->timeSincePing = time();
                     } else {
                         return $cont->push(false);
@@ -105,12 +105,12 @@ class ClientProxy extends Client
                 if (! is_bool($message)) {
                     /* qos 1 puback */
                     if ($message['type'] === Types::PUBLISH && $message['qos'] === Qos::QOS_AT_LEAST_ONCE) {
-                        parent::send(['type' => Types::PUBACK, 'message_id' => $message['message_id']]);
+                        parent::send(['type' => Types::PUBACK, 'message_id' => $message['message_id']], false);
                     }
 
                     /* qos 2 pubrel */
                     if ($message['type'] === Types::PUBLISH && $message['qos'] === Qos::QOS_EXACTLY_ONCE) {
-                        parent::send(['type' => Types::PUBREC, 'message_id' => $message['message_id']]);
+                        parent::send(['type' => Types::PUBREC, 'message_id' => $message['message_id']], false);
                     }
 
                     /* qos 2 pub comp */
@@ -119,7 +119,8 @@ class ClientProxy extends Client
                             [
                                 'type' => Types::PUBCOMP,
                                 'message_id' => $message['message_id'],
-                            ]
+                            ],
+                            false
                         );
                     }
 

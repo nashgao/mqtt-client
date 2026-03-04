@@ -150,7 +150,7 @@ final class DebugTapServer
         }
 
         $this->serverSocket = $socket;
-        chmod($this->socketPath, 0666);
+        @chmod($this->socketPath, 0666);
         $this->running = true;
 
         $this->timerId = \Swoole\Timer::tick(100, function (): void {
@@ -470,7 +470,7 @@ final class DebugTapServer
 
             if ($data === false) {
                 // Check if it's a real error or just timeout (EAGAIN)
-                if ($client->errCode !== SOCKET_EAGAIN && $client->errCode !== 0) {
+                if ($client->errCode !== SOCKET_EAGAIN && $client->errCode !== SOCKET_ETIMEDOUT && $client->errCode !== 0) {
                     $this->disconnectClient($id);
                 }
                 continue;
