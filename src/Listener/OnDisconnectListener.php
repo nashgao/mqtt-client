@@ -6,10 +6,13 @@ namespace Nashgao\MQTT\Listener;
 
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
+use Nashgao\MQTT\Config\TopicConfig;
 use Nashgao\MQTT\Event\OnDisconnectEvent;
+use Nashgao\MQTT\Event\SubscribeEvent;
 use Nashgao\MQTT\Metrics\ConnectionMetrics;
 use Nashgao\MQTT\Metrics\ErrorMetrics;
 use Nashgao\MQTT\Metrics\ValidationMetrics;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Simps\MQTT\Hex\ReasonCode;
@@ -27,6 +30,8 @@ class OnDisconnectListener implements ListenerInterface
 
     private ValidationMetrics $validationMetrics;
 
+    private ?EventDispatcherInterface $dispatcher;
+
     private array $disconnectionReasons = [];
 
     private array $poolDisconnections = [];
@@ -36,12 +41,14 @@ class OnDisconnectListener implements ListenerInterface
         ?LoggerInterface $logger = null,
         ?ConnectionMetrics $connectionMetrics = null,
         ?ErrorMetrics $errorMetrics = null,
-        ?ValidationMetrics $validationMetrics = null
+        ?ValidationMetrics $validationMetrics = null,
+        ?EventDispatcherInterface $dispatcher = null
     ) {
         $this->logger = $logger ?? $stdoutLogger ?? new NullLogger();
         $this->connectionMetrics = $connectionMetrics ?? new ConnectionMetrics();
         $this->errorMetrics = $errorMetrics ?? new ErrorMetrics();
         $this->validationMetrics = $validationMetrics ?? new ValidationMetrics();
+        $this->dispatcher = $dispatcher;
     }
 
     public function listen(): array
@@ -65,6 +72,9 @@ class OnDisconnectListener implements ListenerInterface
 
             // Log the disconnect event with comprehensive details
             $this->logDisconnectEvent($event);
+
+            // Dispatch resubscription to restore topic subscriptions immediately
+            $this->dispatchResubscription($event);
 
             // Record successful processing
             $this->validationMetrics->recordValidation(
@@ -225,9 +235,56 @@ class OnDisconnectListener implements ListenerInterface
         ?LoggerInterface $logger = null,
         ?ConnectionMetrics $connectionMetrics = null,
         ?ErrorMetrics $errorMetrics = null,
-        ?ValidationMetrics $validationMetrics = null
+        ?ValidationMetrics $validationMetrics = null,
+        ?EventDispatcherInterface $dispatcher = null
     ): self {
-        return new self($stdoutLogger, $logger, $connectionMetrics, $errorMetrics, $validationMetrics);
+        return new self($stdoutLogger, $logger, $connectionMetrics, $errorMetrics, $validationMetrics, $dispatcher);
+    }
+
+    /**
+     * Dispatch resubscription event to restore topic subscriptions after disconnect.
+     *
+     * Converts raw subscribe config from ClientConfig into TopicConfig objects
+     * and dispatches a SubscribeEvent so the SubscribeListener re-subscribes
+     * all topics on the reconnected connection.
+     */
+    private function dispatchResubscription(OnDisconnectEvent $event): void
+    {
+        if ($this->dispatcher === null) {
+            $this->logger->debug('No event dispatcher available, skipping resubscription dispatch');
+            return;
+        }
+
+        if (empty($event->clientConfig->subscribe)) {
+            $this->logger->debug('No subscribe configuration available for resubscription', [
+                'pool_name' => $event->poolName,
+            ]);
+            return;
+        }
+
+        try {
+            /** @var TopicConfig[] $topicConfigs */
+            $topicConfigs = array_map(
+                static fn(array $config): TopicConfig => new TopicConfig($config),
+                $event->clientConfig->subscribe
+            );
+
+            $this->dispatcher->dispatch(new SubscribeEvent(
+                $event->poolName,
+                $topicConfigs
+            ));
+
+            $this->logger->info('Dispatched resubscription after disconnect', [
+                'pool_name' => $event->poolName,
+                'topic_count' => count($topicConfigs),
+                'disconnect_code' => $event->code,
+            ]);
+        } catch (\Throwable $e) {
+            $this->logger->error('Failed to dispatch resubscription', [
+                'pool_name' => $event->poolName,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
