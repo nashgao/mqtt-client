@@ -355,4 +355,23 @@ class PoolConfigTest extends AbstractTestCase
         $this->assertEquals(15.0, $validated['connect_timeout']);
         $this->assertEquals(5.0, $validated['wait_timeout']);
     }
+
+    public function testPoolSettingsAcceptFractionalSeconds()
+    {
+        $poolConfig = new PoolConfig('test-pool', [
+            'host' => 'localhost',
+            'port' => 1883,
+            'pool' => [
+                'connect_timeout' => 10.0,
+                'wait_timeout' => 2.5,
+                'heartbeat' => 60,
+                'max_idle_time' => 60.0,
+            ],
+        ]);
+
+        $this->assertSame(10.0, $poolConfig->connectTimeout);
+        $this->assertSame(2.5, $poolConfig->waitTimeout);
+        $this->assertSame(60.0, $poolConfig->heartbeat);
+        $this->assertSame(2.5, $poolConfig->getPoolSettings()['wait_timeout']);
+    }
 }

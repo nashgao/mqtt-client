@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-10-17
+
+### Fixed
+- **Shared subscriptions were silently dropped on auto-subscribe**: `TopicSubscription` now carries `enable_share_topic`, `share_topic`, `enable_queue_topic`, `enable_multisub` and `multisub_num` through `toTopicConfig()` and `toArray()`. Before, a pool configured with a share group subscribed to the plain topic, so every connection received every message.
+- **Pool settings with fractional seconds crashed config loading**: `PoolConfig` types `connect_timeout`, `wait_timeout`, `heartbeat` and `max_idle_time` as `float` (as Hyperf's pool options do); `10.0` used to throw a `TypeError`.
+
 ## [0.2.1-alpha.11] - 2026-02-17
 
 ### Fixed

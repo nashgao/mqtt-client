@@ -151,4 +151,35 @@ class TopicSubscriptionTest extends AbstractTestCase
         $this->assertEquals('TestHandler', $array['handler']);
         $this->assertEquals(['key' => 'value'], $array['metadata']);
     }
+
+    public function testSharedSubscriptionSettingsReachTopicConfig()
+    {
+        $subscription = new TopicSubscription([
+            'topic' => 'sensors/readings',
+            'qos' => 2,
+            'enable_share_topic' => true,
+            'share_topic' => ['group_name' => ['workers']],
+            'enable_queue_topic' => true,
+            'enable_multisub' => true,
+            'multisub_num' => 3,
+        ]);
+
+        $topicConfig = $subscription->toTopicConfig();
+
+        $this->assertTrue($topicConfig->enableShareTopic);
+        $this->assertSame(['group_name' => ['workers']], $topicConfig->shareTopic);
+        $this->assertTrue($topicConfig->enableQueueTopic);
+        $this->assertTrue($topicConfig->enableMultisub);
+        $this->assertSame(3, $topicConfig->multisubNum);
+        $this->assertSame(2, $topicConfig->qos);
+    }
+
+    public function testTopicWithoutSharingStaysUnshared()
+    {
+        $topicConfig = (new TopicSubscription(['topic' => 'sensors/readings']))->toTopicConfig();
+
+        $this->assertFalse($topicConfig->enableShareTopic);
+        $this->assertFalse($topicConfig->enableQueueTopic);
+        $this->assertFalse($topicConfig->enableMultisub);
+    }
 }
