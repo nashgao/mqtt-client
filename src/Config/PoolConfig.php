@@ -39,13 +39,13 @@ class PoolConfig
 
     public int $maxConnections = 10;
 
-    public int $connectTimeout = 10;
+    public float $connectTimeout = 10.0;
 
-    public int $waitTimeout = 3;
+    public float $waitTimeout = 3.0;
 
-    public int $heartbeat = -1;
+    public float $heartbeat = -1.0;
 
-    public int $maxIdleTime = 60;
+    public float $maxIdleTime = 60.0;
 
     // Subscription configuration
     public TopicSubscriptionConfig $subscriptionConfig;

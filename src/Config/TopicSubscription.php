@@ -20,6 +20,16 @@ class TopicSubscription
 
     public int $retainHandling = 2;
 
+    public bool $enableMultisub = false;
+
+    public int $multisubNum = 1;
+
+    public bool $enableShareTopic = false;
+
+    public array $shareTopic = [];
+
+    public bool $enableQueueTopic = false;
+
     public $filter;
 
     public array $properties = [];
@@ -54,6 +64,26 @@ class TopicSubscription
 
         if (isset($config['retain_handling'])) {
             $this->retainHandling = (int) $config['retain_handling'];
+        }
+
+        if (isset($config['enable_multisub'])) {
+            $this->enableMultisub = (bool) $config['enable_multisub'];
+        }
+
+        if (isset($config['multisub_num'])) {
+            $this->multisubNum = (int) $config['multisub_num'];
+        }
+
+        if (isset($config['enable_share_topic'])) {
+            $this->enableShareTopic = (bool) $config['enable_share_topic'];
+        }
+
+        if (isset($config['share_topic'])) {
+            $this->shareTopic = (array) $config['share_topic'];
+        }
+
+        if (isset($config['enable_queue_topic'])) {
+            $this->enableQueueTopic = (bool) $config['enable_queue_topic'];
         }
 
         if (isset($config['filter']) && is_callable($config['filter'])) {
@@ -150,6 +180,11 @@ class TopicSubscription
             'no_local' => $this->noLocal,
             'retain_as_published' => $this->retainAsPublished,
             'retain_handling' => $this->retainHandling,
+            'enable_multisub' => $this->enableMultisub,
+            'multisub_num' => $this->multisubNum,
+            'enable_share_topic' => $this->enableShareTopic,
+            'share_topic' => $this->shareTopic,
+            'enable_queue_topic' => $this->enableQueueTopic,
         ]);
     }
 
@@ -162,6 +197,11 @@ class TopicSubscription
             'no_local' => $this->noLocal,
             'retain_as_published' => $this->retainAsPublished,
             'retain_handling' => $this->retainHandling,
+            'enable_multisub' => $this->enableMultisub,
+            'multisub_num' => $this->multisubNum,
+            'enable_share_topic' => $this->enableShareTopic,
+            'share_topic' => $this->shareTopic,
+            'enable_queue_topic' => $this->enableQueueTopic,
             'properties' => $this->properties,
         ];
 
